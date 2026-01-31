@@ -17,11 +17,6 @@
         <include>
             <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Sun</uri>
         </include>
-        
-        <!-- Hokuyo UST10LX visual model -->
-        <include>
-            <uri>https://fuel.gazebosim.org/1.0/mjcarroll/models/Hokuyo UST10LX</uri>
-        </include>
 
         <gui>
             <camera name="my_camera">

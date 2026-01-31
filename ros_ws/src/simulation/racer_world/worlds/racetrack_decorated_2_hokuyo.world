@@ -17,11 +17,6 @@
         <include>
             <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Sun</uri>
         </include>
-        
-        <!-- Hokuyo UST10LX visual model -->
-        <include>
-            <uri>https://fuel.gazebosim.org/1.0/mjcarroll/models/Hokuyo UST10LX</uri>
-        </include>
 
         <gui>
             <camera name="my_camera">
@@ -135,66 +130,6 @@
                     </box>
                 </geometry>
                 </collision>
-
-                <!-- Visual Lidar: a visible “puck” so you can see the sensor mounted -->
-                <visual name="lidar_visual">
-                <pose relative_to="lidar_frame">0 0 0 0 0 0</pose>
-                <geometry>
-                    <cylinder>
-                    <radius>0.03</radius>
-                    <length>0.04</length>
-                    </cylinder>
-                </geometry>
-                </visual>
-
-                <sensor name="ust10lx" type="gpu_lidar">
-                <pose relative_to="lidar_frame">0 0 0 0 0 0</pose>
-
-                <!-- Gazebo Transport topic (will appear as /scan if you set "scan") -->
-                <topic>scan</topic>
-
-                <!-- ~40 Hz (UST-10LX is ~25ms per scan) -->
-                <update_rate>40</update_rate>
-
-                <ray>
-                    <scan>
-                    <horizontal>
-                        <!-- 270° FOV: [-135°, +135°] -->
-                        <min_angle>-2.35619449</min_angle>
-                        <max_angle> 2.35619449</max_angle>
-
-                        <!-- ~0.25° resolution: 270 / 0.25 = 1080 steps -->
-                        <samples>1080</samples>
-                        <resolution>1</resolution>
-                    </horizontal>
-
-                    <!-- 2D scan plane -->
-                    <vertical>
-                        <samples>1</samples>
-                        <resolution>1</resolution>
-                        <min_angle>0</min_angle>
-                        <max_angle>0</max_angle>
-                    </vertical>
-                    </scan>
-
-                    <!-- Range model -->
-                    <range>
-                    <min>0.05</min>
-                    <max>10.0</max>
-                    <resolution>0.01</resolution>
-                    </range>
-
-                    <!-- Noise model (Gaussian); mean/stddev are part of SDF noise spec -->
-                    <noise type="gaussian">
-                    <mean>0.0</mean>
-                    <stddev>0.01</stddev> <!-- meters -->
-                    </noise>
-                </ray>
-
-                <always_on>1</always_on>
-                <visualize>true</visualize>
-                </sensor>
-
             </link>
 
             <link name='front_left_wheel'>
@@ -504,10 +439,29 @@
                 </axis>
             </joint>
 
+            <!-- Hokuyo UST-10LX model (visual + sensor) from Fuel -->
+            <include>
+                <name>hokuyo</name>
+                <uri>https://fuel.gazebosim.org/1.0/mjcarroll/models/Hokuyo UST10LX</uri>
+
+                <!-- Mount at the same place as the old cylinder (lidar_frame). -->
+                <!-- The Fuel model’s sensor is at +0.0525045525m in its model.sdf,
+                    so we shift the whole model down by that amount so the scan plane
+                    is at lidar_frame height. -->
+                <pose relative_to="lidar_frame">0 0 -0.0525045525 0 0 0</pose>
+            </include>
+
+            <!-- Rigidly attach the included model to the car chassis -->
+            <joint name="hokuyo_mount_fixed" type="fixed">
+                <parent>chassis</parent>
+                <child>hokuyo::link</child>
+            </joint>
+
+
             <!-- Lidar Frame-->
             <frame name="lidar_frame" attached_to="chassis">
                 <!-- x y z roll pitch yaw; set z to the mounting height -->
-                <pose>0.08 0 0.07 0 0 0</pose>
+                <pose>0.08 0 0.10 0 0 0</pose>
             </frame>
 
             <!-- ACKERMANN STEERING PLUGIN -->
