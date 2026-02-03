@@ -138,7 +138,7 @@
 
                 <!-- Visual Lidar: a visible “puck” so you can see the sensor mounted -->
                 <visual name="lidar_visual">
-                <pose relative_to="lidar_frame">0 0 0 0 0 0</pose>
+                <pose>0 0 0 0 0 0</pose>
                 <geometry>
                     <cylinder>
                     <radius>0.03</radius>
@@ -148,7 +148,7 @@
                 </visual>
 
                 <sensor name="ust10lx" type="gpu_lidar">
-                <pose relative_to="lidar_frame">0 0 0 0 0 0</pose>
+                <pose>0 0 0 0 0 0</pose>
 
                 <!-- Gazebo Transport topic (will appear as /scan if you set "scan") -->
                 <topic>scan</topic>
