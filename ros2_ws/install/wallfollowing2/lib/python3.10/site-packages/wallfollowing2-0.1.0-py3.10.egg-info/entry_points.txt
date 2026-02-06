@@ -1,0 +1,3 @@
+[console_scripts]
+wallfollowing_node = wallfollowing2.wallfollowing_node:main
+

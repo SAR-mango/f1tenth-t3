@@ -1,0 +1,19 @@
+running egg_info
+writing ../../build/wallfollowing2/wallfollowing2.egg-info/PKG-INFO
+writing dependency_links to ../../build/wallfollowing2/wallfollowing2.egg-info/dependency_links.txt
+writing entry points to ../../build/wallfollowing2/wallfollowing2.egg-info/entry_points.txt
+writing requirements to ../../build/wallfollowing2/wallfollowing2.egg-info/requires.txt
+writing top-level names to ../../build/wallfollowing2/wallfollowing2.egg-info/top_level.txt
+reading manifest file '../../build/wallfollowing2/wallfollowing2.egg-info/SOURCES.txt'
+writing manifest file '../../build/wallfollowing2/wallfollowing2.egg-info/SOURCES.txt'
+running build
+running build_py
+running install
+running install_lib
+running install_data
+running install_egg_info
+removing '/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/lib/python3.10/site-packages/wallfollowing2-0.1.0-py3.10.egg-info' (and everything under it)
+Copying ../../build/wallfollowing2/wallfollowing2.egg-info to /home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/lib/python3.10/site-packages/wallfollowing2-0.1.0-py3.10.egg-info
+running install_scripts
+Installing wallfollowing_node script to /home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/lib/wallfollowing2
+writing list of installed files to '/home/erk/f1tenth-t3/ros2_ws/build/wallfollowing2/install.log'

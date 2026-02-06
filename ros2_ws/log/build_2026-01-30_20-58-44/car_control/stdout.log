@@ -1,0 +1,5 @@
+[ 60%] [32mBuilding CXX object CMakeFiles/drive_parameters_multiplexer.dir/src/drive_parameters_multiplexer.cpp.o[0m
+[ 60%] [32mBuilding CXX object CMakeFiles/drive_parameters_multiplexer.dir/src/drive_parameters_source.cpp.o[0m
+[ 60%] [32mBuilding CXX object CMakeFiles/car_controller.dir/src/car_controller.cpp.o[0m
+[ 80%] [32m[1mLinking CXX executable drive_parameters_multiplexer[0m
+[ 80%] Built target drive_parameters_multiplexer

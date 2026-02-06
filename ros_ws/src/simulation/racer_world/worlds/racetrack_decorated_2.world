@@ -428,8 +428,8 @@
                 <axis>
                 <xyz>0 0 1</xyz>
                 <limit>
-                    <lower>-0.6</lower>
-                    <upper>+0.6</upper>
+                    <lower>-0.523599</lower>
+                    <upper>+0.523599</upper>
                     <velocity>1.0</velocity>
                     <effort>25</effort>
                 </limit>
@@ -443,8 +443,8 @@
                 <axis>
                 <xyz>0 0 1</xyz>
                 <limit>
-                    <lower>-0.6</lower>
-                    <upper>+0.6</upper>
+                    <lower>-0.523599</lower>
+                    <upper>+0.523599</upper>
                     <velocity>1.0</velocity>
                     <effort>25</effort>
                 </limit>
@@ -455,7 +455,7 @@
                 <parent>front_left_wheel_steering_link</parent>
                 <child>front_left_wheel</child>
                 <axis>
-                <xyz>0 0 1</xyz>
+                <xyz>0 1 0</xyz>
                 <limit>
                     <lower>-1.79769e+308</lower>
                     <upper>1.79769e+308</upper>
@@ -467,7 +467,7 @@
                 <parent>front_right_wheel_steering_link</parent>
                 <child>front_right_wheel</child>
                 <axis>
-                <xyz>0 0 1</xyz>
+                <xyz>0 1 0</xyz>
                 <limit>
                     <lower>-1.79769e+308</lower>
                     <upper>1.79769e+308</upper>
@@ -479,7 +479,7 @@
                 <parent>chassis</parent>
                 <child>rear_left_wheel</child>
                 <axis>
-                <xyz>0 0 1</xyz>
+                <xyz>0 1 0</xyz>
                 <limit>
                     <lower>-1.79769e+308</lower>
                     <upper>1.79769e+308</upper>
@@ -491,7 +491,7 @@
                 <parent>chassis</parent>
                 <child>rear_right_wheel</child>
                 <axis>
-                <xyz>0 0 1</xyz>
+                <xyz>0 1 0</xyz>
                 <limit>
                     <lower>-1.79769e+308</lower>
                     <upper>1.79769e+308</upper>
@@ -516,14 +516,14 @@
                 <left_steering_joint>front_left_wheel_steering_joint</left_steering_joint>
                 <right_steering_joint>front_right_wheel_steering_joint</right_steering_joint>
                 <kingpin_width>0.2</kingpin_width>
-                <steering_limit>0.5</steering_limit>
-                <wheel_base>0.198864</wheel_base>
-                <wheel_separation>0.25</wheel_separation>
+                <steering_limit>0.523599</steering_limit>
+                <wheel_base>0.300568</wheel_base>
+                <wheel_separation>0.250012</wheel_separation>
                 <wheel_radius>0.056098</wheel_radius>
                 <min_velocity>-1</min_velocity>
-                <max_velocity>1</max_velocity>
-                <min_acceleration>-3</min_acceleration>
-                <max_acceleration>3</max_acceleration>
+                <max_velocity>2.0</max_velocity>
+                <min_acceleration>-2.0</min_acceleration>
+                <max_acceleration>2.0</max_acceleration>
             </plugin>
 
         </model>

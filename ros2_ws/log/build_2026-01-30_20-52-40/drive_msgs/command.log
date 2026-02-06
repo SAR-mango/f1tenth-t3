@@ -1,0 +1,6 @@
+Invoking command in '/home/erk/f1tenth-t3/ros2_ws/build/drive_msgs': /usr/bin/cmake /home/erk/f1tenth-t3/ros2_ws/src/drive_msgs -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCMAKE_INSTALL_PREFIX=/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs
+Invoked command in '/home/erk/f1tenth-t3/ros2_ws/build/drive_msgs' returned '0': /usr/bin/cmake /home/erk/f1tenth-t3/ros2_ws/src/drive_msgs -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCMAKE_INSTALL_PREFIX=/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs
+Invoking command in '/home/erk/f1tenth-t3/ros2_ws/build/drive_msgs': /usr/bin/cmake --build /home/erk/f1tenth-t3/ros2_ws/build/drive_msgs -- -j12 -l12
+Invoked command in '/home/erk/f1tenth-t3/ros2_ws/build/drive_msgs' returned '0': /usr/bin/cmake --build /home/erk/f1tenth-t3/ros2_ws/build/drive_msgs -- -j12 -l12
+Invoking command in '/home/erk/f1tenth-t3/ros2_ws/build/drive_msgs': /usr/bin/cmake --install /home/erk/f1tenth-t3/ros2_ws/build/drive_msgs
+Invoked command in '/home/erk/f1tenth-t3/ros2_ws/build/drive_msgs' returned '0': /usr/bin/cmake --install /home/erk/f1tenth-t3/ros2_ws/build/drive_msgs

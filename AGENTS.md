@@ -26,6 +26,11 @@ new dependencies, new workflows, or significant refactors).
     - teleoperation/          # Keyboard/joystick control
 - doc/                        # Documentation and assets
 - scripts/                    # Helper scripts (formatting, cartographer, etc.)
+- ros2_ws/                    # ROS2 workspace (migration target)
+  - src/drive_msgs            # ROS2 interface package (DriveParam.msg)
+  - src/wallfollowing2        # ROS2 port of wallfollowing2 (rclpy)
+  - src/car_control           # ROS2 control nodes (multiplexer + controller)
+  - src/racer_bringup         # ROS2 Gazebo Fortress launch + ros_gz_bridge
 
 ## Key simulation assets
 - ros_ws/src/simulation/racer_world/worlds/
@@ -37,8 +42,27 @@ new dependencies, new workflows, or significant refactors).
 - Build: `catkin_make` from `ros_ws/`
 - Source: `source devel/setup.bash` (or `setup.zsh`)
 - Launch: see `ros_ws/launch/*.launch` (gazebo, nav stack, RL training)
+- ROS2 build: `colcon build --packages-select drive_msgs` from `ros2_ws/`
+- ROS2 source: `source install/setup.bash`
+- ROS2 sim: `ros2 launch racer_bringup fortress_sim.launch.py`
+- Shell: zsh, ROS2 environment is pre-sourced on new terminals.
+- Assumed installed: ROS2 Humble, Gazebo Fortress, ros_gz bridge.
+- Use `ign` CLI for Gazebo Fortress (`gz` is not available).
 
 ## Continuity log (append newest on top)
+- 2026-02-04: Added ROS2 Fortress teleop+RViz launch and RViz lidar config;
+  Hokuyo world now publishes /scan from an explicit lidar sensor.
+- 2026-02-04: Fixed wheel joint axes (spin on Y) and tightened steering limits/
+  Ackermann parameters in racetrack_decorated_2*.world for realistic turning.
+- 2026-02-04: Noted `ign` CLI required for Gazebo Fortress (no `gz`).
+- 2026-01-31: Switched ROS2 Fortress launch to use `ign gazebo -r` instead of
+  `gz sim` for compatibility with the current setup.
+- 2026-01-31: Noted zsh shell, pre-sourced ROS2 setup, and installed
+  Humble + Fortress + ros_gz bridge assumptions.
+- 2026-01-31: Added ROS2 wallfollowing2 (rclpy), car_control (rclcpp), and
+  racer_bringup launch with ros_gz_bridge for /scan and /cmd_vel.
+- 2026-01-31: Added ROS2 workspace scaffold with `drive_msgs` interface package
+  and `DriveParam.msg` to start the migration.
 - 2026-01-31: Clarified ROS2 Humble + Gazebo Fortress migration goal; noted
   repo is a legacy ROS1/Gazebo project with limited modifications so far.
 - 2026-01-31: Created AGENTS.md for cross-session continuity.
