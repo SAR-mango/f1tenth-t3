@@ -8,8 +8,7 @@ from launch_ros.actions import Node
 
 
 def _default_world_path():
-    here = os.path.dirname(__file__)
-    repo_root = os.path.abspath(os.path.join(here, "..", "..", "..", ".."))
+    repo_root = os.environ.get("F1TENTH_T3_ROOT", "/home/erk/f1tenth-t3")
     return os.path.join(
         repo_root,
         "ros_ws",
@@ -51,12 +50,11 @@ def generate_launch_description():
         package="ros_gz_bridge",
         executable="parameter_bridge",
         arguments=[
-            "scan@sensor_msgs/msg/LaserScan@gz.msgs.LaserScan",
-            "/model/car/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist",
-            "/clock@rosgraph_msgs/msg/Clock@gz.msgs.Clock",
+            "/scan@sensor_msgs/msg/LaserScan[ignition.msgs.LaserScan",
+            "/model/car/cmd_vel@geometry_msgs/msg/Twist]ignition.msgs.Twist",
+            "/clock@rosgraph_msgs/msg/Clock[ignition.msgs.Clock",
         ],
         remappings=[
-            ("scan", "/scan"),
             ("/model/car/cmd_vel", "/cmd_vel"),
         ],
         output="screen",

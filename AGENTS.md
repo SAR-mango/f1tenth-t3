@@ -50,6 +50,65 @@ new dependencies, new workflows, or significant refactors).
 - Use `ign` CLI for Gazebo Fortress (`gz` is not available).
 
 ## Continuity log (append newest on top)
+- 2026-02-11: Rebuilt `rviz2_lidar.rviz` from Humble's
+  `/opt/ros/humble/share/rviz_common/default.rviz` baseline and overlaid
+  `/scan` LaserScan + fixed frame `car/chassis/ust10lx` after stripped config
+  caused RViz displays to appear but not create topic subscriptions.
+- 2026-02-11: Replaced `rviz2_lidar.rviz` with a minimal deterministic config
+  (fixed frame `car/chassis/ust10lx`, LaserScan display on `/scan`) to match
+  the known-good manual RViz setup and avoid display/QoS config side effects.
+- 2026-02-11: Re-added static TF publisher to
+  `fortress_teleop_rviz.launch.py` (`base_link` ->
+  `car/chassis/ust10lx`) so RViz fixed frame exists at startup and LaserScan
+  subscribes immediately.
+- 2026-02-11: Simplified `fortress_teleop_rviz.launch.py` to match manual RViz
+  success path: no forced `use_sim_time`, removed static TF publisher, and load
+  RViz config from source tree by default. Set `rviz2_lidar.rviz` fixed frame to
+  `car/chassis/ust10lx`.
+- 2026-02-11: Switched ros_gz_bridge message type names in Fortress launch
+  files from `gz.msgs.*` to `ignition.msgs.*` (`/scan`, `/cmd_vel`, `/clock`)
+  to match `ign topic` transport types and restore scan payload flow to ROS2.
+- 2026-02-10: Synced Fortress setup with Gazebo sensor docs: switched
+  racetrack_decorated_2_hokuyo.world system plugin filenames to
+  `ignition-gazebo-*-system`, added UserCommands plugin, set lidar topic to
+  `/scan`, and changed lidar tag to `<always_on>true</always_on>`.
+- 2026-02-10: Updated ros_gz bridge mappings in fortress_sim.launch.py and
+  fortress_teleop_rviz.launch.py to one-way directions (`GZ->ROS` for `/scan`
+  and `/clock`, `ROS->GZ` for `/cmd_vel`) to avoid scan/clock feedback loops.
+- 2026-02-10: Replaced rviz2_lidar.rviz with explicit Grid + TF + LaserScan
+  display config and explicit `/scan` QoS settings for reliable lidar display.
+- 2026-02-05: Reduced chassis mass to 1.0, lowered COM to z=-0.05, increased
+  steering limits (0.7 rad) and max velocity/accel in racetrack_decorated_2*.world.
+- 2026-02-05: Lowered chassis COM, increased chassis mass, increased wheel
+  friction, and dropped lidar visual to roof level in racetrack_decorated_2*.world.
+- 2026-02-05: Set wheel joint axes to use parent model frame in
+  racetrack_decorated_2*.world to correct wheel spin direction with steering.
+- 2026-02-05: Enabled Grid + TF displays in RViz config and added explicit
+  gravity / physics step settings to racetrack_decorated_2_hokuyo.world.
+- 2026-02-05: Added static TF publisher and configurable scan/base frames in
+  fortress_teleop_rviz.launch.py; RViz fixed frame set to base_link.
+- 2026-02-05: Added Physics + SceneBroadcaster system plugins and physics
+  settings to racetrack_decorated_2_hokuyo.world to match the working
+  visualize_lidar.sdf pattern.
+- 2026-02-05: Updated racetrack_decorated_2_hokuyo.world to SDF 1.6 and
+  gpu_lidar `<lidar>` block (matching Ignition visualize_lidar.sdf) so /scan
+  can publish.
+- 2026-02-05: Added minimal lidar-only test world
+  `ros_ws/src/simulation/racer_world/worlds/lidar_test.world` for isolating
+  Ignition /scan publishing issues.
+- 2026-02-05: Reverted Hokuyo world lidar block to match
+  racetrack_decorated_2.world (gpu_lidar + relative_to + topic scan).
+- 2026-02-05: Replaced Fuel Hokuyo include in racetrack_decorated_2_hokuyo.world
+  with the inline lidar sensor/visual from racetrack_decorated_2.world, using
+  SDF 1.4-compatible ray sensor and explicit pose.
+- 2026-02-05: Set Hokuyo lidar pose explicitly (no relative_to) to avoid SDF
+  1.4 frame issues and get /scan publishing.
+- 2026-02-05: Switched Hokuyo world lidar sensor to CPU `ray` for better
+  compatibility after /scan still produced no messages.
+- 2026-02-05: Changed Hokuyo world lidar sensor to `gpu_ray` for SDF 1.4
+  compatibility so /scan publishes correctly in Ignition.
+- 2026-02-05: Fixed ROS2 launch world path to use F1TENTH_T3_ROOT (default
+  /home/erk/f1tenth-t3) so Ignition can find the world from install space.
 - 2026-02-04: Added ROS2 Fortress teleop+RViz launch and RViz lidar config;
   Hokuyo world now publishes /scan from an explicit lidar sensor.
 - 2026-02-04: Fixed wheel joint axes (spin on Y) and tightened steering limits/

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sdf version="1.4">
+<sdf version="1.6">
     <world name="racetrack">
         <scene>
             <shadows>1</shadows>
@@ -8,11 +8,32 @@
             <sky></sky>
         </scene>
         <physics type="ode" default="true">
-            <!-- Default physics profile with no changes -->
+            <gravity>0 0 -9.8</gravity>
+            <max_step_size>0.001</max_step_size>
+            <real_time_update_rate>1000</real_time_update_rate>
         </physics>
         <physics name="fast_simulation" type="ode" default="false">
             <real_time_update_rate>0</real_time_update_rate>
         </physics>
+
+        <!-- Fortress world systems required for physics, sensors, and scene updates -->
+        <plugin
+            filename="ignition-gazebo-physics-system"
+            name="ignition::gazebo::systems::Physics">
+        </plugin>
+        <plugin
+            filename="ignition-gazebo-user-commands-system"
+            name="ignition::gazebo::systems::UserCommands">
+        </plugin>
+        <plugin
+            filename="ignition-gazebo-scene-broadcaster-system"
+            name="ignition::gazebo::systems::SceneBroadcaster">
+        </plugin>
+        <plugin
+            filename="ignition-gazebo-sensors-system"
+            name="ignition::gazebo::systems::Sensors">
+            <render_engine>ogre2</render_engine>
+        </plugin>
 
         <include>
             <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Sun</uri>
@@ -101,7 +122,8 @@
             <link name='chassis'>
                 <pose>-0.030113 0 0.030771 0 -0 0</pose>
                 <inertial>
-                <mass>1.14395</mass>
+                <pose>0 0 -0.05 0 0 0</pose>
+                <mass>10.0</mass>
                 <inertia>
                     <ixx>0.126164</ixx>
                     <ixy>0</ixy>
@@ -131,16 +153,27 @@
                 </geometry>
                 </collision>
 
-                <!-- Lidar sensor for ROS2 bridge (/scan) -->
+                <!-- Visual Lidar: a visible “puck” so you can see the sensor mounted -->
+                <visual name="lidar_visual">
+                <pose relative_to="lidar_frame">0 0 -0.03 0 0 0</pose>
+                <geometry>
+                    <cylinder>
+                    <radius>0.03</radius>
+                    <length>0.04</length>
+                    </cylinder>
+                </geometry>
+                </visual>
+
+                <!-- Hokuyo-style lidar sensor (Ignition gpu_lidar) -->
                 <sensor name="ust10lx" type="gpu_lidar">
                 <pose relative_to="lidar_frame">0 0 0 0 0 0</pose>
                 <topic>/scan</topic>
                 <update_rate>40</update_rate>
-                <ray>
+                <lidar>
                     <scan>
                     <horizontal>
                         <min_angle>-2.35619449</min_angle>
-                        <max_angle>2.35619449</max_angle>
+                        <max_angle> 2.35619449</max_angle>
                         <samples>1080</samples>
                         <resolution>1</resolution>
                     </horizontal>
@@ -156,13 +189,9 @@
                     <max>10.0</max>
                     <resolution>0.01</resolution>
                     </range>
-                    <noise type="gaussian">
-                    <mean>0.0</mean>
-                    <stddev>0.01</stddev>
-                    </noise>
-                </ray>
-                <always_on>1</always_on>
-                <visualize>false</visualize>
+                </lidar>
+                <always_on>true</always_on>
+                <visualize>true</visualize>
                 </sensor>
             </link>
 
@@ -202,8 +231,8 @@
                 <surface>
                     <friction>
                     <ode>
-                        <mu>0.5</mu>
-                        <mu2>1.0</mu2>
+                        <mu>1.2</mu>
+                        <mu2>1.2</mu2>
                         <fdir1>0 0 1</fdir1>
                     </ode>
                     </friction>
@@ -247,8 +276,8 @@
                 <surface>
                     <friction>
                     <ode>
-                        <mu>0.5</mu>
-                        <mu2>1.0</mu2>
+                        <mu>1.2</mu>
+                        <mu2>1.2</mu2>
                         <fdir1>0 0 1</fdir1>
                     </ode>
                     </friction>
@@ -292,8 +321,8 @@
                 <surface>
                     <friction>
                     <ode>
-                        <mu>0.5</mu>
-                        <mu2>1.0</mu2>
+                        <mu>1.2</mu>
+                        <mu2>1.2</mu2>
                         <fdir1>0 0 1</fdir1>
                     </ode>
                     </friction>
@@ -337,8 +366,8 @@
                 <surface>
                     <friction>
                     <ode>
-                        <mu>0.5</mu>
-                        <mu2>1.0</mu2>
+                        <mu>1.2</mu>
+                        <mu2>1.2</mu2>
                         <fdir1>0 0 1</fdir1>
                     </ode>
                     </friction>
@@ -402,8 +431,8 @@
                 <axis>
                 <xyz>0 0 1</xyz>
                 <limit>
-                    <lower>-0.523599</lower>
-                    <upper>+0.523599</upper>
+                    <lower>-0.7</lower>
+                    <upper>+0.7</upper>
                     <velocity>1.0</velocity>
                     <effort>25</effort>
                 </limit>
@@ -417,8 +446,8 @@
                 <axis>
                 <xyz>0 0 1</xyz>
                 <limit>
-                    <lower>-0.523599</lower>
-                    <upper>+0.523599</upper>
+                    <lower>-0.7</lower>
+                    <upper>+0.7</upper>
                     <velocity>1.0</velocity>
                     <effort>25</effort>
                 </limit>
@@ -430,6 +459,7 @@
                 <child>front_left_wheel</child>
                 <axis>
                 <xyz>0 1 0</xyz>
+                <use_parent_model_frame>1</use_parent_model_frame>
                 <limit>
                     <lower>-1.79769e+308</lower>
                     <upper>1.79769e+308</upper>
@@ -442,6 +472,7 @@
                 <child>front_right_wheel</child>
                 <axis>
                 <xyz>0 1 0</xyz>
+                <use_parent_model_frame>1</use_parent_model_frame>
                 <limit>
                     <lower>-1.79769e+308</lower>
                     <upper>1.79769e+308</upper>
@@ -454,6 +485,7 @@
                 <child>rear_left_wheel</child>
                 <axis>
                 <xyz>0 1 0</xyz>
+                <use_parent_model_frame>1</use_parent_model_frame>
                 <limit>
                     <lower>-1.79769e+308</lower>
                     <upper>1.79769e+308</upper>
@@ -466,31 +498,13 @@
                 <child>rear_right_wheel</child>
                 <axis>
                 <xyz>0 1 0</xyz>
+                <use_parent_model_frame>1</use_parent_model_frame>
                 <limit>
                     <lower>-1.79769e+308</lower>
                     <upper>1.79769e+308</upper>
                 </limit>
                 </axis>
             </joint>
-
-            <!-- Hokuyo UST-10LX model (visual + sensor) from Fuel -->
-            <include>
-                <name>hokuyo</name>
-                <uri>https://fuel.gazebosim.org/1.0/mjcarroll/models/Hokuyo UST10LX</uri>
-
-                <!-- Mount at the same place as the old cylinder (lidar_frame). -->
-                <!-- The Fuel model’s sensor is at +0.0525045525m in its model.sdf,
-                    so we shift the whole model down by that amount so the scan plane
-                    is at lidar_frame height. -->
-                <pose relative_to="lidar_frame">0 0 -0.0525045525 0 0 0</pose>
-            </include>
-
-            <!-- Rigidly attach the included model to the car chassis -->
-            <joint name="hokuyo_mount_fixed" type="fixed">
-                <parent>chassis</parent>
-                <child>hokuyo::link</child>
-            </joint>
-
 
             <!-- Lidar Frame-->
             <frame name="lidar_frame" attached_to="chassis">
@@ -509,24 +523,17 @@
                 <left_steering_joint>front_left_wheel_steering_joint</left_steering_joint>
                 <right_steering_joint>front_right_wheel_steering_joint</right_steering_joint>
                 <kingpin_width>0.2</kingpin_width>
-                <steering_limit>0.523599</steering_limit>
+                <steering_limit>0.7</steering_limit>
                 <wheel_base>0.300568</wheel_base>
                 <wheel_separation>0.250012</wheel_separation>
                 <wheel_radius>0.056098</wheel_radius>
                 <min_velocity>-1</min_velocity>
-                <max_velocity>2.0</max_velocity>
-                <min_acceleration>-2.0</min_acceleration>
-                <max_acceleration>2.0</max_acceleration>
+                <max_velocity>3.0</max_velocity>
+                <min_acceleration>-3.0</min_acceleration>
+                <max_acceleration>3.0</max_acceleration>
             </plugin>
 
         </model>
     </world>
-
-    <!-- SENSOR PLUGIN -->
-    <plugin
-        filename="libignition-gazebo-sensors-system.so"
-        name="ignition::gazebo::systems::Sensors">
-        <render_engine>ogre2</render_engine>
-    </plugin>
 
 </sdf>
