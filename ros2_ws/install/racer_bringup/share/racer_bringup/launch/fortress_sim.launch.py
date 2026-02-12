@@ -20,6 +20,19 @@ def _default_world_path():
     )
 
 
+def _car_control_exec(name: str) -> str:
+    repo_root = os.environ.get("F1TENTH_T3_ROOT", "/home/erk/f1tenth-t3")
+    return os.path.join(
+        repo_root,
+        "ros2_ws",
+        "install",
+        "car_control",
+        "lib",
+        "car_control",
+        name,
+    )
+
+
 def generate_launch_description():
     world = LaunchConfiguration("world")
     use_wallfollowing = LaunchConfiguration("wallfollowing")
@@ -60,22 +73,29 @@ def generate_launch_description():
         output="screen",
     )
 
-    drive_parameters_multiplexer = Node(
-        package="car_control",
-        executable="drive_parameters_multiplexer",
-        parameters=[{"use_sim_time": True}],
+    drive_parameters_multiplexer = ExecuteProcess(
+        cmd=[
+            _car_control_exec("drive_parameters_multiplexer"),
+            "--ros-args",
+            "-p",
+            "use_sim_time:=true",
+        ],
         output="screen",
         condition=IfCondition(use_control),
     )
 
-    car_controller = Node(
-        package="car_control",
-        executable="car_controller",
-        parameters=[
-            {"use_sim_time": True},
-            {"publish_cmd_vel": True},
-            {"max_linear_speed": 1.0},
-            {"max_steering_angle": 0.5},
+    car_controller = ExecuteProcess(
+        cmd=[
+            _car_control_exec("car_controller"),
+            "--ros-args",
+            "-p",
+            "use_sim_time:=true",
+            "-p",
+            "publish_cmd_vel:=true",
+            "-p",
+            "max_linear_speed:=1.0",
+            "-p",
+            "max_steering_angle:=0.5",
         ],
         output="screen",
         condition=IfCondition(use_control),

@@ -50,6 +50,11 @@ new dependencies, new workflows, or significant refactors).
 - Use `ign` CLI for Gazebo Fortress (`gz` is not available).
 
 ## Continuity log (append newest on top)
+- 2026-02-12: Patched `fortress_sim.launch.py` and
+  `fortress_wallfollowing.launch.py` to start `car_control` executables via
+  workspace install paths (`ros2_ws/install/car_control/lib/car_control/*`)
+  instead of package lookup, working around intermittent `package 'car_control'
+  not found` overlay-resolution issues.
 - 2026-02-11: Added dedicated autonomous launch
   `fortress_wallfollowing.launch.py` (ign + bridge + car_control +
   wallfollowing2 + continuous `/commands/drive_mode=2` and
