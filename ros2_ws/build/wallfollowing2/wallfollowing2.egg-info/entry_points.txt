@@ -1,3 +1,4 @@
 [console_scripts]
+scan_stop_reverse_test_node = wallfollowing2.scan_stop_reverse_test_node:main
 wallfollowing_node = wallfollowing2.wallfollowing_node:main
 

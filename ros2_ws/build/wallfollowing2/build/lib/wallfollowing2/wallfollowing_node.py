@@ -116,6 +116,8 @@ class WallFollowingNode(Node):
 
     def get_scan_as_cartesian(self, laser_scan):
         ranges = np.array(laser_scan.ranges)
+        if ranges.shape[0] == 0:
+            return np.zeros((0, 2))
 
         angles = np.linspace(
             laser_scan.angle_min,
@@ -139,10 +141,13 @@ class WallFollowingNode(Node):
             angles = angles[skip_left:-1 - skip_right]
             ranges = ranges[skip_left:-1 - skip_right]
 
-        inf_mask = np.isinf(ranges)
-        if inf_mask.any():
-            ranges = ranges[~inf_mask]
-            angles = angles[~inf_mask]
+        finite_mask = np.isfinite(ranges)
+        if not finite_mask.all():
+            ranges = ranges[finite_mask]
+            angles = angles[finite_mask]
+
+        if ranges.shape[0] == 0:
+            return np.zeros((0, 2))
 
         points = np.zeros((ranges.shape[0], 2))
         points[:, 0] = -np.sin(angles) * ranges
@@ -150,8 +155,13 @@ class WallFollowingNode(Node):
         return points
 
     def find_left_right_border(self, points, margin_relative=0.1):
+        if points.shape[0] < 10:
+            raise ValueError("Too few scan points to detect wall split.")
         margin = int(points.shape[0] * margin_relative)
+        margin = max(1, min(margin, points.shape[0] // 3))
         relative = points[margin + 1:-margin, :] - points[margin:-margin - 1, :]
+        if relative.shape[0] == 0:
+            raise ValueError("Relative wall-segment array is empty.")
         distances = np.linalg.norm(relative, axis=1)
         return margin + np.argmax(distances) + 1
 
@@ -264,12 +274,24 @@ class WallFollowingNode(Node):
             )
             return
 
-        split = self.find_left_right_border(points)
+        try:
+            split = self.find_left_right_border(points)
+        except ValueError as exc:
+            self.get_logger().warn(f"Skipping laser scan: {exc}")
+            return
+
         right_wall = points[:split:4, :]
         left_wall = points[split::4, :]
+        if right_wall.shape[0] < 3 or left_wall.shape[0] < 3:
+            self.get_logger().warn("Skipping laser scan: insufficient wall points.")
+            return
 
-        left_circle = Circle.fit(left_wall)
-        right_circle = Circle.fit(right_wall)
+        try:
+            left_circle = Circle.fit(left_wall)
+            right_circle = Circle.fit(right_wall)
+        except Exception as exc:
+            self.get_logger().warn(f"Skipping laser scan: circle fit failed ({exc}).")
+            return
 
         barrier_start = int(
             points.shape[0] * (0.5 - self.params.barrier_size_realtive)
@@ -277,6 +299,8 @@ class WallFollowingNode(Node):
         barrier_end = int(
             points.shape[0] * (0.5 + self.params.barrier_size_realtive)
         )
+        barrier_start = max(0, min(points.shape[0] - 1, barrier_start))
+        barrier_end = max(barrier_start + 1, min(points.shape[0], barrier_end))
         barrier = np.max(points[barrier_start: barrier_end, 1])
 
         self.follow_walls(left_circle, right_circle, barrier, delta_time)

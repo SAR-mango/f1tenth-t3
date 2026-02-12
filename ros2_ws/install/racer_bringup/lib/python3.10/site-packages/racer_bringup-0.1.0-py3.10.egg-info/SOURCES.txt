@@ -8,6 +8,8 @@ setup.py
 ../../build/racer_bringup/racer_bringup.egg-info/top_level.txt
 ../../build/racer_bringup/racer_bringup.egg-info/zip-safe
 config/rviz2_lidar.rviz
+launch/fortress_scan_stop_test.launch.py
 launch/fortress_sim.launch.py
 launch/fortress_teleop_rviz.launch.py
+launch/fortress_wallfollowing.launch.py
 resource/racer_bringup

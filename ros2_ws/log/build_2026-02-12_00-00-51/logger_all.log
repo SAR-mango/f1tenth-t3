@@ -1,0 +1,247 @@
+[0.079s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build', '--packages-select', 'wallfollowing2', 'racer_bringup', 'car_control']
+[0.079s] DEBUG:colcon:Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=False, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=12, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=['wallfollowing2', 'racer_bringup', 'car_control'], packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, allow_overriding=[], cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, verb_parser=<colcon_defaults.argument_parser.defaults.DefaultArgumentsDecorator object at 0x7bb4b8d00e50>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0x7bb4b8e56320>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0x7bb4b8e56320>>)
+[0.216s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.217s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.217s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.217s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.217s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.217s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.217s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/erk/f1tenth-t3/ros2_ws'
+[0.217s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.217s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.217s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.217s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.217s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.218s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.218s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.218s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.218s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ignore', 'ignore_ament_install']
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore_ament_install'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_pkg']
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_pkg'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_meta']
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_meta'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ros']
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ros'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['cmake', 'python']
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'cmake'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['python_setup_py']
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python_setup_py'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src/car_control) by extensions ['ignore', 'ignore_ament_install']
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src/car_control) by extension 'ignore'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src/car_control) by extension 'ignore_ament_install'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src/car_control) by extensions ['colcon_pkg']
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src/car_control) by extension 'colcon_pkg'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src/car_control) by extensions ['colcon_meta']
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src/car_control) by extension 'colcon_meta'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src/car_control) by extensions ['ros']
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src/car_control) by extension 'ros'
+[0.234s] DEBUG:colcon.colcon_core.package_identification:Package 'src/car_control' with type 'ros.catkin' and name 'car_control'
+[0.234s] Level 1:colcon.colcon_core.package_identification:_identify(src/drive_msgs) by extensions ['ignore', 'ignore_ament_install']
+[0.234s] Level 1:colcon.colcon_core.package_identification:_identify(src/drive_msgs) by extension 'ignore'
+[0.234s] Level 1:colcon.colcon_core.package_identification:_identify(src/drive_msgs) by extension 'ignore_ament_install'
+[0.234s] Level 1:colcon.colcon_core.package_identification:_identify(src/drive_msgs) by extensions ['colcon_pkg']
+[0.234s] Level 1:colcon.colcon_core.package_identification:_identify(src/drive_msgs) by extension 'colcon_pkg'
+[0.234s] Level 1:colcon.colcon_core.package_identification:_identify(src/drive_msgs) by extensions ['colcon_meta']
+[0.234s] Level 1:colcon.colcon_core.package_identification:_identify(src/drive_msgs) by extension 'colcon_meta'
+[0.234s] Level 1:colcon.colcon_core.package_identification:_identify(src/drive_msgs) by extensions ['ros']
+[0.234s] Level 1:colcon.colcon_core.package_identification:_identify(src/drive_msgs) by extension 'ros'
+[0.235s] DEBUG:colcon.colcon_core.package_identification:Package 'src/drive_msgs' with type 'ros.catkin' and name 'drive_msgs'
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(src/racer_bringup) by extensions ['ignore', 'ignore_ament_install']
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(src/racer_bringup) by extension 'ignore'
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(src/racer_bringup) by extension 'ignore_ament_install'
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(src/racer_bringup) by extensions ['colcon_pkg']
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(src/racer_bringup) by extension 'colcon_pkg'
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(src/racer_bringup) by extensions ['colcon_meta']
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(src/racer_bringup) by extension 'colcon_meta'
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(src/racer_bringup) by extensions ['ros']
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(src/racer_bringup) by extension 'ros'
+[0.236s] DEBUG:colcon.colcon_core.package_identification:Package 'src/racer_bringup' with type 'ros.ament_python' and name 'racer_bringup'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(src/wallfollowing2) by extensions ['ignore', 'ignore_ament_install']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(src/wallfollowing2) by extension 'ignore'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(src/wallfollowing2) by extension 'ignore_ament_install'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(src/wallfollowing2) by extensions ['colcon_pkg']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(src/wallfollowing2) by extension 'colcon_pkg'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(src/wallfollowing2) by extensions ['colcon_meta']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(src/wallfollowing2) by extension 'colcon_meta'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(src/wallfollowing2) by extensions ['ros']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(src/wallfollowing2) by extension 'ros'
+[0.236s] DEBUG:colcon.colcon_core.package_identification:Package 'src/wallfollowing2' with type 'ros.ament_python' and name 'wallfollowing2'
+[0.236s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.236s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.236s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.236s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.236s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[0.261s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'drive_msgs' in 'src/drive_msgs'
+[0.262s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[0.262s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[0.263s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 4 installed packages in /home/erk/f1tenth-t3/ros2_ws/install
+[0.264s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 290 installed packages in /opt/ros/humble
+[0.266s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[0.296s] Level 5:colcon.colcon_core.verb:set package 'car_control' build argument 'cmake_args' from command line to 'None'
+[0.296s] Level 5:colcon.colcon_core.verb:set package 'car_control' build argument 'cmake_target' from command line to 'None'
+[0.296s] Level 5:colcon.colcon_core.verb:set package 'car_control' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.296s] Level 5:colcon.colcon_core.verb:set package 'car_control' build argument 'cmake_clean_cache' from command line to 'False'
+[0.296s] Level 5:colcon.colcon_core.verb:set package 'car_control' build argument 'cmake_clean_first' from command line to 'False'
+[0.296s] Level 5:colcon.colcon_core.verb:set package 'car_control' build argument 'cmake_force_configure' from command line to 'False'
+[0.296s] Level 5:colcon.colcon_core.verb:set package 'car_control' build argument 'ament_cmake_args' from command line to 'None'
+[0.296s] Level 5:colcon.colcon_core.verb:set package 'car_control' build argument 'catkin_cmake_args' from command line to 'None'
+[0.296s] Level 5:colcon.colcon_core.verb:set package 'car_control' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.296s] DEBUG:colcon.colcon_core.verb:Building package 'car_control' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/erk/f1tenth-t3/ros2_ws/build/car_control', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/erk/f1tenth-t3/ros2_ws/install/car_control', 'merge_install': False, 'path': '/home/erk/f1tenth-t3/ros2_ws/src/car_control', 'symlink_install': False, 'test_result_base': None}
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'wallfollowing2' build argument 'cmake_args' from command line to 'None'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'wallfollowing2' build argument 'cmake_target' from command line to 'None'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'wallfollowing2' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'wallfollowing2' build argument 'cmake_clean_cache' from command line to 'False'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'wallfollowing2' build argument 'cmake_clean_first' from command line to 'False'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'wallfollowing2' build argument 'cmake_force_configure' from command line to 'False'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'wallfollowing2' build argument 'ament_cmake_args' from command line to 'None'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'wallfollowing2' build argument 'catkin_cmake_args' from command line to 'None'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'wallfollowing2' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.297s] DEBUG:colcon.colcon_core.verb:Building package 'wallfollowing2' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/erk/f1tenth-t3/ros2_ws/build/wallfollowing2', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2', 'merge_install': False, 'path': '/home/erk/f1tenth-t3/ros2_ws/src/wallfollowing2', 'symlink_install': False, 'test_result_base': None}
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'racer_bringup' build argument 'cmake_args' from command line to 'None'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'racer_bringup' build argument 'cmake_target' from command line to 'None'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'racer_bringup' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'racer_bringup' build argument 'cmake_clean_cache' from command line to 'False'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'racer_bringup' build argument 'cmake_clean_first' from command line to 'False'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'racer_bringup' build argument 'cmake_force_configure' from command line to 'False'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'racer_bringup' build argument 'ament_cmake_args' from command line to 'None'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'racer_bringup' build argument 'catkin_cmake_args' from command line to 'None'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'racer_bringup' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.297s] DEBUG:colcon.colcon_core.verb:Building package 'racer_bringup' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/erk/f1tenth-t3/ros2_ws/build/racer_bringup', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup', 'merge_install': False, 'path': '/home/erk/f1tenth-t3/ros2_ws/src/racer_bringup', 'symlink_install': False, 'test_result_base': None}
+[0.297s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[0.298s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[0.298s] INFO:colcon.colcon_ros.task.catkin.build:Building ROS package in '/home/erk/f1tenth-t3/ros2_ws/src/car_control' with build type 'catkin'
+[0.299s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/erk/f1tenth-t3/ros2_ws/src/car_control'
+[0.300s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[0.300s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.300s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.303s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/erk/f1tenth-t3/ros2_ws/src/wallfollowing2' with build type 'ament_python'
+[0.303s] Level 1:colcon.colcon_core.shell:create_environment_hook('wallfollowing2', 'ament_prefix_path')
+[0.303s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/share/wallfollowing2/hook/ament_prefix_path.ps1'
+[0.304s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/share/wallfollowing2/hook/ament_prefix_path.dsv'
+[0.304s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/share/wallfollowing2/hook/ament_prefix_path.sh'
+[0.305s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.305s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.310s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/erk/f1tenth-t3/ros2_ws/build/car_control': CMAKE_PREFIX_PATH=/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs:/home/erk/f1tenth-t3/ros2_ws/install/car_control PKG_CONFIG_PATH=/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/lib/x86_64-linux-gnu/pkgconfig:/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/lib/pkgconfig:/home/erk/f1tenth-t3/ros2_ws/install/car_control/lib/x86_64-linux-gnu/pkgconfig:/home/erk/f1tenth-t3/ros2_ws/install/car_control/lib/pkgconfig PYTHONPATH=/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/local/lib/python3.10/dist-packages:/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/lib/python3.10/site-packages:/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages ROS_PACKAGE_PATH=/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/share:/home/erk/f1tenth-t3/ros2_ws/install/car_control/share /usr/bin/cmake --build /home/erk/f1tenth-t3/ros2_ws/build/car_control -- -j12 -l12
+[0.544s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/erk/f1tenth-t3/ros2_ws/src/wallfollowing2'
+[0.545s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.545s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.845s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/erk/f1tenth-t3/ros2_ws/src/wallfollowing2': CMAKE_PREFIX_PATH=/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs:/home/erk/f1tenth-t3/ros2_ws/install/car_control PKG_CONFIG_PATH=/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/lib/x86_64-linux-gnu/pkgconfig:/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/lib/pkgconfig:/home/erk/f1tenth-t3/ros2_ws/install/car_control/lib/x86_64-linux-gnu/pkgconfig:/home/erk/f1tenth-t3/ros2_ws/install/car_control/lib/pkgconfig PYTHONPATH=/home/erk/f1tenth-t3/ros2_ws/build/wallfollowing2/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/lib/python3.10/site-packages:/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/local/lib/python3.10/dist-packages:/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/lib/python3.10/site-packages:/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages ROS_PACKAGE_PATH=/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/share:/home/erk/f1tenth-t3/ros2_ws/install/car_control/share /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/wallfollowing2 build --build-base /home/erk/f1tenth-t3/ros2_ws/build/wallfollowing2/build install --record /home/erk/f1tenth-t3/ros2_ws/build/wallfollowing2/install.log --single-version-externally-managed install_data
+[1.116s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/erk/f1tenth-t3/ros2_ws/src/wallfollowing2' returned '0': CMAKE_PREFIX_PATH=/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs:/home/erk/f1tenth-t3/ros2_ws/install/car_control PKG_CONFIG_PATH=/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/lib/x86_64-linux-gnu/pkgconfig:/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/lib/pkgconfig:/home/erk/f1tenth-t3/ros2_ws/install/car_control/lib/x86_64-linux-gnu/pkgconfig:/home/erk/f1tenth-t3/ros2_ws/install/car_control/lib/pkgconfig PYTHONPATH=/home/erk/f1tenth-t3/ros2_ws/build/wallfollowing2/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/lib/python3.10/site-packages:/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/local/lib/python3.10/dist-packages:/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/lib/python3.10/site-packages:/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages ROS_PACKAGE_PATH=/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/share:/home/erk/f1tenth-t3/ros2_ws/install/car_control/share /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/wallfollowing2 build --build-base /home/erk/f1tenth-t3/ros2_ws/build/wallfollowing2/build install --record /home/erk/f1tenth-t3/ros2_ws/build/wallfollowing2/install.log --single-version-externally-managed install_data
+[1.117s] Level 1:colcon.colcon_core.environment:checking '/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2' for CMake module files
+[1.117s] Level 1:colcon.colcon_core.environment:checking '/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2' for CMake config files
+[1.118s] Level 1:colcon.colcon_core.environment:checking '/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/lib'
+[1.118s] Level 1:colcon.colcon_core.environment:checking '/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/bin'
+[1.118s] Level 1:colcon.colcon_core.environment:checking '/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/lib/pkgconfig/wallfollowing2.pc'
+[1.118s] Level 1:colcon.colcon_core.environment:checking '/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/lib/python3.10/site-packages'
+[1.118s] Level 1:colcon.colcon_core.shell:create_environment_hook('wallfollowing2', 'pythonpath')
+[1.119s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/share/wallfollowing2/hook/pythonpath.ps1'
+[1.119s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/share/wallfollowing2/hook/pythonpath.dsv'
+[1.119s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/share/wallfollowing2/hook/pythonpath.sh'
+[1.120s] Level 1:colcon.colcon_core.environment:checking '/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/bin'
+[1.120s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(wallfollowing2)
+[1.120s] INFO:colcon.colcon_core.shell:Creating package script '/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/share/wallfollowing2/package.ps1'
+[1.120s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/share/wallfollowing2/package.dsv'
+[1.121s] INFO:colcon.colcon_core.shell:Creating package script '/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/share/wallfollowing2/package.sh'
+[1.121s] INFO:colcon.colcon_core.shell:Creating package script '/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/share/wallfollowing2/package.bash'
+[1.122s] INFO:colcon.colcon_core.shell:Creating package script '/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/share/wallfollowing2/package.zsh'
+[1.122s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/share/colcon-core/packages/wallfollowing2)
+[11.528s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/erk/f1tenth-t3/ros2_ws/build/car_control' returned '0': CMAKE_PREFIX_PATH=/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs:/home/erk/f1tenth-t3/ros2_ws/install/car_control PKG_CONFIG_PATH=/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/lib/x86_64-linux-gnu/pkgconfig:/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/lib/pkgconfig:/home/erk/f1tenth-t3/ros2_ws/install/car_control/lib/x86_64-linux-gnu/pkgconfig:/home/erk/f1tenth-t3/ros2_ws/install/car_control/lib/pkgconfig PYTHONPATH=/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/local/lib/python3.10/dist-packages:/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/lib/python3.10/site-packages:/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages ROS_PACKAGE_PATH=/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/share:/home/erk/f1tenth-t3/ros2_ws/install/car_control/share /usr/bin/cmake --build /home/erk/f1tenth-t3/ros2_ws/build/car_control -- -j12 -l12
+[11.536s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/erk/f1tenth-t3/ros2_ws/build/car_control': CMAKE_PREFIX_PATH=/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs:/home/erk/f1tenth-t3/ros2_ws/install/car_control PKG_CONFIG_PATH=/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/lib/x86_64-linux-gnu/pkgconfig:/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/lib/pkgconfig:/home/erk/f1tenth-t3/ros2_ws/install/car_control/lib/x86_64-linux-gnu/pkgconfig:/home/erk/f1tenth-t3/ros2_ws/install/car_control/lib/pkgconfig PYTHONPATH=/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/local/lib/python3.10/dist-packages:/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/lib/python3.10/site-packages:/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages ROS_PACKAGE_PATH=/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/share:/home/erk/f1tenth-t3/ros2_ws/install/car_control/share /usr/bin/cmake --install /home/erk/f1tenth-t3/ros2_ws/build/car_control
+[11.553s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/erk/f1tenth-t3/ros2_ws/build/car_control' returned '0': CMAKE_PREFIX_PATH=/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs:/home/erk/f1tenth-t3/ros2_ws/install/car_control PKG_CONFIG_PATH=/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/lib/x86_64-linux-gnu/pkgconfig:/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/lib/pkgconfig:/home/erk/f1tenth-t3/ros2_ws/install/car_control/lib/x86_64-linux-gnu/pkgconfig:/home/erk/f1tenth-t3/ros2_ws/install/car_control/lib/pkgconfig PYTHONPATH=/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/local/lib/python3.10/dist-packages:/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/lib/python3.10/site-packages:/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages ROS_PACKAGE_PATH=/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/share:/home/erk/f1tenth-t3/ros2_ws/install/car_control/share /usr/bin/cmake --install /home/erk/f1tenth-t3/ros2_ws/build/car_control
+[11.553s] Level 1:colcon.colcon_core.shell:create_environment_hook('car_control', 'ros_package_path')
+[11.554s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/erk/f1tenth-t3/ros2_ws/install/car_control/share/car_control/hook/ros_package_path.ps1'
+[11.554s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/erk/f1tenth-t3/ros2_ws/install/car_control/share/car_control/hook/ros_package_path.dsv'
+[11.554s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/erk/f1tenth-t3/ros2_ws/install/car_control/share/car_control/hook/ros_package_path.sh'
+[11.554s] Level 1:colcon.colcon_core.shell:create_environment_hook('car_control', 'pkg_config_path')
+[11.555s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/erk/f1tenth-t3/ros2_ws/install/car_control/share/car_control/hook/pkg_config_path.ps1'
+[11.555s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/erk/f1tenth-t3/ros2_ws/install/car_control/share/car_control/hook/pkg_config_path.dsv'
+[11.555s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/erk/f1tenth-t3/ros2_ws/install/car_control/share/car_control/hook/pkg_config_path.sh'
+[11.556s] Level 1:colcon.colcon_core.shell:create_environment_hook('car_control', 'pkg_config_path_multiarch')
+[11.557s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/erk/f1tenth-t3/ros2_ws/install/car_control/share/car_control/hook/pkg_config_path_multiarch.ps1'
+[11.557s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/erk/f1tenth-t3/ros2_ws/install/car_control/share/car_control/hook/pkg_config_path_multiarch.dsv'
+[11.557s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/erk/f1tenth-t3/ros2_ws/install/car_control/share/car_control/hook/pkg_config_path_multiarch.sh'
+[11.558s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(car_control)
+[11.558s] Level 1:colcon.colcon_core.environment:checking '/home/erk/f1tenth-t3/ros2_ws/install/car_control' for CMake module files
+[11.558s] Level 1:colcon.colcon_core.environment:checking '/home/erk/f1tenth-t3/ros2_ws/install/car_control' for CMake config files
+[11.558s] Level 1:colcon.colcon_core.shell:create_environment_hook('car_control', 'cmake_prefix_path')
+[11.559s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/erk/f1tenth-t3/ros2_ws/install/car_control/share/car_control/hook/cmake_prefix_path.ps1'
+[11.559s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/erk/f1tenth-t3/ros2_ws/install/car_control/share/car_control/hook/cmake_prefix_path.dsv'
+[11.559s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/erk/f1tenth-t3/ros2_ws/install/car_control/share/car_control/hook/cmake_prefix_path.sh'
+[11.559s] Level 1:colcon.colcon_core.environment:checking '/home/erk/f1tenth-t3/ros2_ws/install/car_control/lib'
+[11.559s] Level 1:colcon.colcon_core.environment:checking '/home/erk/f1tenth-t3/ros2_ws/install/car_control/bin'
+[11.560s] Level 1:colcon.colcon_core.environment:checking '/home/erk/f1tenth-t3/ros2_ws/install/car_control/lib/pkgconfig/car_control.pc'
+[11.560s] Level 1:colcon.colcon_core.environment:checking '/home/erk/f1tenth-t3/ros2_ws/install/car_control/lib/python3.10/site-packages'
+[11.560s] Level 1:colcon.colcon_core.environment:checking '/home/erk/f1tenth-t3/ros2_ws/install/car_control/bin'
+[11.560s] INFO:colcon.colcon_core.shell:Creating package script '/home/erk/f1tenth-t3/ros2_ws/install/car_control/share/car_control/package.ps1'
+[11.561s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/erk/f1tenth-t3/ros2_ws/install/car_control/share/car_control/package.dsv'
+[11.561s] INFO:colcon.colcon_core.shell:Creating package script '/home/erk/f1tenth-t3/ros2_ws/install/car_control/share/car_control/package.sh'
+[11.561s] INFO:colcon.colcon_core.shell:Creating package script '/home/erk/f1tenth-t3/ros2_ws/install/car_control/share/car_control/package.bash'
+[11.562s] INFO:colcon.colcon_core.shell:Creating package script '/home/erk/f1tenth-t3/ros2_ws/install/car_control/share/car_control/package.zsh'
+[11.562s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/erk/f1tenth-t3/ros2_ws/install/car_control/share/colcon-core/packages/car_control)
+[11.562s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/erk/f1tenth-t3/ros2_ws/src/racer_bringup' with build type 'ament_python'
+[11.562s] Level 1:colcon.colcon_core.shell:create_environment_hook('racer_bringup', 'ament_prefix_path')
+[11.562s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/share/racer_bringup/hook/ament_prefix_path.ps1'
+[11.563s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/share/racer_bringup/hook/ament_prefix_path.dsv'
+[11.563s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/share/racer_bringup/hook/ament_prefix_path.sh'
+[11.564s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[11.564s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[11.753s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/erk/f1tenth-t3/ros2_ws/src/racer_bringup'
+[11.753s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[11.753s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[41.600s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/erk/f1tenth-t3/ros2_ws/src/racer_bringup': AMENT_PREFIX_PATH=/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2:/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup:/opt/ros/humble PYTHONPATH=/home/erk/f1tenth-t3/ros2_ws/build/racer_bringup/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/lib/python3.10/site-packages:/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/lib/python3.10/site-packages:/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/local/lib/python3.10/dist-packages:/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/racer_bringup build --build-base /home/erk/f1tenth-t3/ros2_ws/build/racer_bringup/build install --record /home/erk/f1tenth-t3/ros2_ws/build/racer_bringup/install.log --single-version-externally-managed install_data
+[71.621s] Level 1:colcon.colcon_core.environment:checking '/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup' for CMake module files
+[71.622s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/erk/f1tenth-t3/ros2_ws/src/racer_bringup' returned '0': AMENT_PREFIX_PATH=/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2:/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup:/opt/ros/humble PYTHONPATH=/home/erk/f1tenth-t3/ros2_ws/build/racer_bringup/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/lib/python3.10/site-packages:/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/lib/python3.10/site-packages:/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/local/lib/python3.10/dist-packages:/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/racer_bringup build --build-base /home/erk/f1tenth-t3/ros2_ws/build/racer_bringup/build install --record /home/erk/f1tenth-t3/ros2_ws/build/racer_bringup/install.log --single-version-externally-managed install_data
+[71.622s] Level 1:colcon.colcon_core.environment:checking '/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup' for CMake config files
+[71.622s] Level 1:colcon.colcon_core.environment:checking '/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/lib'
+[71.622s] Level 1:colcon.colcon_core.environment:checking '/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/bin'
+[71.622s] Level 1:colcon.colcon_core.environment:checking '/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/lib/pkgconfig/racer_bringup.pc'
+[71.623s] Level 1:colcon.colcon_core.environment:checking '/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/lib/python3.10/site-packages'
+[71.623s] Level 1:colcon.colcon_core.shell:create_environment_hook('racer_bringup', 'pythonpath')
+[71.623s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/share/racer_bringup/hook/pythonpath.ps1'
+[71.623s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/share/racer_bringup/hook/pythonpath.dsv'
+[71.623s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/share/racer_bringup/hook/pythonpath.sh'
+[71.624s] Level 1:colcon.colcon_core.environment:checking '/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/bin'
+[71.624s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(racer_bringup)
+[71.624s] INFO:colcon.colcon_core.shell:Creating package script '/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/share/racer_bringup/package.ps1'
+[71.624s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/share/racer_bringup/package.dsv'
+[71.625s] INFO:colcon.colcon_core.shell:Creating package script '/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/share/racer_bringup/package.sh'
+[71.625s] INFO:colcon.colcon_core.shell:Creating package script '/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/share/racer_bringup/package.bash'
+[71.625s] INFO:colcon.colcon_core.shell:Creating package script '/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/share/racer_bringup/package.zsh'
+[71.625s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/share/colcon-core/packages/racer_bringup)
+[71.636s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[71.636s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[71.636s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[71.636s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[71.640s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[71.640s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[71.640s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[71.640s] DEBUG:colcon.colcon_notification.desktop_notification.notify2:Failed to initialize notify2: org.freedesktop.DBus.Error.AccessDenied: Failed to connect to socket /run/user/1000/bus: Operation not permitted
+[71.640s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[71.640s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/erk/f1tenth-t3/ros2_ws/install/local_setup.ps1'
+[71.641s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/erk/f1tenth-t3/ros2_ws/install/_local_setup_util_ps1.py'
+[71.642s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/erk/f1tenth-t3/ros2_ws/install/setup.ps1'
+[71.643s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/erk/f1tenth-t3/ros2_ws/install/local_setup.sh'
+[71.643s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/erk/f1tenth-t3/ros2_ws/install/_local_setup_util_sh.py'
+[71.643s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/erk/f1tenth-t3/ros2_ws/install/setup.sh'
+[71.644s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/erk/f1tenth-t3/ros2_ws/install/local_setup.bash'
+[71.645s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/erk/f1tenth-t3/ros2_ws/install/setup.bash'
+[71.645s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/erk/f1tenth-t3/ros2_ws/install/local_setup.zsh'
+[71.646s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/erk/f1tenth-t3/ros2_ws/install/setup.zsh'

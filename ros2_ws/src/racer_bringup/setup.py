@@ -12,6 +12,8 @@ setup(
         ("share/" + package_name + "/launch", [
             "launch/fortress_sim.launch.py",
             "launch/fortress_teleop_rviz.launch.py",
+            "launch/fortress_scan_stop_test.launch.py",
+            "launch/fortress_wallfollowing.launch.py",
         ]),
         ("share/" + package_name + "/config", ["config/rviz2_lidar.rviz"]),
     ],

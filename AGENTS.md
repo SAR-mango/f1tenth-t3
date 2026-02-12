@@ -50,6 +50,25 @@ new dependencies, new workflows, or significant refactors).
 - Use `ign` CLI for Gazebo Fortress (`gz` is not available).
 
 ## Continuity log (append newest on top)
+- 2026-02-11: Added dedicated autonomous launch
+  `fortress_wallfollowing.launch.py` (ign + bridge + car_control +
+  wallfollowing2 + continuous `/commands/drive_mode=2` and
+  `/commands/emergency_stop=false` publishers). Includes conservative
+  wallfollowing speed parameters for initial stability.
+- 2026-02-11: Removed external `circle_fit` dependency by implementing
+  numpy least-squares circle fitting in `wallfollowing2/circle.py`. Hardened
+  `wallfollowing_node.py` against sparse/invalid scans and fit failures.
+- 2026-02-11: Tuned scan-stop-reverse test timing: startup delay increased to
+  6.0s and pre-reverse hold increased to 3.0s (both node defaults and
+  `fortress_scan_stop_test.launch.py` parameters).
+- 2026-02-11: Fixed crash in `scan_stop_reverse_test_node` caused by passing
+  printf-style args directly to `rclpy` logger. Startup info log now formats
+  as a single string, allowing the test state machine to run.
+- 2026-02-11: Added ROS2 lidar-behavior test node
+  `scan_stop_reverse_test_node` in `wallfollowing2`:
+  waits 3s, drives forward until front scan <= 0.5m, stops, reverses ~0.5m by
+  timed command, then remains stopped. Added dedicated launch
+  `fortress_scan_stop_test.launch.py` (ign + bridge + test node).
 - 2026-02-11: Rebuilt `rviz2_lidar.rviz` from Humble's
   `/opt/ros/humble/share/rviz_common/default.rviz` baseline and overlaid
   `/scan` LaserScan + fixed frame `car/chassis/ust10lx` after stripped config
