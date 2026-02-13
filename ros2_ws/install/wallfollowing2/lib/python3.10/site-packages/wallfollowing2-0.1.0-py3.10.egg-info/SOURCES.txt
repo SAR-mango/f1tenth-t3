@@ -11,6 +11,7 @@ setup.py
 resource/wallfollowing2
 wallfollowing2/__init__.py
 wallfollowing2/circle.py
+wallfollowing2/follow_the_gap_node.py
 wallfollowing2/rviz_geometry.py
 wallfollowing2/scan_stop_reverse_test_node.py
 wallfollowing2/wallfollowing_node.py

@@ -50,6 +50,13 @@ new dependencies, new workflows, or significant refactors).
 - Use `ign` CLI for Gazebo Fortress (`gz` is not available).
 
 ## Continuity log (append newest on top)
+- 2026-02-13: Added basic ROS2 follow-the-gap autonomy path:
+  `wallfollowing2/follow_the_gap_node.py` (publishes
+  `/input/drive_param/autonomous`) with new console entry point
+  `follow_the_gap_node`, plus dedicated launch
+  `fortress_follow_the_gap.launch.py` (ign + bridge + car_control +
+  continuous `/commands/drive_mode=2` and `/commands/emergency_stop=false`).
+  Registered the new launch in `racer_bringup/setup.py`.
 - 2026-02-12: Patched `fortress_sim.launch.py` and
   `fortress_wallfollowing.launch.py` to start `car_control` executables via
   workspace install paths (`ros2_ws/install/car_control/lib/car_control/*`)
