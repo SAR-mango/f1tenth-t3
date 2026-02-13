@@ -1,0 +1,88 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-f5d49eade8cb7118e5b5.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "car_control",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "car_control_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-car_control_uninstall-6b9aac70ada936180df7.json",
+					"name" : "car_control_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "car_controller::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-car_controller-50ec94aa18d9bbab16fb.json",
+					"name" : "car_controller",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "drive_parameters_multiplexer::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-drive_parameters_multiplexer-11fdedb507c23360b6fc.json",
+					"name" : "drive_parameters_multiplexer",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-543b7d6e6cd8e55bacd7.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/erk/f1tenth-t3/ros2_ws/build/car_control",
+		"source" : "/home/erk/f1tenth-t3/ros2_ws/src/car_control"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

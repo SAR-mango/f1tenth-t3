@@ -1,0 +1,33 @@
+[35m[1mConsolidate compiler generated dependencies of target car_controller[0m
+[35m[1mConsolidate compiler generated dependencies of target drive_parameters_multiplexer[0m
+[ 20%] [32mBuilding CXX object CMakeFiles/car_controller.dir/src/car_controller.cpp.o[0m
+[ 80%] Built target drive_parameters_multiplexer
+[100%] [32m[1mLinking CXX executable car_controller[0m
+[100%] Built target car_controller
+-- Install configuration: ""
+-- Installing: /home/erk/f1tenth-t3/ros2_ws/install/car_control/lib/car_control/drive_parameters_multiplexer
+-- Set runtime path of "/home/erk/f1tenth-t3/ros2_ws/install/car_control/lib/car_control/drive_parameters_multiplexer" to ""
+-- Installing: /home/erk/f1tenth-t3/ros2_ws/install/car_control/lib/car_control/car_controller
+-- Set runtime path of "/home/erk/f1tenth-t3/ros2_ws/install/car_control/lib/car_control/car_controller" to ""
+-- Installing: /home/erk/f1tenth-t3/ros2_ws/install/car_control/include/
+-- Installing: /home/erk/f1tenth-t3/ros2_ws/install/car_control/include//car_control
+-- Installing: /home/erk/f1tenth-t3/ros2_ws/install/car_control/include//car_control/car_config.hpp
+-- Installing: /home/erk/f1tenth-t3/ros2_ws/install/car_control/include//car_control/drive_mode.hpp
+-- Installing: /home/erk/f1tenth-t3/ros2_ws/install/car_control/include//car_control/drive_parameters_source.hpp
+-- Installing: /home/erk/f1tenth-t3/ros2_ws/install/car_control/include//car_control/car_controller.hpp
+-- Installing: /home/erk/f1tenth-t3/ros2_ws/install/car_control/include//car_control/drive_parameters_multiplexer.hpp
+-- Installing: /home/erk/f1tenth-t3/ros2_ws/install/car_control/share/ament_index/resource_index/package_run_dependencies/car_control
+-- Installing: /home/erk/f1tenth-t3/ros2_ws/install/car_control/share/ament_index/resource_index/parent_prefix_path/car_control
+-- Installing: /home/erk/f1tenth-t3/ros2_ws/install/car_control/share/car_control/environment/ament_prefix_path.sh
+-- Installing: /home/erk/f1tenth-t3/ros2_ws/install/car_control/share/car_control/environment/ament_prefix_path.dsv
+-- Installing: /home/erk/f1tenth-t3/ros2_ws/install/car_control/share/car_control/environment/path.sh
+-- Installing: /home/erk/f1tenth-t3/ros2_ws/install/car_control/share/car_control/environment/path.dsv
+-- Installing: /home/erk/f1tenth-t3/ros2_ws/install/car_control/share/car_control/local_setup.bash
+-- Installing: /home/erk/f1tenth-t3/ros2_ws/install/car_control/share/car_control/local_setup.sh
+-- Installing: /home/erk/f1tenth-t3/ros2_ws/install/car_control/share/car_control/local_setup.zsh
+-- Installing: /home/erk/f1tenth-t3/ros2_ws/install/car_control/share/car_control/local_setup.dsv
+-- Installing: /home/erk/f1tenth-t3/ros2_ws/install/car_control/share/car_control/package.dsv
+-- Installing: /home/erk/f1tenth-t3/ros2_ws/install/car_control/share/ament_index/resource_index/packages/car_control
+-- Installing: /home/erk/f1tenth-t3/ros2_ws/install/car_control/share/car_control/cmake/car_controlConfig.cmake
+-- Installing: /home/erk/f1tenth-t3/ros2_ws/install/car_control/share/car_control/cmake/car_controlConfig-version.cmake
+-- Installing: /home/erk/f1tenth-t3/ros2_ws/install/car_control/share/car_control/package.xml
