@@ -1,0 +1,4 @@
+Invoking command in '/home/f1tt3/f1tenth-t3/ros2_ws/build/drive_msgs': /usr/bin/cmake --build /home/f1tt3/f1tenth-t3/ros2_ws/build/drive_msgs -- -j6 -l6
+Invoked command in '/home/f1tt3/f1tenth-t3/ros2_ws/build/drive_msgs' returned '0': /usr/bin/cmake --build /home/f1tt3/f1tenth-t3/ros2_ws/build/drive_msgs -- -j6 -l6
+Invoking command in '/home/f1tt3/f1tenth-t3/ros2_ws/build/drive_msgs': /usr/bin/cmake --install /home/f1tt3/f1tenth-t3/ros2_ws/build/drive_msgs
+Invoked command in '/home/f1tt3/f1tenth-t3/ros2_ws/build/drive_msgs' returned '0': /usr/bin/cmake --install /home/f1tt3/f1tenth-t3/ros2_ws/build/drive_msgs

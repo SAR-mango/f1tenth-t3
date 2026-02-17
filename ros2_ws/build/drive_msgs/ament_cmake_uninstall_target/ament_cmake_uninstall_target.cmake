@@ -2,7 +2,7 @@
 # ament_cmake_core/cmake/uninstall_target/ament_cmake_uninstall_target.cmake.in
 
 function(ament_cmake_uninstall_target_remove_empty_directories path)
-  set(install_space "/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs")
+  set(install_space "/home/f1tt3/f1tenth-t3/ros2_ws/install/drive_msgs")
   if(install_space STREQUAL "")
     message(FATAL_ERROR "The CMAKE_INSTALL_PREFIX variable must not be empty")
   endif()
@@ -29,7 +29,7 @@ function(ament_cmake_uninstall_target_remove_empty_directories path)
 endfunction()
 
 # uninstall files installed using the standard install() function
-set(install_manifest "/home/erk/f1tenth-t3/ros2_ws/build/drive_msgs/install_manifest.txt")
+set(install_manifest "/home/f1tt3/f1tenth-t3/ros2_ws/build/drive_msgs/install_manifest.txt")
 if(NOT EXISTS "${install_manifest}")
   message(FATAL_ERROR "Cannot find install manifest: ${install_manifest}")
 endif()

@@ -1,0 +1,29 @@
+running egg_info
+creating ../../build/racer_bringup/racer_bringup.egg-info
+writing ../../build/racer_bringup/racer_bringup.egg-info/PKG-INFO
+writing dependency_links to ../../build/racer_bringup/racer_bringup.egg-info/dependency_links.txt
+writing requirements to ../../build/racer_bringup/racer_bringup.egg-info/requires.txt
+writing top-level names to ../../build/racer_bringup/racer_bringup.egg-info/top_level.txt
+writing manifest file '../../build/racer_bringup/racer_bringup.egg-info/SOURCES.txt'
+reading manifest file '../../build/racer_bringup/racer_bringup.egg-info/SOURCES.txt'
+writing manifest file '../../build/racer_bringup/racer_bringup.egg-info/SOURCES.txt'
+running build
+running install
+running install_data
+creating /home/f1tt3/f1tenth-t3/ros2_ws/install/racer_bringup/share/ament_index
+creating /home/f1tt3/f1tenth-t3/ros2_ws/install/racer_bringup/share/ament_index/resource_index
+creating /home/f1tt3/f1tenth-t3/ros2_ws/install/racer_bringup/share/ament_index/resource_index/packages
+copying resource/racer_bringup -> /home/f1tt3/f1tenth-t3/ros2_ws/install/racer_bringup/share/ament_index/resource_index/packages
+copying package.xml -> /home/f1tt3/f1tenth-t3/ros2_ws/install/racer_bringup/share/racer_bringup
+creating /home/f1tt3/f1tenth-t3/ros2_ws/install/racer_bringup/share/racer_bringup/launch
+copying launch/fortress_sim.launch.py -> /home/f1tt3/f1tenth-t3/ros2_ws/install/racer_bringup/share/racer_bringup/launch
+copying launch/fortress_teleop_rviz.launch.py -> /home/f1tt3/f1tenth-t3/ros2_ws/install/racer_bringup/share/racer_bringup/launch
+copying launch/fortress_scan_stop_test.launch.py -> /home/f1tt3/f1tenth-t3/ros2_ws/install/racer_bringup/share/racer_bringup/launch
+copying launch/fortress_wallfollowing.launch.py -> /home/f1tt3/f1tenth-t3/ros2_ws/install/racer_bringup/share/racer_bringup/launch
+copying launch/fortress_follow_the_gap.launch.py -> /home/f1tt3/f1tenth-t3/ros2_ws/install/racer_bringup/share/racer_bringup/launch
+creating /home/f1tt3/f1tenth-t3/ros2_ws/install/racer_bringup/share/racer_bringup/config
+copying config/rviz2_lidar.rviz -> /home/f1tt3/f1tenth-t3/ros2_ws/install/racer_bringup/share/racer_bringup/config
+running install_egg_info
+Copying ../../build/racer_bringup/racer_bringup.egg-info to /home/f1tt3/f1tenth-t3/ros2_ws/install/racer_bringup/lib/python3.10/site-packages/racer_bringup-0.1.0-py3.10.egg-info
+running install_scripts
+writing list of installed files to '/home/f1tt3/f1tenth-t3/ros2_ws/build/racer_bringup/install.log'

@@ -1,0 +1,79 @@
+{
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_custom_target"
+		],
+		"files" : 
+		[
+			"/home/f1tt3/f1tenth-t3/ros2_ws/build/drive_msgs/drive_msgs__py/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 34,
+				"parent" : 0
+			}
+		]
+	},
+	"dependencies" : 
+	[
+		{
+			"id" : "drive_msgs::@6890427a1f51a3e7e1df"
+		}
+	],
+	"id" : "drive_msgs__py::@6f8f5a91aeeaec95a9e3",
+	"name" : "drive_msgs__py",
+	"paths" : 
+	{
+		"build" : "drive_msgs__py",
+		"source" : "/home/f1tt3/f1tenth-t3/ros2_ws/build/drive_msgs/drive_msgs__py"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		},
+		{
+			"name" : "CMake Rules",
+			"sourceIndexes" : 
+			[
+				1,
+				2
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"isGenerated" : true,
+			"path" : "/home/f1tt3/f1tenth-t3/ros2_ws/build/drive_msgs/drive_msgs__py/CMakeFiles/drive_msgs__py",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/f1tt3/f1tenth-t3/ros2_ws/build/drive_msgs/drive_msgs__py/CMakeFiles/drive_msgs__py.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/f1tt3/f1tenth-t3/ros2_ws/build/drive_msgs/rosidl_generator_py/drive_msgs/_drive_msgs_s.ep.rosidl_typesupport_fastrtps_c.c.rule",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "UTILITY"
+}

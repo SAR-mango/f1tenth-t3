@@ -1,8 +1,8 @@
-# Install script for directory: /home/erk/f1tenth-t3/ros2_ws/build/drive_msgs/drive_msgs__py
+# Install script for directory: /home/f1tt3/f1tenth-t3/ros2_ws/build/drive_msgs/drive_msgs__py
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs")
+  set(CMAKE_INSTALL_PREFIX "/home/f1tt3/f1tenth-t3/ros2_ws/install/drive_msgs")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
