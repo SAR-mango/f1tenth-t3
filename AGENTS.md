@@ -50,6 +50,9 @@ new dependencies, new workflows, or significant refactors).
 - Use `ign` CLI for Gazebo Fortress (`gz` is not available).
 
 ## Continuity log (append newest on top)
+- 2026-02-17: Added ROS2 artifact hygiene for git by ignoring
+  `ros2_ws/build/`, `ros2_ws/install/`, and `ros2_ws/log/` in `.gitignore`
+  and untracking previously committed generated colcon files from those paths.
 - 2026-02-13: Added basic ROS2 follow-the-gap autonomy path:
   `wallfollowing2/follow_the_gap_node.py` (publishes
   `/input/drive_param/autonomous`) with new console entry point

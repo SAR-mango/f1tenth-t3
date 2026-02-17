@@ -1,6 +1,0 @@
-{
-  "package_name": "drive_msgs",
-  "non_idl_tuples": [
-    "/home/f1tt3/f1tenth-t3/ros2_ws/src/drive_msgs:msg/DriveParam.msg"
-  ]
-}
