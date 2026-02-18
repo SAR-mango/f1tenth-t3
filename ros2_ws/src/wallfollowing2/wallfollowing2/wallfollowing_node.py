@@ -13,14 +13,14 @@ from drive_msgs.msg import DriveParam
 PARAM_DEFAULTS = {
     "left_distance_setpoint": 0.25,
     "lookahead_distance": 0.70,
-    "kp": 4.2,
-    "kd": 0.75,
+    "kp": 1.6,
+    "kd": 0.25,
     "steering_limit": 1.0,
-    "steering_sign": -1.0,
-    "min_throttle": 0.55,
-    "max_throttle": 1.0,
-    "steering_speed_reduction": 0.35,
-    "max_acceleration": 2.5,
+    "steering_sign": 1.0,
+    "min_throttle": 0.35,
+    "max_throttle": 0.75,
+    "steering_speed_reduction": 0.30,
+    "max_acceleration": 1.2,
     "front_stop_distance": 0.18,
     "front_slow_distance": 0.55,
     "front_angle_half_width_deg": 10.0,
@@ -30,6 +30,9 @@ PARAM_DEFAULTS = {
     "wall_sample_min_y": 0.10,
     "wall_sample_max_y": 1.40,
     "sample_stride": 2,
+    "fit_outlier_percentile": 70.0,
+    "wall_distance_smoothing_alpha": 0.30,
+    "derivative_smoothing_alpha": 0.20,
 }
 
 TOPIC_DRIVE_PARAMETERS = "/input/drive_param/autonomous"
@@ -67,6 +70,8 @@ class WallFollowingNode(Node):
         self.last_scan_time = None
         self.last_error = 0.0
         self.last_speed = 0.0
+        self.filtered_left_distance = None
+        self.filtered_derivative = 0.0
 
     def _declare_parameters(self):
         dynamic_descriptor = ParameterDescriptor(dynamic_typing=True)
@@ -124,9 +129,8 @@ class WallFollowingNode(Node):
 
     def _to_cartesian(self, angles, ranges):
         points = np.zeros((ranges.shape[0], 2), dtype=np.float64)
-        # Same frame convention used by the previous controller:
-        # +x left, +y forward.
-        points[:, 0] = -np.sin(angles) * ranges
+        # ROS LaserScan angles are CCW-positive (left), so +x is left.
+        points[:, 0] = np.sin(angles) * ranges
         points[:, 1] = np.cos(angles) * ranges
         return points
 
@@ -158,7 +162,24 @@ class WallFollowingNode(Node):
 
         y = wall_points[:, 1]
         x = wall_points[:, 0]
+
+        if np.ptp(y) < 0.05:
+            raise ValueError("left-wall sample span too small for line fit")
+
         slope, intercept = np.polyfit(y, x, 1)
+        residuals = np.abs(x - (slope * y + intercept))
+        if residuals.shape[0] >= 4:
+            keep_percentile = clamp(
+                float(self.params.fit_outlier_percentile),
+                50.0,
+                100.0,
+            )
+            residual_limit = float(np.percentile(residuals, keep_percentile))
+            inlier_mask = residuals <= residual_limit
+            if np.count_nonzero(inlier_mask) >= 3:
+                y = y[inlier_mask]
+                x = x[inlier_mask]
+                slope, intercept = np.polyfit(y, x, 1)
 
         lookahead = max(0.05, float(self.params.lookahead_distance))
         left_distance = slope * lookahead + intercept
@@ -204,6 +225,9 @@ class WallFollowingNode(Node):
         front_min = self._front_min(angles, ranges)
         if front_min <= self.params.front_stop_distance:
             self.last_speed = 0.0
+            self.last_error = 0.0
+            self.filtered_derivative = 0.0
+            self.filtered_left_distance = None
             self.drive(0.0, 0.0)
             return
 
@@ -212,11 +236,41 @@ class WallFollowingNode(Node):
             left_distance = self._estimate_left_distance(points)
         except ValueError as exc:
             self.get_logger().warn(f"Skipping scan: {exc}")
+            max_delta = max(0.0, self.params.max_acceleration) * delta_time
+            self.last_speed = max(0.0, self.last_speed - max_delta)
+            self.drive(0.0, self.last_speed)
             return
 
-        error = left_distance - self.params.left_distance_setpoint
-        derivative = (error - self.last_error) / max(1e-6, delta_time)
-        self.last_error = error
+        if self.filtered_left_distance is None:
+            self.filtered_left_distance = left_distance
+            error = self.filtered_left_distance - self.params.left_distance_setpoint
+            self.last_error = error
+            self.filtered_derivative = 0.0
+            derivative = 0.0
+        else:
+            distance_alpha = clamp(
+                float(self.params.wall_distance_smoothing_alpha),
+                0.0,
+                1.0,
+            )
+            self.filtered_left_distance = (
+                (1.0 - distance_alpha) * self.filtered_left_distance
+                + distance_alpha * left_distance
+            )
+
+            error = self.filtered_left_distance - self.params.left_distance_setpoint
+            raw_derivative = (error - self.last_error) / max(1e-6, delta_time)
+            derivative_alpha = clamp(
+                float(self.params.derivative_smoothing_alpha),
+                0.0,
+                1.0,
+            )
+            self.filtered_derivative = (
+                (1.0 - derivative_alpha) * self.filtered_derivative
+                + derivative_alpha * raw_derivative
+            )
+            derivative = self.filtered_derivative
+            self.last_error = error
 
         steering = self.params.kp * error + self.params.kd * derivative
         steering = clamp(

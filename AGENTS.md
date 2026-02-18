@@ -50,6 +50,19 @@ new dependencies, new workflows, or significant refactors).
 - Use `ign` CLI for Gazebo Fortress (`gz` is not available).
 
 ## Continuity log (append newest on top)
+- 2026-02-18: Fixed `wallfollowing` immediate right-wall crash without
+  changing controller type: corrected ROS LaserScan left/right mapping in
+  `wallfollowing_node.py` cartesian conversion (`x = sin(angle) * range`),
+  switched wallfollowing steering sign to positive for this setup, eliminated
+  startup derivative kick, and added a safe straight/slow fallback on failed
+  wall fits. Retuned `fortress_wallfollowing.launch.py` to lower
+  `kp/kd/steering_limit` and slower throttle/acceleration for stable testing.
+- 2026-02-18: Retuned ROS2 `wallfollowing` for stability-first behavior after
+  aggressive right-wall impacts: lowered PD/speed authority in
+  `fortress_wallfollowing.launch.py` (`car_controller` speed/steer caps and
+  wallfollowing throttle/accel/gains) and added lidar bump robustness in
+  `wallfollowing_node.py` via left-wall line-fit outlier rejection plus
+  low-pass smoothing of wall-distance and derivative terms.
 - 2026-02-17: Fixed ROS2 parameter override type mismatch for wallfollowing
   and wallbalancing nodes (e.g., `kp:=1` as int) by enabling dynamic parameter
   typing at declaration and coercing loaded values to expected numeric types.
