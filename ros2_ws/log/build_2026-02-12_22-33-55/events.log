@@ -1,0 +1,360 @@
+[0.000000] (-) TimerEvent: {}
+[0.000054] (-) JobUnselected: {'identifier': 'car_control'}
+[0.000125] (-) JobUnselected: {'identifier': 'drive_msgs'}
+[0.000239] (wallfollowing2) JobQueued: {'identifier': 'wallfollowing2', 'dependencies': OrderedDict([('drive_msgs', '/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs')])}
+[0.000709] (racer_bringup) JobQueued: {'identifier': 'racer_bringup', 'dependencies': OrderedDict([('drive_msgs', '/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs'), ('car_control', '/home/erk/f1tenth-t3/ros2_ws/install/car_control'), ('wallfollowing2', '/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2')])}
+[0.000767] (wallfollowing2) JobStarted: {'identifier': 'wallfollowing2'}
+[0.099735] (-) TimerEvent: {}
+[0.199888] (-) TimerEvent: {}
+[0.300039] (-) TimerEvent: {}
+[0.400186] (-) TimerEvent: {}
+[0.500408] (-) TimerEvent: {}
+[0.574150] (wallfollowing2) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'egg_info', '--egg-base', '../../build/wallfollowing2', 'build', '--build-base', '/home/erk/f1tenth-t3/ros2_ws/build/wallfollowing2/build', 'install', '--record', '/home/erk/f1tenth-t3/ros2_ws/build/wallfollowing2/install.log', '--single-version-externally-managed', 'install_data'], 'cwd': '/home/erk/f1tenth-t3/ros2_ws/src/wallfollowing2', 'env': {'GJS_DEBUG_TOPICS': 'JS ERROR;JS LOG', 'VSCODE_CWD': '/home/erk', 'CODEX_CI': '1', 'VSCODE_ESM_ENTRYPOINT': 'vs/workbench/api/node/extensionHostProcess', 'CODEX_INTERNAL_ORIGINATOR_OVERRIDE': 'codex_vscode', 'USER': 'erk', 'VSCODE_NLS_CONFIG': '{"userLocale":"en-us","osLocale":"en-us","resolvedLanguage":"en","defaultMessagesFile":"/usr/share/code/resources/app/out/nls.messages.json","locale":"en-us","availableLanguages":{}}', 'VSCODE_HANDLES_UNCAUGHT_ERRORS': 'true', 'ROS_PACKAGE_PATH': '/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/share:/home/erk/f1tenth-t3/ros2_ws/install/car_control/share', 'XDG_SESSION_TYPE': 'wayland', 'LD_LIBRARY_PATH': '/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib', 'SHLVL': '0', 'CHROME_DESKTOP': 'code.desktop', 'HOME': '/home/erk', 'OLDPWD': '/home/erk/f1tenth-t3', 'DESKTOP_SESSION': 'ubuntu', 'GIO_LAUNCHED_DESKTOP_FILE': '/usr/share/applications/code.desktop', 'VSCODE_IPC_HOOK': '/run/user/1000/vscode-3c1423a1-1.10-main.sock', 'GNOME_SHELL_SESSION_MODE': 'ubuntu', 'GTK_MODULES': 'gail:atk-bridge', 'PAGER': 'cat', 'ROS_PYTHON_VERSION': '3', 'LC_CTYPE': 'C.UTF-8', 'MANAGERPID': '1719', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'NO_COLOR': '1', 'SYSTEMD_EXEC_PID': '1877', 'COLORTERM': '', 'GIO_LAUNCHED_DESKTOP_FILE_PID': '108326', 'VSCODE_CRASH_REPORTER_PROCESS_TYPE': 'extensionHost', 'APPLICATION_INSIGHTS_NO_STATSBEAT': 'true', 'COLCON_PREFIX_PATH': '/home/erk/f1tenth-t3/ros2_ws/install', 'ROS_DISTRO': 'humble', 'WAYLAND_DISPLAY': 'wayland-0', 'LOGNAME': 'erk', 'JOURNAL_STREAM': '8:9095', '_': '/usr/bin/colcon', 'PKG_CONFIG_PATH': '/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/lib/x86_64-linux-gnu/pkgconfig:/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/lib/pkgconfig:/home/erk/f1tenth-t3/ros2_ws/install/car_control/lib/x86_64-linux-gnu/pkgconfig:/home/erk/f1tenth-t3/ros2_ws/install/car_control/lib/pkgconfig', 'ROS_VERSION': '2', 'RUST_LOG': 'warn', 'XDG_SESSION_CLASS': 'user', 'TERM': 'dumb', 'USERNAME': 'erk', 'FC_FONTATIONS': '1', 'GNOME_DESKTOP_SESSION_ID': 'this-is-deprecated', 'ROS_LOCALHOST_ONLY': '0', 'PATH': '/home/erk/.codex/tmp/arg0/codex-arg05ZRotC:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/erk/.vscode/extensions/openai.chatgpt-0.4.71-linux-x64/bin/linux-x86_64', 'INVOCATION_ID': 'f1b9c46615314e2888acd9854756d9b8', 'SESSION_MANAGER': 'local/erk-MS-7B48:@/tmp/.ICE-unix/1847,unix/erk-MS-7B48:/tmp/.ICE-unix/1847', 'GDK_BACKEND': 'wayland', 'GNOME_SETUP_DISPLAY': ':1', 'XDG_MENU_PREFIX': 'gnome-', 'XDG_RUNTIME_DIR': '/run/user/1000', 'CODEX_SANDBOX_NETWORK_DISABLED': '1', 'DISPLAY': ':0', 'LANG': 'C.UTF-8', 'XDG_CURRENT_DESKTOP': 'ubuntu:GNOME', 'GH_PAGER': 'cat', 'XAUTHORITY': '/run/user/1000/.mutter-Xwaylandauth.2252J3', 'XDG_SESSION_DESKTOP': 'ubuntu', 'XMODIFIERS': '@im=ibus', 'AMENT_PREFIX_PATH': '/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup:/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2:/opt/ros/humble', 'SSH_AGENT_LAUNCHER': 'gnome-keyring', 'SSH_AUTH_SOCK': '/run/user/1000/keyring/ssh', 'SHELL': '/usr/bin/zsh', 'ELECTRON_RUN_AS_NODE': '1', 'GDMSESSION': 'ubuntu', 'QT_ACCESSIBILITY': '1', 'CODEX_THREAD_ID': '019c1201-e7c4-7b21-97f7-54738a2719d0', 'GJS_DEBUG_OUTPUT': 'stderr', 'GIT_PAGER': 'cat', 'QT_IM_MODULE': 'ibus', 'LC_ALL': 'C.UTF-8', 'PWD': '/home/erk/f1tenth-t3/ros2_ws/build/wallfollowing2', 'VSCODE_CODE_CACHE_PATH': '/home/erk/.config/Code/CachedData/c9d77990917f3102ada88be140d28b038d1dd7c7', 'XDG_DATA_DIRS': '/usr/local/share/:/usr/share/:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/erk/f1tenth-t3/ros2_ws/build/wallfollowing2/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/lib/python3.10/site-packages:/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/local/lib/python3.10/dist-packages:/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/lib/python3.10/site-packages:/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages', 'COLCON': '1', 'CMAKE_PREFIX_PATH': '/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs:/home/erk/f1tenth-t3/ros2_ws/install/car_control', 'VSCODE_PID': '108326'}, 'shell': False}
+[0.600481] (-) TimerEvent: {}
+[0.700621] (-) TimerEvent: {}
+[0.800768] (-) TimerEvent: {}
+[0.809996] (wallfollowing2) StdoutLine: {'line': b'running egg_info\n'}
+[0.810656] (wallfollowing2) StdoutLine: {'line': b'writing ../../build/wallfollowing2/wallfollowing2.egg-info/PKG-INFO\n'}
+[0.810867] (wallfollowing2) StdoutLine: {'line': b'writing dependency_links to ../../build/wallfollowing2/wallfollowing2.egg-info/dependency_links.txt\n'}
+[0.811099] (wallfollowing2) StdoutLine: {'line': b'writing entry points to ../../build/wallfollowing2/wallfollowing2.egg-info/entry_points.txt\n'}
+[0.811322] (wallfollowing2) StdoutLine: {'line': b'writing requirements to ../../build/wallfollowing2/wallfollowing2.egg-info/requires.txt\n'}
+[0.811492] (wallfollowing2) StdoutLine: {'line': b'writing top-level names to ../../build/wallfollowing2/wallfollowing2.egg-info/top_level.txt\n'}
+[0.813423] (wallfollowing2) StdoutLine: {'line': b"reading manifest file '../../build/wallfollowing2/wallfollowing2.egg-info/SOURCES.txt'\n"}
+[0.814499] (wallfollowing2) StdoutLine: {'line': b"writing manifest file '../../build/wallfollowing2/wallfollowing2.egg-info/SOURCES.txt'\n"}
+[0.814719] (wallfollowing2) StdoutLine: {'line': b'running build\n'}
+[0.814969] (wallfollowing2) StdoutLine: {'line': b'running build_py\n'}
+[0.815048] (wallfollowing2) StdoutLine: {'line': b'copying wallfollowing2/rviz_geometry.py -> /home/erk/f1tenth-t3/ros2_ws/build/wallfollowing2/build/lib/wallfollowing2\n'}
+[0.815215] (wallfollowing2) StdoutLine: {'line': b'running install\n'}
+[0.815650] (wallfollowing2) StdoutLine: {'line': b'running install_lib\n'}
+[0.817104] (wallfollowing2) StdoutLine: {'line': b'copying /home/erk/f1tenth-t3/ros2_ws/build/wallfollowing2/build/lib/wallfollowing2/rviz_geometry.py -> /home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/lib/python3.10/site-packages/wallfollowing2\n'}
+[0.818032] (wallfollowing2) StdoutLine: {'line': b'byte-compiling /home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/lib/python3.10/site-packages/wallfollowing2/rviz_geometry.py to rviz_geometry.cpython-310.pyc\n'}
+[0.819303] (wallfollowing2) StdoutLine: {'line': b'running install_data\n'}
+[0.819810] (wallfollowing2) StdoutLine: {'line': b'running install_egg_info\n'}
+[0.824171] (wallfollowing2) StdoutLine: {'line': b"removing '/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/lib/python3.10/site-packages/wallfollowing2-0.1.0-py3.10.egg-info' (and everything under it)\n"}
+[0.824449] (wallfollowing2) StdoutLine: {'line': b'Copying ../../build/wallfollowing2/wallfollowing2.egg-info to /home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/lib/python3.10/site-packages/wallfollowing2-0.1.0-py3.10.egg-info\n'}
+[0.825220] (wallfollowing2) StdoutLine: {'line': b'running install_scripts\n'}
+[0.843754] (wallfollowing2) StdoutLine: {'line': b'Installing scan_stop_reverse_test_node script to /home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/lib/wallfollowing2\n'}
+[0.843996] (wallfollowing2) StdoutLine: {'line': b'Installing wallfollowing_node script to /home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/lib/wallfollowing2\n'}
+[0.844166] (wallfollowing2) StdoutLine: {'line': b"writing list of installed files to '/home/erk/f1tenth-t3/ros2_ws/build/wallfollowing2/install.log'\n"}
+[0.864588] (wallfollowing2) CommandEnded: {'returncode': 0}
+[0.874829] (wallfollowing2) JobEnded: {'identifier': 'wallfollowing2', 'rc': 0}
+[0.876817] (racer_bringup) JobStarted: {'identifier': 'racer_bringup'}
+[0.900803] (-) TimerEvent: {}
+[1.000949] (-) TimerEvent: {}
+[1.101111] (-) TimerEvent: {}
+[1.201257] (-) TimerEvent: {}
+[1.301421] (-) TimerEvent: {}
+[1.401525] (-) TimerEvent: {}
+[1.457270] (racer_bringup) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'egg_info', '--egg-base', '../../build/racer_bringup', 'build', '--build-base', '/home/erk/f1tenth-t3/ros2_ws/build/racer_bringup/build', 'install', '--record', '/home/erk/f1tenth-t3/ros2_ws/build/racer_bringup/install.log', '--single-version-externally-managed', 'install_data'], 'cwd': '/home/erk/f1tenth-t3/ros2_ws/src/racer_bringup', 'env': {'GJS_DEBUG_TOPICS': 'JS ERROR;JS LOG', 'VSCODE_CWD': '/home/erk', 'CODEX_CI': '1', 'VSCODE_ESM_ENTRYPOINT': 'vs/workbench/api/node/extensionHostProcess', 'CODEX_INTERNAL_ORIGINATOR_OVERRIDE': 'codex_vscode', 'USER': 'erk', 'VSCODE_NLS_CONFIG': '{"userLocale":"en-us","osLocale":"en-us","resolvedLanguage":"en","defaultMessagesFile":"/usr/share/code/resources/app/out/nls.messages.json","locale":"en-us","availableLanguages":{}}', 'VSCODE_HANDLES_UNCAUGHT_ERRORS': 'true', 'ROS_PACKAGE_PATH': '/home/erk/f1tenth-t3/ros2_ws/install/car_control/share:/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/share', 'XDG_SESSION_TYPE': 'wayland', 'LD_LIBRARY_PATH': '/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib', 'SHLVL': '0', 'CHROME_DESKTOP': 'code.desktop', 'HOME': '/home/erk', 'OLDPWD': '/home/erk/f1tenth-t3', 'DESKTOP_SESSION': 'ubuntu', 'GIO_LAUNCHED_DESKTOP_FILE': '/usr/share/applications/code.desktop', 'VSCODE_IPC_HOOK': '/run/user/1000/vscode-3c1423a1-1.10-main.sock', 'GNOME_SHELL_SESSION_MODE': 'ubuntu', 'GTK_MODULES': 'gail:atk-bridge', 'PAGER': 'cat', 'ROS_PYTHON_VERSION': '3', 'LC_CTYPE': 'C.UTF-8', 'MANAGERPID': '1719', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'NO_COLOR': '1', 'SYSTEMD_EXEC_PID': '1877', 'COLORTERM': '', 'GIO_LAUNCHED_DESKTOP_FILE_PID': '108326', 'VSCODE_CRASH_REPORTER_PROCESS_TYPE': 'extensionHost', 'APPLICATION_INSIGHTS_NO_STATSBEAT': 'true', 'COLCON_PREFIX_PATH': '/home/erk/f1tenth-t3/ros2_ws/install', 'ROS_DISTRO': 'humble', 'WAYLAND_DISPLAY': 'wayland-0', 'LOGNAME': 'erk', 'JOURNAL_STREAM': '8:9095', '_': '/usr/bin/colcon', 'PKG_CONFIG_PATH': '/home/erk/f1tenth-t3/ros2_ws/install/car_control/lib/x86_64-linux-gnu/pkgconfig:/home/erk/f1tenth-t3/ros2_ws/install/car_control/lib/pkgconfig:/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/lib/x86_64-linux-gnu/pkgconfig:/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/lib/pkgconfig', 'ROS_VERSION': '2', 'RUST_LOG': 'warn', 'XDG_SESSION_CLASS': 'user', 'TERM': 'dumb', 'USERNAME': 'erk', 'FC_FONTATIONS': '1', 'GNOME_DESKTOP_SESSION_ID': 'this-is-deprecated', 'ROS_LOCALHOST_ONLY': '0', 'PATH': '/home/erk/.codex/tmp/arg0/codex-arg05ZRotC:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/erk/.vscode/extensions/openai.chatgpt-0.4.71-linux-x64/bin/linux-x86_64', 'INVOCATION_ID': 'f1b9c46615314e2888acd9854756d9b8', 'SESSION_MANAGER': 'local/erk-MS-7B48:@/tmp/.ICE-unix/1847,unix/erk-MS-7B48:/tmp/.ICE-unix/1847', 'GDK_BACKEND': 'wayland', 'GNOME_SETUP_DISPLAY': ':1', 'XDG_MENU_PREFIX': 'gnome-', 'XDG_RUNTIME_DIR': '/run/user/1000', 'CODEX_SANDBOX_NETWORK_DISABLED': '1', 'DISPLAY': ':0', 'LANG': 'C.UTF-8', 'XDG_CURRENT_DESKTOP': 'ubuntu:GNOME', 'GH_PAGER': 'cat', 'XAUTHORITY': '/run/user/1000/.mutter-Xwaylandauth.2252J3', 'XDG_SESSION_DESKTOP': 'ubuntu', 'XMODIFIERS': '@im=ibus', 'AMENT_PREFIX_PATH': '/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2:/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup:/opt/ros/humble', 'SSH_AGENT_LAUNCHER': 'gnome-keyring', 'SSH_AUTH_SOCK': '/run/user/1000/keyring/ssh', 'SHELL': '/usr/bin/zsh', 'ELECTRON_RUN_AS_NODE': '1', 'GDMSESSION': 'ubuntu', 'QT_ACCESSIBILITY': '1', 'CODEX_THREAD_ID': '019c1201-e7c4-7b21-97f7-54738a2719d0', 'GJS_DEBUG_OUTPUT': 'stderr', 'GIT_PAGER': 'cat', 'QT_IM_MODULE': 'ibus', 'LC_ALL': 'C.UTF-8', 'PWD': '/home/erk/f1tenth-t3/ros2_ws/build/racer_bringup', 'VSCODE_CODE_CACHE_PATH': '/home/erk/.config/Code/CachedData/c9d77990917f3102ada88be140d28b038d1dd7c7', 'XDG_DATA_DIRS': '/usr/local/share/:/usr/share/:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/erk/f1tenth-t3/ros2_ws/build/racer_bringup/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/lib/python3.10/site-packages:/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/lib/python3.10/site-packages:/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/local/lib/python3.10/dist-packages:/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages', 'COLCON': '1', 'CMAKE_PREFIX_PATH': '/home/erk/f1tenth-t3/ros2_ws/install/car_control:/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs', 'VSCODE_PID': '108326'}, 'shell': False}
+[1.501600] (-) TimerEvent: {}
+[1.601729] (-) TimerEvent: {}
+[1.687472] (racer_bringup) StdoutLine: {'line': b'running egg_info\n'}
+[1.688046] (racer_bringup) StdoutLine: {'line': b'writing ../../build/racer_bringup/racer_bringup.egg-info/PKG-INFO\n'}
+[1.688215] (racer_bringup) StdoutLine: {'line': b'writing dependency_links to ../../build/racer_bringup/racer_bringup.egg-info/dependency_links.txt\n'}
+[1.688380] (racer_bringup) StdoutLine: {'line': b'writing requirements to ../../build/racer_bringup/racer_bringup.egg-info/requires.txt\n'}
+[1.688533] (racer_bringup) StdoutLine: {'line': b'writing top-level names to ../../build/racer_bringup/racer_bringup.egg-info/top_level.txt\n'}
+[1.689399] (racer_bringup) StdoutLine: {'line': b"reading manifest file '../../build/racer_bringup/racer_bringup.egg-info/SOURCES.txt'\n"}
+[1.691397] (racer_bringup) StdoutLine: {'line': b"writing manifest file '../../build/racer_bringup/racer_bringup.egg-info/SOURCES.txt'\n"}
+[1.691579] (racer_bringup) StdoutLine: {'line': b'running build\n'}
+[1.691651] (racer_bringup) StdoutLine: {'line': b'running install\n'}
+[1.691903] (racer_bringup) StdoutLine: {'line': b'running install_data\n'}
+[1.692449] (racer_bringup) StdoutLine: {'line': b'running install_egg_info\n'}
+[1.696322] (racer_bringup) StdoutLine: {'line': b"removing '/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/lib/python3.10/site-packages/racer_bringup-0.1.0-py3.10.egg-info' (and everything under it)\n"}
+[1.696538] (racer_bringup) StdoutLine: {'line': b'Copying ../../build/racer_bringup/racer_bringup.egg-info to /home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/lib/python3.10/site-packages/racer_bringup-0.1.0-py3.10.egg-info\n'}
+[1.697240] (racer_bringup) StdoutLine: {'line': b'running install_scripts\n'}
+[1.701818] (-) TimerEvent: {}
+[1.722986] (racer_bringup) StdoutLine: {'line': b"writing list of installed files to '/home/erk/f1tenth-t3/ros2_ws/build/racer_bringup/install.log'\n"}
+[1.801903] (-) TimerEvent: {}
+[1.902044] (-) TimerEvent: {}
+[2.002183] (-) TimerEvent: {}
+[2.102397] (-) TimerEvent: {}
+[2.202731] (-) TimerEvent: {}
+[2.302815] (-) TimerEvent: {}
+[2.402950] (-) TimerEvent: {}
+[2.503080] (-) TimerEvent: {}
+[2.603229] (-) TimerEvent: {}
+[2.703367] (-) TimerEvent: {}
+[2.803502] (-) TimerEvent: {}
+[2.903647] (-) TimerEvent: {}
+[3.003788] (-) TimerEvent: {}
+[3.103930] (-) TimerEvent: {}
+[3.204087] (-) TimerEvent: {}
+[3.304236] (-) TimerEvent: {}
+[3.404383] (-) TimerEvent: {}
+[3.504530] (-) TimerEvent: {}
+[3.604667] (-) TimerEvent: {}
+[3.704802] (-) TimerEvent: {}
+[3.805065] (-) TimerEvent: {}
+[3.905202] (-) TimerEvent: {}
+[4.005347] (-) TimerEvent: {}
+[4.105480] (-) TimerEvent: {}
+[4.205616] (-) TimerEvent: {}
+[4.305784] (-) TimerEvent: {}
+[4.405936] (-) TimerEvent: {}
+[4.506075] (-) TimerEvent: {}
+[4.606228] (-) TimerEvent: {}
+[4.706388] (-) TimerEvent: {}
+[4.806489] (-) TimerEvent: {}
+[4.906641] (-) TimerEvent: {}
+[5.006730] (-) TimerEvent: {}
+[5.106869] (-) TimerEvent: {}
+[5.207015] (-) TimerEvent: {}
+[5.307149] (-) TimerEvent: {}
+[5.407240] (-) TimerEvent: {}
+[5.507376] (-) TimerEvent: {}
+[5.607512] (-) TimerEvent: {}
+[5.707648] (-) TimerEvent: {}
+[5.807783] (-) TimerEvent: {}
+[5.907918] (-) TimerEvent: {}
+[6.008015] (-) TimerEvent: {}
+[6.108163] (-) TimerEvent: {}
+[6.208312] (-) TimerEvent: {}
+[6.308447] (-) TimerEvent: {}
+[6.408576] (-) TimerEvent: {}
+[6.508708] (-) TimerEvent: {}
+[6.608841] (-) TimerEvent: {}
+[6.708925] (-) TimerEvent: {}
+[6.809074] (-) TimerEvent: {}
+[6.909221] (-) TimerEvent: {}
+[7.009352] (-) TimerEvent: {}
+[7.109501] (-) TimerEvent: {}
+[7.209647] (-) TimerEvent: {}
+[7.309779] (-) TimerEvent: {}
+[7.409909] (-) TimerEvent: {}
+[7.510004] (-) TimerEvent: {}
+[7.610136] (-) TimerEvent: {}
+[7.710241] (-) TimerEvent: {}
+[7.810385] (-) TimerEvent: {}
+[7.910523] (-) TimerEvent: {}
+[8.010651] (-) TimerEvent: {}
+[8.110783] (-) TimerEvent: {}
+[8.210912] (-) TimerEvent: {}
+[8.311048] (-) TimerEvent: {}
+[8.411191] (-) TimerEvent: {}
+[8.511339] (-) TimerEvent: {}
+[8.611490] (-) TimerEvent: {}
+[8.711619] (-) TimerEvent: {}
+[8.811752] (-) TimerEvent: {}
+[8.911887] (-) TimerEvent: {}
+[9.012023] (-) TimerEvent: {}
+[9.112170] (-) TimerEvent: {}
+[9.212262] (-) TimerEvent: {}
+[9.312389] (-) TimerEvent: {}
+[9.412522] (-) TimerEvent: {}
+[9.512622] (-) TimerEvent: {}
+[9.612770] (-) TimerEvent: {}
+[9.712927] (-) TimerEvent: {}
+[9.813012] (-) TimerEvent: {}
+[9.913146] (-) TimerEvent: {}
+[10.013263] (-) TimerEvent: {}
+[10.113412] (-) TimerEvent: {}
+[10.213542] (-) TimerEvent: {}
+[10.313681] (-) TimerEvent: {}
+[10.413816] (-) TimerEvent: {}
+[10.513955] (-) TimerEvent: {}
+[10.614089] (-) TimerEvent: {}
+[10.714233] (-) TimerEvent: {}
+[10.814370] (-) TimerEvent: {}
+[10.914500] (-) TimerEvent: {}
+[11.014634] (-) TimerEvent: {}
+[11.114763] (-) TimerEvent: {}
+[11.214904] (-) TimerEvent: {}
+[11.315042] (-) TimerEvent: {}
+[11.415189] (-) TimerEvent: {}
+[11.515343] (-) TimerEvent: {}
+[11.615513] (-) TimerEvent: {}
+[11.715641] (-) TimerEvent: {}
+[11.815781] (-) TimerEvent: {}
+[11.915921] (-) TimerEvent: {}
+[12.016073] (-) TimerEvent: {}
+[12.116217] (-) TimerEvent: {}
+[12.216361] (-) TimerEvent: {}
+[12.316516] (-) TimerEvent: {}
+[12.416660] (-) TimerEvent: {}
+[12.516801] (-) TimerEvent: {}
+[12.616888] (-) TimerEvent: {}
+[12.717040] (-) TimerEvent: {}
+[12.817179] (-) TimerEvent: {}
+[12.917335] (-) TimerEvent: {}
+[13.017449] (-) TimerEvent: {}
+[13.117586] (-) TimerEvent: {}
+[13.217732] (-) TimerEvent: {}
+[13.317878] (-) TimerEvent: {}
+[13.418025] (-) TimerEvent: {}
+[13.518193] (-) TimerEvent: {}
+[13.618342] (-) TimerEvent: {}
+[13.718510] (-) TimerEvent: {}
+[13.818652] (-) TimerEvent: {}
+[13.918733] (-) TimerEvent: {}
+[14.018933] (-) TimerEvent: {}
+[14.119089] (-) TimerEvent: {}
+[14.219244] (-) TimerEvent: {}
+[14.319372] (-) TimerEvent: {}
+[14.419499] (-) TimerEvent: {}
+[14.519654] (-) TimerEvent: {}
+[14.619796] (-) TimerEvent: {}
+[14.719942] (-) TimerEvent: {}
+[14.820077] (-) TimerEvent: {}
+[14.920174] (-) TimerEvent: {}
+[15.020458] (-) TimerEvent: {}
+[15.120755] (-) TimerEvent: {}
+[15.220893] (-) TimerEvent: {}
+[15.321029] (-) TimerEvent: {}
+[15.421161] (-) TimerEvent: {}
+[15.521327] (-) TimerEvent: {}
+[15.621492] (-) TimerEvent: {}
+[15.721631] (-) TimerEvent: {}
+[15.821774] (-) TimerEvent: {}
+[15.921884] (-) TimerEvent: {}
+[16.022027] (-) TimerEvent: {}
+[16.122153] (-) TimerEvent: {}
+[16.222253] (-) TimerEvent: {}
+[16.322391] (-) TimerEvent: {}
+[16.422530] (-) TimerEvent: {}
+[16.522666] (-) TimerEvent: {}
+[16.622749] (-) TimerEvent: {}
+[16.722862] (-) TimerEvent: {}
+[16.822983] (-) TimerEvent: {}
+[16.923064] (-) TimerEvent: {}
+[17.023193] (-) TimerEvent: {}
+[17.123352] (-) TimerEvent: {}
+[17.223516] (-) TimerEvent: {}
+[17.323632] (-) TimerEvent: {}
+[17.423867] (-) TimerEvent: {}
+[17.524005] (-) TimerEvent: {}
+[17.624137] (-) TimerEvent: {}
+[17.724240] (-) TimerEvent: {}
+[17.824348] (-) TimerEvent: {}
+[17.924473] (-) TimerEvent: {}
+[18.024626] (-) TimerEvent: {}
+[18.124764] (-) TimerEvent: {}
+[18.224902] (-) TimerEvent: {}
+[18.325043] (-) TimerEvent: {}
+[18.425171] (-) TimerEvent: {}
+[18.525357] (-) TimerEvent: {}
+[18.625463] (-) TimerEvent: {}
+[18.725621] (-) TimerEvent: {}
+[18.825757] (-) TimerEvent: {}
+[18.925914] (-) TimerEvent: {}
+[19.026046] (-) TimerEvent: {}
+[19.126192] (-) TimerEvent: {}
+[19.226331] (-) TimerEvent: {}
+[19.326475] (-) TimerEvent: {}
+[19.426605] (-) TimerEvent: {}
+[19.526710] (-) TimerEvent: {}
+[19.626840] (-) TimerEvent: {}
+[19.726991] (-) TimerEvent: {}
+[19.827100] (-) TimerEvent: {}
+[19.927243] (-) TimerEvent: {}
+[20.027376] (-) TimerEvent: {}
+[20.127532] (-) TimerEvent: {}
+[20.227629] (-) TimerEvent: {}
+[20.327709] (-) TimerEvent: {}
+[20.427841] (-) TimerEvent: {}
+[20.527981] (-) TimerEvent: {}
+[20.628115] (-) TimerEvent: {}
+[20.728263] (-) TimerEvent: {}
+[20.828346] (-) TimerEvent: {}
+[20.928431] (-) TimerEvent: {}
+[21.028565] (-) TimerEvent: {}
+[21.128698] (-) TimerEvent: {}
+[21.228831] (-) TimerEvent: {}
+[21.328964] (-) TimerEvent: {}
+[21.429113] (-) TimerEvent: {}
+[21.529241] (-) TimerEvent: {}
+[21.629348] (-) TimerEvent: {}
+[21.729491] (-) TimerEvent: {}
+[21.829623] (-) TimerEvent: {}
+[21.929772] (-) TimerEvent: {}
+[22.029900] (-) TimerEvent: {}
+[22.130031] (-) TimerEvent: {}
+[22.230126] (-) TimerEvent: {}
+[22.330259] (-) TimerEvent: {}
+[22.430386] (-) TimerEvent: {}
+[22.530514] (-) TimerEvent: {}
+[22.630654] (-) TimerEvent: {}
+[22.730779] (-) TimerEvent: {}
+[22.830923] (-) TimerEvent: {}
+[22.931067] (-) TimerEvent: {}
+[23.031201] (-) TimerEvent: {}
+[23.131333] (-) TimerEvent: {}
+[23.231463] (-) TimerEvent: {}
+[23.331587] (-) TimerEvent: {}
+[23.431670] (-) TimerEvent: {}
+[23.531826] (-) TimerEvent: {}
+[23.631974] (-) TimerEvent: {}
+[23.732148] (-) TimerEvent: {}
+[23.832309] (-) TimerEvent: {}
+[23.932452] (-) TimerEvent: {}
+[24.032559] (-) TimerEvent: {}
+[24.132703] (-) TimerEvent: {}
+[24.232846] (-) TimerEvent: {}
+[24.332984] (-) TimerEvent: {}
+[24.433137] (-) TimerEvent: {}
+[24.533253] (-) TimerEvent: {}
+[24.633403] (-) TimerEvent: {}
+[24.733533] (-) TimerEvent: {}
+[24.833664] (-) TimerEvent: {}
+[24.933805] (-) TimerEvent: {}
+[25.033951] (-) TimerEvent: {}
+[25.134091] (-) TimerEvent: {}
+[25.234242] (-) TimerEvent: {}
+[25.334375] (-) TimerEvent: {}
+[25.434510] (-) TimerEvent: {}
+[25.534650] (-) TimerEvent: {}
+[25.634812] (-) TimerEvent: {}
+[25.735018] (-) TimerEvent: {}
+[25.835150] (-) TimerEvent: {}
+[25.935254] (-) TimerEvent: {}
+[26.035437] (-) TimerEvent: {}
+[26.135619] (-) TimerEvent: {}
+[26.235746] (-) TimerEvent: {}
+[26.335879] (-) TimerEvent: {}
+[26.436029] (-) TimerEvent: {}
+[26.536166] (-) TimerEvent: {}
+[26.636357] (-) TimerEvent: {}
+[26.736508] (-) TimerEvent: {}
+[26.836698] (-) TimerEvent: {}
+[26.936871] (-) TimerEvent: {}
+[27.037024] (-) TimerEvent: {}
+[27.137169] (-) TimerEvent: {}
+[27.237303] (-) TimerEvent: {}
+[27.337388] (-) TimerEvent: {}
+[27.437523] (-) TimerEvent: {}
+[27.537618] (-) TimerEvent: {}
+[27.637747] (-) TimerEvent: {}
+[27.737823] (-) TimerEvent: {}
+[27.837963] (-) TimerEvent: {}
+[27.938103] (-) TimerEvent: {}
+[28.038186] (-) TimerEvent: {}
+[28.138322] (-) TimerEvent: {}
+[28.238473] (-) TimerEvent: {}
+[28.338615] (-) TimerEvent: {}
+[28.438801] (-) TimerEvent: {}
+[28.538933] (-) TimerEvent: {}
+[28.639064] (-) TimerEvent: {}
+[28.739210] (-) TimerEvent: {}
+[28.839350] (-) TimerEvent: {}
+[28.939502] (-) TimerEvent: {}
+[29.039591] (-) TimerEvent: {}
+[29.139732] (-) TimerEvent: {}
+[29.239886] (-) TimerEvent: {}
+[29.340016] (-) TimerEvent: {}
+[29.440152] (-) TimerEvent: {}
+[29.540379] (-) TimerEvent: {}
+[29.640652] (-) TimerEvent: {}
+[29.740797] (-) TimerEvent: {}
+[29.840934] (-) TimerEvent: {}
+[29.941077] (-) TimerEvent: {}
+[30.041215] (-) TimerEvent: {}
+[30.141315] (-) TimerEvent: {}
+[30.241468] (-) TimerEvent: {}
+[30.341613] (-) TimerEvent: {}
+[30.441745] (-) TimerEvent: {}
+[30.541882] (-) TimerEvent: {}
+[30.642029] (-) TimerEvent: {}
+[30.742171] (-) TimerEvent: {}
+[30.842306] (-) TimerEvent: {}
+[30.905127] (racer_bringup) CommandEnded: {'returncode': 0}
+[30.910889] (racer_bringup) JobEnded: {'identifier': 'racer_bringup', 'rc': 0}
+[30.911211] (-) EventReactorShutdown: {}

@@ -1,0 +1,18 @@
+[30.036s] Invoking command in '/home/erk/f1tenth-t3/ros2_ws/src/racer_bringup': AMENT_PREFIX_PATH=/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2:/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup:/opt/ros/humble PYTHONPATH=/home/erk/f1tenth-t3/ros2_ws/build/racer_bringup/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/lib/python3.10/site-packages:/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/lib/python3.10/site-packages:/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/local/lib/python3.10/dist-packages:/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/racer_bringup build --build-base /home/erk/f1tenth-t3/ros2_ws/build/racer_bringup/build install --record /home/erk/f1tenth-t3/ros2_ws/build/racer_bringup/install.log --single-version-externally-managed install_data
+[30.264s] running egg_info
+[30.264s] writing ../../build/racer_bringup/racer_bringup.egg-info/PKG-INFO
+[30.265s] writing dependency_links to ../../build/racer_bringup/racer_bringup.egg-info/dependency_links.txt
+[30.265s] writing requirements to ../../build/racer_bringup/racer_bringup.egg-info/requires.txt
+[30.265s] writing top-level names to ../../build/racer_bringup/racer_bringup.egg-info/top_level.txt
+[30.265s] reading manifest file '../../build/racer_bringup/racer_bringup.egg-info/SOURCES.txt'
+[30.266s] writing manifest file '../../build/racer_bringup/racer_bringup.egg-info/SOURCES.txt'
+[30.266s] running build
+[30.266s] running install
+[30.266s] running install_data
+[30.266s] copying launch/fortress_wallfollowing.launch.py -> /home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/share/racer_bringup/launch
+[30.266s] running install_egg_info
+[30.268s] removing '/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/lib/python3.10/site-packages/racer_bringup-0.1.0-py3.10.egg-info' (and everything under it)
+[30.269s] Copying ../../build/racer_bringup/racer_bringup.egg-info to /home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/lib/python3.10/site-packages/racer_bringup-0.1.0-py3.10.egg-info
+[30.269s] running install_scripts
+[30.283s] writing list of installed files to '/home/erk/f1tenth-t3/ros2_ws/build/racer_bringup/install.log'
+[30.297s] Invoked command in '/home/erk/f1tenth-t3/ros2_ws/src/racer_bringup' returned '0': AMENT_PREFIX_PATH=/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2:/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup:/opt/ros/humble PYTHONPATH=/home/erk/f1tenth-t3/ros2_ws/build/racer_bringup/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/lib/python3.10/site-packages:/home/erk/f1tenth-t3/ros2_ws/install/wallfollowing2/lib/python3.10/site-packages:/home/erk/f1tenth-t3/ros2_ws/install/drive_msgs/local/lib/python3.10/dist-packages:/home/erk/f1tenth-t3/ros2_ws/install/racer_bringup/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/racer_bringup build --build-base /home/erk/f1tenth-t3/ros2_ws/build/racer_bringup/build install --record /home/erk/f1tenth-t3/ros2_ws/build/racer_bringup/install.log --single-version-externally-managed install_data

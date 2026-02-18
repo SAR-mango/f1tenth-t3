@@ -172,8 +172,8 @@ def handle_scan(laser_scan, delta_time):
     left_circle = Circle.fit(left_wall)
     right_circle = Circle.fit(right_wall)
 
-    barrier_start = int(points.shape[0] * (0.5 - parameters.barrier_size_realtive))  # nopep8
-    barrier_end = int(points.shape[0] * (0.5 + parameters.barrier_size_realtive))  # nopep8
+    barrier_start = int(points.shape[0] * (0.5 - parameters.barrier_size_relative))  # nopep8
+    barrier_end = int(points.shape[0] * (0.5 + parameters.barrier_size_relative))  # nopep8
     barrier = np.max(points[barrier_start: barrier_end, 1])
 
     follow_walls(left_circle, right_circle, barrier, delta_time)

@@ -19,6 +19,7 @@ setup(
     entry_points={
         "console_scripts": [
             "wallfollowing_node = wallfollowing2.wallfollowing_node:main",
+            "wallbalancing_node = wallfollowing2.wallbalancing_node:main",
             "scan_stop_reverse_test_node = wallfollowing2.scan_stop_reverse_test_node:main",
         ],
     },

@@ -50,6 +50,51 @@ new dependencies, new workflows, or significant refactors).
 - Use `ign` CLI for Gazebo Fortress (`gz` is not available).
 
 ## Continuity log (append newest on top)
+- 2026-02-17: Fixed ROS2 parameter override type mismatch for wallfollowing
+  and wallbalancing nodes (e.g., `kp:=1` as int) by enabling dynamic parameter
+  typing at declaration and coercing loaded values to expected numeric types.
+- 2026-02-17: Split autonomous controllers into two named setups:
+  `wallfollowing` now uses a new simple left-wall tracker (target 0.25m,
+  line-fit on subsampled left-forward lidar points, no percentile/notch
+  filtering), while the previous advanced balanced-wall controller was renamed
+  to `wallbalancing`. Added `wallbalancing_node` entry point and
+  `fortress_wallbalancing.launch.py`; updated `fortress_wallfollowing.launch.py`
+  to use snappier simple-controller + faster car controller limits.
+- 2026-02-17: Applied aggressive wallfollowing speed retune for straight-line
+  throughput: increased `car_controller` speed/steer limits in
+  `fortress_wallfollowing.launch.py`, retuned wallfollowing params
+  (`min/max_throttle`, accel, radius gating, barrier gating) and added
+  `min_relative_speed` floor. Updated ROS2 wallfollowing logic to use average
+  wall curvature and speed-floor scaling by front clearance to prevent
+  near-stops on clear straights.
+- 2026-02-17: Renamed misspelled wallfollowing parameter
+  `barrier_size_realtive` -> `barrier_size_relative` in ROS2 and legacy ROS1
+  wallfollowing sources/configs. Updated ROS2 wallfollowing speed gating with
+  `barrier_speed_weight` and retuned `fortress_wallfollowing.launch.py`
+  (`barrier_size_relative`, barrier limits, percentile) so straight-line speed
+  is less constrained by front-barrier heuristics.
+- 2026-02-12: Added wallfollowing balancing + notch robustness for faster
+  laps: new `wall_balance_gain` shifts target away from the closer wall; new
+  `barrier_percentile` uses percentile front distance for speed gating to avoid
+  overreacting to small wall notches. Retuned `fortress_wallfollowing` for
+  higher straight speed with safer sharp-turn behavior.
+- 2026-02-12: Retuned `fortress_wallfollowing.launch.py` for faster but more
+  stable driving: increased `car_controller` max linear speed / steering
+  authority, raised wallfollowing throttle and acceleration limits, adjusted
+  barrier speed gating (lower/upper/exponent), and tuned PID + lookahead
+  (`controller_*`, `corner_cutting`, `straight_smoothing`) for sharper turn
+  recovery.
+- 2026-02-12: Improved wallfollowing stability: corrected front barrier metric
+  to nearest obstacle (`min` front distance), added `steering_sign` parameter
+  and hard front-stop guard, clamped steering/speed commands, and tuned
+  `fortress_wallfollowing.launch.py` to more conservative speeds/acceleration.
+- 2026-02-12: Fixed `wallfollowing_node` crash in
+  `wallfollowing2/rviz_geometry.py` by replacing invalid positional
+  `geometry_msgs/Point` construction with explicit field assignment helper.
+  Set marker frame to `car/chassis/ust10lx`.
+- 2026-02-12: Reduced terminal noise in
+  `fortress_wallfollowing.launch.py` by sending helper drive-mode/emergency-stop
+  `ros2 topic pub` process output to log files instead of screen.
 - 2026-02-12: Patched `fortress_sim.launch.py` and
   `fortress_wallfollowing.launch.py` to start `car_control` executables via
   workspace install paths (`ros2_ws/install/car_control/lib/car_control/*`)

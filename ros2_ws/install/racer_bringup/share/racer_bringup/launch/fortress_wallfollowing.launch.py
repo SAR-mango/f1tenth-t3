@@ -79,9 +79,9 @@ def generate_launch_description():
             "-p",
             "publish_cmd_vel:=true",
             "-p",
-            "max_linear_speed:=1.0",
+            "max_linear_speed:=2.9",
             "-p",
-            "max_steering_angle:=0.5",
+            "max_steering_angle:=0.62",
         ],
         output="screen",
     )
@@ -98,7 +98,7 @@ def generate_launch_description():
             "std_msgs/msg/Int32",
             "{data: 2}",
         ],
-        output="screen",
+        output="log",
     )
     emergency_stop_pub = ExecuteProcess(
         cmd=[
@@ -111,7 +111,7 @@ def generate_launch_description():
             "std_msgs/msg/Bool",
             "{data: false}",
         ],
-        output="screen",
+        output="log",
     )
 
     wallfollowing = Node(
@@ -119,11 +119,25 @@ def generate_launch_description():
         executable="wallfollowing_node",
         parameters=[
             {"use_sim_time": True},
-            {"min_throttle": 0.12},
-            {"max_throttle": 0.45},
-            {"max_acceleration": 0.25},
-            {"high_speed_steering_limit": 0.65},
+            {"left_distance_setpoint": 0.25},
+            {"lookahead_distance": 0.70},
+            {"kp": 2.0},
+            {"kd": 0.9},
+            {"steering_limit": 1.0},
+            {"steering_sign": -1.0},
+            {"min_throttle": 0.58},
+            {"max_throttle": 1.0},
+            {"steering_speed_reduction": 0.32},
+            {"max_acceleration": 2.8},
+            {"front_stop_distance": 0.18},
+            {"front_slow_distance": 0.55},
+            {"front_angle_half_width_deg": 10.0},
             {"usable_laser_range": 220.0},
+            {"wall_sample_min_x": 0.05},
+            {"wall_sample_max_x": 1.10},
+            {"wall_sample_min_y": 0.10},
+            {"wall_sample_max_y": 1.40},
+            {"sample_stride": 2},
         ],
         output="screen",
     )

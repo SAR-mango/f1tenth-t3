@@ -8,7 +8,7 @@ from .circle import Point
 
 
 RVIZ_TOPIC = "/wallfollowing_visualization"
-RVIZ_FRAME = "laser"
+RVIZ_FRAME = "car/chassis/ust10lx"
 RVIZ_NAMESPACE = "wall_following"
 
 
@@ -34,16 +34,24 @@ def _make_marker(clock, marker_id, color, line_width):
     return message
 
 
+def _point_msg(x, y, z=0.0):
+    point = PointMessage()
+    point.x = float(x)
+    point.y = float(y)
+    point.z = float(z)
+    return point
+
+
 def show_line_in_rviz(publisher, clock, marker_id, points, color, line_width=0.02):
     message = _make_marker(clock, marker_id, color, line_width)
     if isinstance(points, np.ndarray):
         message.points = [
-            PointMessage(points[i, 1], -points[i, 0], 0.0)
+            _point_msg(points[i, 1], -points[i, 0], 0.0)
             for i in range(points.shape[0])
         ]
     elif isinstance(points, list):
         message.points = [
-            PointMessage(point.y, -point.x, 0.0)
+            _point_msg(point.y, -point.x, 0.0)
             for point in points
         ]
     else:

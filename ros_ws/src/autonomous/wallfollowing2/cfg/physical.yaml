@@ -2,7 +2,7 @@
 dictitems:
   barrier_exponent: 1.4
   barrier_lower_limit: 1.0
-  barrier_size_realtive: 0.1
+  barrier_size_relative: 0.1
   barrier_upper_limit: 15.0
   controller_d: 0.02
   controller_i: 0.2
