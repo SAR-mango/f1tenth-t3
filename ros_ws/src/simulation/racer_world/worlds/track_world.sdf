@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<sdf version="1.9">
+  <world name="track_world">
+    <include>
+      <uri>model://track_model</uri>
+    </include>
+  </world>
+</sdf>
