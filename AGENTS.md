@@ -50,6 +50,59 @@ new dependencies, new workflows, or significant refactors).
 - Use `ign` CLI for Gazebo Fortress (`gz` is not available).
 
 ## Continuity log (append newest on top)
+- 2026-03-03: Added anti-flip FTG launch retune after rollover in
+  `fortress_follow_the_gap.launch.py`: reduced controller caps
+  (`max_linear_speed:=1.15`, `max_steering_angle:=0.52`), reduced
+  `max_steering_step`, lowered `side_speed_floor`, added
+  `bubble_max_angle_degrees`, `gap_fallback_speed_scale`, and
+  `hard_stop_distance`, and shifted to stronger turn slowdown
+  (`steering_slowdown_exponent:=1.0`) with lower `max_speed:=0.82`.
+- 2026-03-03: Adjusted FTG front-stop sensitivity in
+  `fortress_follow_the_gap.launch.py` to avoid deterministic stopping at a
+  repeatable track location: lowered `front_stop_distance` to 0.38, reduced
+  `front_caution_distance` to 0.95, narrowed `front_window_degrees` to 14, and
+  lowered `front_stop_percentile` to 4.
+- 2026-03-03: Applied requested balanced FTG profile in
+  `fortress_follow_the_gap.launch.py` to reduce wall hugging while restoring
+  pace: raised `max_linear_speed` to 1.40 and `max_speed` to 0.95, increased
+  `side_clearance_min`/`wall_bias_gain`, and relaxed front-stop conservatism
+  (`front_stop_distance` 0.50, `front_caution_distance` 1.10,
+  `front_window_degrees` 20, `front_stop_percentile` 8, hold frames 3).
+- 2026-03-03: Hardened FTG random-stop behavior in
+  `wallfollowing2/follow_the_gap_node.py` by making front-stop detection robust
+  to scan outliers: ignore non-physical near-zero ranges, compute front
+  clearance via percentile (`front_stop_percentile`) instead of raw min, and
+  require consecutive stop detections (`front_stop_hold_frames`) before
+  commanding zero speed. Added corresponding launch params in
+  `fortress_follow_the_gap.launch.py`.
+- 2026-03-03: Added front-clearance speed governor to
+  `wallfollowing2/follow_the_gap_node.py` via new `front_caution_distance`
+  parameter, so FTG slows earlier when forward free space collapses (without
+  abandoning gap-following). Retuned `fortress_follow_the_gap.launch.py` to a
+  faster-but-safer profile after wall impacts (`max_linear_speed:=1.25`,
+  increased bubble/stop margins, reduced wall-bias aggressiveness, and lowered
+  side speed floor).
+- 2026-03-03: Added faster follow-the-gap profile after over-conservative
+  behavior: introduced `side_speed_floor` in
+  `wallfollowing2/follow_the_gap_node.py` to prevent excessive slowdown near
+  walls, and retuned `fortress_follow_the_gap.launch.py` for higher pace
+  (`max_linear_speed:=1.35`, `max_speed:=0.92`, `min_speed:=0.24`) while
+  retaining steering smoothing/rate-limit safeguards.
+- 2026-03-03: Reduced follow-the-gap steering oscillation by adding command
+  damping and hysteresis in `follow_the_gap_node.py` (new parameters
+  `wall_bias_deadband_m`, `steering_smoothing_alpha`, `max_steering_step`),
+  smoothing gap-target scoring, and lowering wall-bias aggressiveness in
+  `fortress_follow_the_gap.launch.py` with more conservative speed defaults.
+- 2026-03-03: Improved ROS2 follow-the-gap wall-clearance behavior in
+  `wallfollowing2/follow_the_gap_node.py`: added support for launch-tuned
+  clearance parameters (`side_clearance_min`, `bubble_turn_gain_degrees`,
+  `wall_bias_gain`, `steering_slowdown_exponent`), adaptive bubble sizing from
+  closest obstacle distance + steering state, safe-gap midpoint targeting
+  (instead of farthest-ray edge target), wall-distance steering bias, and
+  front-stop checks against unmodified scan ranges. Tuned
+  `fortress_follow_the_gap.launch.py` for safer defaults (higher clearance
+  margins and lower max speed) and slightly reduced `car_controller`
+  `max_linear_speed` for stability.
 - 2026-02-17: Added ROS2 artifact hygiene for git by ignoring
   `ros2_ws/build/`, `ros2_ws/install/`, and `ros2_ws/log/` in `.gitignore`
   and untracking previously committed generated colcon files from those paths.
