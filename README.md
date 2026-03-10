@@ -75,6 +75,24 @@ Set up enviroment variables for your shell:
 source devel/setup.bash # (or setup.zsh, depending on your shell)
 ```
 
+### ROS2 Humble (migration workspace)
+
+For the ROS2 migration workspace (`ros2_ws`), build and source:
+
+```bash
+cd ros2_ws
+colcon build
+source install/setup.bash  # or setup.zsh
+```
+
+Real Hokuyo scan-stop/reverse test (no Gazebo), including `urg_node_driver`,
+`scan_stop_reverse_test_node`, `cmd_vel_to_drive_param_real_node`, and
+`car_control`:
+
+```bash
+ros2 launch racer_bringup real_scan_stop_test.launch.py
+```
+
 Use a launch file to start ROS and Gazebo:
 
 ```bash

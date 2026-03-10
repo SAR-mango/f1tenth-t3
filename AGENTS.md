@@ -50,6 +50,26 @@ new dependencies, new workflows, or significant refactors).
 - Use `ign` CLI for Gazebo Fortress (`gz` is not available).
 
 ## Continuity log (append newest on top)
+- 2026-03-10: Fixed ROS2 launch/root-path drift that caused sim bringup to
+  fail on this machine with stale `/home/erk/f1tenth-t3` references and
+  non-expanded `~/f1tenth-t3` defaults. Updated `racer_bringup` Fortress launch
+  files (`fortress_sim`, `fortress_teleop_rviz`, `fortress_scan_stop_test`,
+  `fortress_wallfollowing`, `fortress_wallbalancing`) to use
+  `os.path.expanduser("~/f1tenth-t3")` fallback for `F1TENTH_T3_ROOT`, then
+  rebuilt `drive_msgs`, `car_control`, `wallfollowing2`, `racer_bringup` so
+  installed launch/scripts regenerate with correct local paths.
+- 2026-03-10: Added ROS2 real-car scan-stop test path while keeping
+  `scan_stop_reverse_test_node.py` unchanged: new
+  `cmd_vel_to_drive_param_real_node` in `wallfollowing2` converts
+  `/cmd_vel` (m/s + turning-radius mode) to normalized
+  `/input/drive_param/autonomous` for `car_control` using Ackermann defaults
+  from `racetrack_decorated_2_hokuyo.world`
+  (`wheel_base=0.300568`, `kingpin_width=0.2`, `steering_limit=0.7`) and
+  legacy servo/ERPM mapping. Added `racer_bringup/real_scan_stop_test.launch.py`
+  to run real Hokuyo (`urg_node_driver`), translator, scan-stop test node,
+  multiplexer/controller, and continuous drive-mode/emergency-stop publishers.
+  Registered new launch + console script in package setup files and added
+  `urg_node` runtime dependency to `racer_bringup`.
 - 2026-02-18: Fixed `wallfollowing` immediate right-wall crash without
   changing controller type: corrected ROS LaserScan left/right mapping in
   `wallfollowing_node.py` cartesian conversion (`x = sin(angle) * range`),
@@ -190,7 +210,7 @@ new dependencies, new workflows, or significant refactors).
 - 2026-02-05: Changed Hokuyo world lidar sensor to `gpu_ray` for SDF 1.4
   compatibility so /scan publishes correctly in Ignition.
 - 2026-02-05: Fixed ROS2 launch world path to use F1TENTH_T3_ROOT (default
-  /home/erk/f1tenth-t3) so Ignition can find the world from install space.
+  ~/f1tenth-t3) so Ignition can find the world from install space.
 - 2026-02-04: Added ROS2 Fortress teleop+RViz launch and RViz lidar config;
   Hokuyo world now publishes /scan from an explicit lidar sensor.
 - 2026-02-04: Fixed wheel joint axes (spin on Y) and tightened steering limits/

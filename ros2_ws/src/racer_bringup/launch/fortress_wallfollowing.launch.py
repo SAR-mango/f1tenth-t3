@@ -7,7 +7,7 @@ from launch_ros.actions import Node
 
 
 def _default_world_path():
-    repo_root = os.environ.get("F1TENTH_T3_ROOT", "/home/erk/f1tenth-t3")
+    repo_root = os.environ.get("F1TENTH_T3_ROOT", os.path.expanduser("~/f1tenth-t3"))
     return os.path.join(
         repo_root,
         "ros_ws",
@@ -20,7 +20,7 @@ def _default_world_path():
 
 
 def _car_control_exec(name: str) -> str:
-    repo_root = os.environ.get("F1TENTH_T3_ROOT", "/home/erk/f1tenth-t3")
+    repo_root = os.environ.get("F1TENTH_T3_ROOT", os.path.expanduser("~/f1tenth-t3"))
     return os.path.join(
         repo_root,
         "ros2_ws",
