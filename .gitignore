@@ -9,3 +9,7 @@ ros_ws/src/navigation_stack/car_cartographer/files/*
 
 *.pyc
 *.to
+
+ros2_ws/build
+ros2_ws/log
+ros2_ws/install/
