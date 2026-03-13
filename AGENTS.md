@@ -50,6 +50,30 @@ new dependencies, new workflows, or significant refactors).
 - Use `ign` CLI for Gazebo Fortress (`gz` is not available).
 
 ## Continuity log (append newest on top)
+- 2026-03-12: Fixed `car_control/uart_actuator_bridge` never opening the UART
+  on this Jetson: the reconnect gate initialized `last_open_attempt_` with
+  `steady_clock::time_point::min()`, which prevented the first open attempt
+  from reaching `open()`/`tcsetattr()` in practice. Switched the initial value
+  to `steady_clock::time_point{}` so the bridge opens the port normally on the
+  first timer tick.
+- 2026-03-12: Switched the ROS2 `uart_actuator_bridge` default command path
+  from post-`car_controller` actuator topics to raw `/cmd_vel` so the MCU can
+  receive `linear.x` in m/s and `angular.z` unchanged as the steering/radius
+  field. `real_scan_stop_test.launch.py` now uses the bridge directly on
+  `/cmd_vel`, drops the unused `cmd_vel_to_drive_param_real_node` /
+  `drive_parameters_multiplexer` / `car_controller` stack for this test path,
+  and defaults `uart_send_rate_hz` to 40.0. The bridge still supports the old
+  actuator-topic mode via `command_mode:=actuator_topics`, but `cmd_vel` is now
+  the default.
+- 2026-03-12: Added ROS2 `car_control` UART actuator bridge node
+  `uart_actuator_bridge` that subscribes to existing actuator topics
+  (`/commands/motor/speed`, `/commands/servo/position`,
+  `commands/motor/brake`) and writes an ASCII CSV frame
+  `speed,angle,brake\n` over Jetson UART using POSIX termios
+  (`uart_device`, `baud_rate`, `send_rate_hz`, timeout/reconnect params).
+  Updated `racer_bringup/real_scan_stop_test.launch.py` to optionally start
+  the bridge with launch args for UART device and baud rate while keeping the
+  existing autonomy/car_control pipeline intact.
 - 2026-03-10: Fixed ROS2 launch/root-path drift that caused sim bringup to
   fail on this machine with stale `/home/erk/f1tenth-t3` references and
   non-expanded `~/f1tenth-t3` defaults. Updated `racer_bringup` Fortress launch

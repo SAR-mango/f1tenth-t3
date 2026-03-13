@@ -86,11 +86,24 @@ source install/setup.bash  # or setup.zsh
 ```
 
 Real Hokuyo scan-stop/reverse test (no Gazebo), including `urg_node_driver`,
-`scan_stop_reverse_test_node`, `cmd_vel_to_drive_param_real_node`, and
-`car_control`:
+`scan_stop_reverse_test_node`, and raw UART output from `/cmd_vel`:
 
 ```bash
 ros2 launch racer_bringup real_scan_stop_test.launch.py
+```
+
+The real scan-stop launch can now forward raw vehicle commands over Jetson UART
+using the `car_control` `uart_actuator_bridge`. By default it subscribes to
+`/cmd_vel` and sends ASCII CSV frames `linear_x,angular_z\n` at 40 Hz, so the
+MCU receives meters/second and the raw steering-or-radius field exactly as
+published by the test node.
+
+Example with an explicit Jetson UART device and baud rate:
+
+```bash
+ros2 launch racer_bringup real_scan_stop_test.launch.py \
+  uart_device:=/dev/ttyTHS1 \
+  uart_baud_rate:=115200
 ```
 
 Use a launch file to start ROS and Gazebo:

@@ -33,9 +33,20 @@ ament_target_dependencies(car_controller
   drive_msgs
 )
 
+add_executable(uart_actuator_bridge
+  src/uart_actuator_bridge.cpp
+)
+ament_target_dependencies(uart_actuator_bridge
+  rclcpp
+  std_msgs
+  geometry_msgs
+  drive_msgs
+)
+
 install(TARGETS
   drive_parameters_multiplexer
   car_controller
+  uart_actuator_bridge
   DESTINATION lib/${PROJECT_NAME}
 )
 
