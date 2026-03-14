@@ -6,8 +6,15 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
 
+def _repo_root():
+    return os.environ.get(
+        "F1TENTH_T3_ROOT",
+        os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", "..")),
+    )
+
+
 def _default_world_path():
-    repo_root = os.environ.get("F1TENTH_T3_ROOT", "/home/erk/f1tenth-t3")
+    repo_root = _repo_root()
     return os.path.join(
         repo_root,
         "ros_ws",

@@ -50,6 +50,14 @@ new dependencies, new workflows, or significant refactors).
 - Use `ign` CLI for Gazebo Fortress (`gz` is not available).
 
 ## Continuity log (append newest on top)
+- 2026-03-13: Removed stale `/home/erk/f1tenth-t3` fallback paths from
+  ROS2 Fortress launch files in `racer_bringup`. `fortress_sim.launch.py`,
+  `fortress_wallfollowing.launch.py`, `fortress_follow_the_gap.launch.py`,
+  `fortress_scan_stop_test.launch.py`, and
+  `fortress_teleop_rviz.launch.py` now derive the repo root from their file
+  location by default and still honor `F1TENTH_T3_ROOT` when set, fixing
+  Gazebo/world and `car_control` executable path resolution on clones in
+  different home directories.
 - 2026-03-03: Added anti-flip FTG launch retune after rollover in
   `fortress_follow_the_gap.launch.py`: reduced controller caps
   (`max_linear_speed:=1.15`, `max_steering_angle:=0.52`), reduced
