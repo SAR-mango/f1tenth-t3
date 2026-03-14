@@ -50,6 +50,17 @@ new dependencies, new workflows, or significant refactors).
 - Use `ign` CLI for Gazebo Fortress (`gz` is not available).
 
 ## Continuity log (append newest on top)
+- 2026-03-13: Applied a second FTG speed/lookahead retune in
+  `fortress_follow_the_gap.launch.py` and
+  `racetrack_decorated_2_hokuyo.world`: raised simulated lidar max range to
+  `12.0 m`, matched FTG `max_range:=12.0`, increased
+  `front_caution_distance:=2.00`, increased `hard_stop_distance:=0.28`,
+  raised FTG `max_speed:=0.98`, and nudged `car_controller`
+  `max_linear_speed:=1.20`.
+- 2026-03-13: Retuned `fortress_follow_the_gap.launch.py` for longer forward
+  lookahead before speed collapse: set `max_range:=10.0`, increased
+  `front_caution_distance` to `1.65`, increased `front_stop_distance` to
+  `0.52`, and raised FTG `max_speed` to `0.90`.
 - 2026-03-13: Removed stale `/home/erk/f1tenth-t3` fallback paths from
   ROS2 Fortress launch files in `racer_bringup`. `fortress_sim.launch.py`,
   `fortress_wallfollowing.launch.py`, `fortress_follow_the_gap.launch.py`,
