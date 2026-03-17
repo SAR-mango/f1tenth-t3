@@ -50,6 +50,14 @@ new dependencies, new workflows, or significant refactors).
 - Use `ign` CLI for Gazebo Fortress (`gz` is not available).
 
 ## Continuity log (append newest on top)
+- 2026-03-16: Added a new ROS2 real-hardware timed arc test path for UART
+  control without lidar dependencies. New `wallfollowing2/timed_arc_test_node`
+  publishes raw `/cmd_vel` commands for a fixed sequence: startup delay, left
+  arc at constant speed/radius, right arc at constant speed/radius, then stop.
+  Added `racer_bringup/real_timed_arc_test.launch.py` to run the node through
+  the existing `car_control/uart_actuator_bridge` raw UART path. Defaults
+  currently follow the per-phase request exactly: 6s wait + 20s left + 20s
+  right = 46s total timeline.
 - 2026-03-12: Fixed `car_control/uart_actuator_bridge` never opening the UART
   on this Jetson: the reconnect gate initialized `last_open_attempt_` with
   `steady_clock::time_point::min()`, which prevented the first open attempt

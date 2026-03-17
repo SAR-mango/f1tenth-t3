@@ -106,6 +106,15 @@ ros2 launch racer_bringup real_scan_stop_test.launch.py \
   uart_baud_rate:=115200
 ```
 
+There is also a timed real-hardware arc test that reuses the same raw UART
+bridge path and publishes `/cmd_vel` directly:
+
+```bash
+ros2 launch racer_bringup real_timed_arc_test.launch.py \
+  uart_device:=/dev/ttyTHS1 \
+  uart_baud_rate:=115200
+```
+
 Use a launch file to start ROS and Gazebo:
 
 ```bash
