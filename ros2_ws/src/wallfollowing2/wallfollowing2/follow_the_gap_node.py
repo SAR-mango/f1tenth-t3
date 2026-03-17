@@ -22,13 +22,26 @@ class FollowTheGapNode(Node):
         self.declare_parameter("wall_bias_deadband_m", 0.12)
         self.declare_parameter("steering_smoothing_alpha", 0.72)
         self.declare_parameter("max_steering_step", 0.10)
+        self.declare_parameter("turn_intent_weight", 0.0)
+        self.declare_parameter("sharp_turn_steering_threshold", 0.55)
+        self.declare_parameter("sharp_turn_extra_steering_step", 0.0)
+        self.declare_parameter("sharp_turn_alpha_reduction", 0.0)
+        self.declare_parameter("corner_escape_turn_threshold_degrees", 0.0)
+        self.declare_parameter("corner_escape_front_distance", 0.0)
+        self.declare_parameter("corner_escape_wall_margin", 0.0)
+        self.declare_parameter("corner_escape_bias", 0.0)
+        self.declare_parameter("corner_escape_extra_steering_step", 0.0)
+        self.declare_parameter("corner_escape_alpha_reduction", 0.0)
         self.declare_parameter("side_speed_floor", 0.25)
         self.declare_parameter("min_range", 0.05)
         self.declare_parameter("max_range", 8.0)
         self.declare_parameter("min_gap_points", 10)
+        self.declare_parameter("hard_stop_distance", 0.24)
         self.declare_parameter("front_stop_distance", 0.45)
         self.declare_parameter("front_caution_distance", 1.35)
         self.declare_parameter("front_window_degrees", 12.0)
+        self.declare_parameter("front_path_window_degrees", 10.0)
+        self.declare_parameter("front_path_steering_threshold_degrees", 18.0)
         self.declare_parameter("front_stop_percentile", 12.0)
         self.declare_parameter("front_stop_hold_frames", 3)
         self.declare_parameter("steering_slowdown_exponent", 1.0)
@@ -49,15 +62,48 @@ class FollowTheGapNode(Node):
             self.get_parameter("steering_smoothing_alpha").value
         )
         self.max_steering_step = float(self.get_parameter("max_steering_step").value)
+        self.turn_intent_weight = float(self.get_parameter("turn_intent_weight").value)
+        self.sharp_turn_steering_threshold = float(
+            self.get_parameter("sharp_turn_steering_threshold").value
+        )
+        self.sharp_turn_extra_steering_step = float(
+            self.get_parameter("sharp_turn_extra_steering_step").value
+        )
+        self.sharp_turn_alpha_reduction = float(
+            self.get_parameter("sharp_turn_alpha_reduction").value
+        )
+        self.corner_escape_turn_threshold_degrees = float(
+            self.get_parameter("corner_escape_turn_threshold_degrees").value
+        )
+        self.corner_escape_front_distance = float(
+            self.get_parameter("corner_escape_front_distance").value
+        )
+        self.corner_escape_wall_margin = float(
+            self.get_parameter("corner_escape_wall_margin").value
+        )
+        self.corner_escape_bias = float(self.get_parameter("corner_escape_bias").value)
+        self.corner_escape_extra_steering_step = float(
+            self.get_parameter("corner_escape_extra_steering_step").value
+        )
+        self.corner_escape_alpha_reduction = float(
+            self.get_parameter("corner_escape_alpha_reduction").value
+        )
         self.side_speed_floor = float(self.get_parameter("side_speed_floor").value)
         self.min_range = float(self.get_parameter("min_range").value)
         self.max_range = float(self.get_parameter("max_range").value)
         self.min_gap_points = int(self.get_parameter("min_gap_points").value)
+        self.hard_stop_distance = float(self.get_parameter("hard_stop_distance").value)
         self.front_stop_distance = float(self.get_parameter("front_stop_distance").value)
         self.front_caution_distance = float(
             self.get_parameter("front_caution_distance").value
         )
         self.front_window_degrees = float(self.get_parameter("front_window_degrees").value)
+        self.front_path_window_degrees = float(
+            self.get_parameter("front_path_window_degrees").value
+        )
+        self.front_path_steering_threshold_degrees = float(
+            self.get_parameter("front_path_steering_threshold_degrees").value
+        )
         self.front_stop_percentile = float(
             self.get_parameter("front_stop_percentile").value
         )
@@ -183,6 +229,7 @@ class FollowTheGapNode(Node):
 
         desired_steering = target_angle / max(half_fov, 1e-6)
         desired_steering = max(-1.0, min(1.0, desired_steering))
+        turn_intent = max(abs(desired_steering), min(1.0, abs(target_angle) / max(half_fov, 1e-6)))
 
         side_window = math.radians(70.0)
         left_mask = (fov_angles > 0.0) & (fov_angles <= side_window)
@@ -190,6 +237,13 @@ class FollowTheGapNode(Node):
         left_distance = float(np.min(fov_ranges_raw[left_mask])) if np.any(left_mask) else self.max_range
         right_distance = (
             float(np.min(fov_ranges_raw[right_mask])) if np.any(right_mask) else self.max_range
+        )
+        front_preview_window = math.radians(self.front_window_degrees) * 0.5
+        front_preview_mask = np.abs(fov_angles) <= front_preview_window
+        corner_front_distance = (
+            float(np.min(fov_ranges_raw[front_preview_mask]))
+            if np.any(front_preview_mask)
+            else self.max_range
         )
         clearance_norm = max(self.side_clearance_min, 1e-6)
         side_delta = left_distance - right_distance
@@ -201,9 +255,65 @@ class FollowTheGapNode(Node):
             )
 
         desired_steering = max(-1.0, min(1.0, desired_steering + wall_bias))
-        alpha = max(0.0, min(0.98, self.steering_smoothing_alpha))
+        corner_turn_threshold = math.radians(
+            max(0.0, self.corner_escape_turn_threshold_degrees)
+        )
+        corner_escape_progress = 0.0
+        turning_left = target_angle >= 0.0
+        if (
+            self.corner_escape_bias > 0.0
+            and self.corner_escape_front_distance > 0.0
+            and abs(target_angle) >= corner_turn_threshold
+        ):
+            turn_side_distance = left_distance if turning_left else right_distance
+            outer_side_distance = right_distance if turning_left else left_distance
+            inside_wall_gap = outer_side_distance - turn_side_distance
+            if (
+                corner_front_distance <= self.corner_escape_front_distance
+                and inside_wall_gap >= self.corner_escape_wall_margin
+            ):
+                front_term = min(
+                    1.0,
+                    (
+                        self.corner_escape_front_distance - corner_front_distance
+                    )
+                    / max(self.corner_escape_front_distance, 1e-6),
+                )
+                wall_term = min(
+                    1.0,
+                    (inside_wall_gap - self.corner_escape_wall_margin)
+                    / max(clearance_norm, 1e-6),
+                )
+                corner_escape_progress = front_term * wall_term
+                escape_bias = self.corner_escape_bias * corner_escape_progress
+                desired_steering += -escape_bias if turning_left else escape_bias
+                desired_steering = max(-1.0, min(1.0, desired_steering))
+        turn_intent = max(turn_intent, abs(desired_steering))
+        desired_turn_mag = abs(desired_steering)
+        sharp_turn_threshold = max(0.0, min(0.95, self.sharp_turn_steering_threshold))
+        sharp_turn_progress = 0.0
+        if desired_turn_mag > sharp_turn_threshold:
+            sharp_turn_progress = min(
+                1.0,
+                (desired_turn_mag - sharp_turn_threshold) / max(1e-6, 1.0 - sharp_turn_threshold),
+            )
+
+        alpha = max(
+            0.0,
+            min(
+                0.98,
+                self.steering_smoothing_alpha
+                - sharp_turn_progress * max(0.0, self.sharp_turn_alpha_reduction),
+                - corner_escape_progress * max(0.0, self.corner_escape_alpha_reduction),
+            ),
+        )
         smoothed_steering = alpha * self.last_steering + (1.0 - alpha) * desired_steering
-        step = max(0.01, self.max_steering_step)
+        step = max(
+            0.01,
+            self.max_steering_step
+            + sharp_turn_progress * max(0.0, self.sharp_turn_extra_steering_step),
+            + corner_escape_progress * max(0.0, self.corner_escape_extra_steering_step),
+        )
         delta = smoothed_steering - self.last_steering
         if delta > step:
             delta = step
@@ -214,11 +324,33 @@ class FollowTheGapNode(Node):
         front_window = math.radians(self.front_window_degrees) * 0.5
         front_mask = np.abs(fov_angles) <= front_window
         front_distance = self.max_range
+        effective_front_distance = self.max_range
+        effective_front_min_distance = self.max_range
         if np.any(front_mask):
             front_values = fov_ranges_raw[front_mask]
+            front_min_distance = float(np.min(front_values))
             percentile = max(0.0, min(100.0, self.front_stop_percentile))
             front_distance = float(np.percentile(front_values, percentile))
-            if front_distance <= self.front_stop_distance:
+            effective_front_distance = front_distance
+            effective_front_min_distance = front_min_distance
+
+            path_window = math.radians(self.front_path_window_degrees) * 0.5
+            path_mask = np.abs(fov_angles - target_angle) <= path_window
+            if np.any(path_mask):
+                path_values = fov_ranges_raw[path_mask]
+                path_min_distance = float(np.min(path_values))
+                path_distance = float(np.percentile(path_values, percentile))
+                threshold = math.radians(self.front_path_steering_threshold_degrees)
+                if abs(target_angle) >= threshold:
+                    effective_front_distance = path_distance
+                    effective_front_min_distance = path_min_distance
+
+            if effective_front_min_distance <= self.hard_stop_distance:
+                self.front_stop_counter = max(1, self.front_stop_hold_frames)
+                self._publish_drive(steering, 0.0)
+                return
+
+            if effective_front_distance <= self.front_stop_distance:
                 self.front_stop_counter += 1
             else:
                 self.front_stop_counter = 0
@@ -229,12 +361,18 @@ class FollowTheGapNode(Node):
             self.front_stop_counter = 0
 
         turn_mag = min(1.0, abs(steering))
-        speed_scale = 1.0 - (turn_mag ** self.steering_slowdown_exponent)
+        turn_intent_weight = max(0.0, min(1.0, self.turn_intent_weight))
+        speed_turn_mag = max(
+            turn_mag,
+            (1.0 - turn_intent_weight) * turn_mag + turn_intent_weight * turn_intent,
+        )
+        turn_speed_scale = 1.0 - (speed_turn_mag ** self.steering_slowdown_exponent)
+        speed_scale = turn_speed_scale
         min_side_distance = min(left_distance, right_distance)
         side_clearance_scale = min(1.0, min_side_distance / clearance_norm)
         speed_scale *= max(self.side_speed_floor, side_clearance_scale)
         caution_distance = max(self.front_stop_distance + 0.05, self.front_caution_distance)
-        front_progress = (front_distance - self.front_stop_distance) / (
+        front_progress = (effective_front_distance - self.front_stop_distance) / (
             caution_distance - self.front_stop_distance
         )
         front_progress = max(0.0, min(1.0, front_progress))

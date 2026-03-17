@@ -50,6 +50,34 @@ new dependencies, new workflows, or significant refactors).
 - Use `ign` CLI for Gazebo Fortress (`gz` is not available).
 
 ## Continuity log (append newest on top)
+- 2026-03-14: Reverted the inside-wall score-penalization experiment in
+  `wallfollowing2/follow_the_gap_node.py` and
+  `fortress_follow_the_gap.launch.py` after it regressed behavior by pushing
+  the car directly into the wall. The stronger escape-bias and adaptive
+  steering-response changes remain in place.
+- 2026-03-14: Added inside-wall score penalization to the existing sharp-corner
+  escape in `wallfollowing2/follow_the_gap_node.py` and enabled it from
+  `fortress_follow_the_gap.launch.py`. Under the same corner trigger, FTG now
+  downweights target rays near the inside-wall side of the chosen gap before
+  applying the escape steering bias, so the selected line shifts outward
+  without changing normal gap behavior elsewhere.
+- 2026-03-14: Strengthened the sharp-corner inside-wall escape in
+  `wallfollowing2/follow_the_gap_node.py` and retuned
+  `fortress_follow_the_gap.launch.py` so the escape condition now also loosens
+  steering damping and step limiting while active. This keeps the same
+  corner-specific trigger, but lets the car react more aggressively away from
+  the inside wall when that trigger fires.
+- 2026-03-14: Added a narrow sharp-corner inside-wall escape in
+  `wallfollowing2/follow_the_gap_node.py` and enabled it from
+  `fortress_follow_the_gap.launch.py`. When the chosen turn is strong, forward
+  space is collapsing, and the turn-side wall is much closer than the outer
+  wall, FTG now adds an extra temporary steering bias away from that inside
+  wall without changing the general gap-targeting behavior.
+- 2026-03-14: Restored the FTG controller and launch to the prior
+  "fastest but still drives up at the sharp corner" state after an accidental
+  rollback too far. This keeps the turn-intent speed shaping and path-aware
+  front-stop logic, but does not include the later midpoint-targeting or
+  turn-dependent corner-clearance experiments.
 - 2026-03-13: Applied a second FTG speed/lookahead retune in
   `fortress_follow_the_gap.launch.py` and
   `racetrack_decorated_2_hokuyo.world`: raised simulated lidar max range to
