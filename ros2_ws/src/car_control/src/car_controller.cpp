@@ -98,7 +98,11 @@ void CarController::emergency_stop_callback(const std_msgs::msg::Bool::SharedPtr
 
 void CarController::stop()
 {
-    publish_speed(0.0);
+    publish_drive_parameters(0.0, 0.0);
+    if (publish_cmd_vel_)
+    {
+        publish_cmd_vel(0.0, 0.0);
+    }
 
     std_msgs::msg::Float64 brake_message;
     brake_message.data = 0.0;

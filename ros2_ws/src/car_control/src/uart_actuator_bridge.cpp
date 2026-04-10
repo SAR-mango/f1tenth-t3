@@ -12,6 +12,7 @@
 #include <iomanip>
 #include <sstream>
 #include <string>
+#include <thread>
 
 namespace
 {
@@ -192,6 +193,7 @@ public:
 
     ~UartActuatorBridge() override
     {
+        send_stop_frame_on_shutdown();
         close_port();
     }
 
@@ -346,6 +348,31 @@ private:
         }
     }
 
+    void send_stop_frame_on_shutdown()
+    {
+        if (fd_ < 0)
+        {
+            return;
+        }
+
+        const std::string stop_frame = build_frame(0.0, 0.0, 0.0);
+        constexpr int kShutdownFrameRepeatCount = 3;
+        constexpr auto kShutdownFrameRepeatDelay = std::chrono::milliseconds(20);
+
+        for (int i = 0; i < kShutdownFrameRepeatCount; ++i)
+        {
+            if (!write_all(stop_frame) || !drain_output())
+            {
+                break;
+            }
+
+            if (i + 1 < kShutdownFrameRepeatCount)
+            {
+                std::this_thread::sleep_for(kShutdownFrameRepeatDelay);
+            }
+        }
+    }
+
     std::string build_frame(double speed, double angle, double brake) const
     {
         std::ostringstream stream;
@@ -380,6 +407,19 @@ private:
                 return false;
             }
             written_total += static_cast<std::size_t>(written);
+        }
+        return true;
+    }
+
+    bool drain_output()
+    {
+        while (tcdrain(fd_) != 0)
+        {
+            if (errno == EINTR)
+            {
+                continue;
+            }
+            return false;
         }
         return true;
     }

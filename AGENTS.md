@@ -50,6 +50,21 @@ new dependencies, new workflows, or significant refactors).
 - Use `ign` CLI for Gazebo Fortress (`gz` is not available).
 
 ## Continuity log (append newest on top)
+- 2026-04-09: Hardened ROS2 real-car shutdown behavior so all real launch paths
+  using `car_control/uart_actuator_bridge` now transmit a final neutral UART
+  frame (`0` speed, `0` steering, `0` brake when present) before closing the
+  serial port. Also updated `car_control/car_controller::stop()` to publish a
+  neutral steering command in addition to zero speed, preventing the last angle
+  from remaining latched on drive-mode lock or emergency stop.
+- 2026-04-09: Added ROS2 real-hardware autonomous launch
+  `racer_bringup/real_wallbalancing.launch.py` for the `wallfollowing2`
+  `wallbalancing_node` using live Hokuyo lidar and Jetson UART output. The new
+  path mirrors the existing autonomy stack on the physical car:
+  `urg_node_driver` -> `wallbalancing_node` ->
+  `drive_parameters_multiplexer` -> `car_controller` -> `/cmd_vel` ->
+  `uart_actuator_bridge`, plus continuous autonomous drive-mode and
+  emergency-stop-clear publishers. Registered the launch for install in
+  `racer_bringup/setup.py`.
 - 2026-04-08: Revised the ROS2 real-hardware `speed_test_node` schedule from a
   uniform speed ladder to the requested stopped-dwell characterization run:
   after 3s startup delay it now commands 0.5 m/s for 12s, 0.6 for 10s, 0.75
