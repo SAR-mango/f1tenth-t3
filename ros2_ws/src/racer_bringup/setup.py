@@ -15,6 +15,8 @@ setup(
             "launch/fortress_scan_stop_test.launch.py",
             "launch/real_scan_stop_test.launch.py",
             "launch/real_timed_arc_test.launch.py",
+            "launch/real_speed_test.launch.py",
+            "launch/real_steering_test.launch.py",
             "launch/fortress_wallfollowing.launch.py",
             "launch/fortress_wallbalancing.launch.py",
         ]),

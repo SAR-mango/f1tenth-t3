@@ -50,6 +50,22 @@ new dependencies, new workflows, or significant refactors).
 - Use `ign` CLI for Gazebo Fortress (`gz` is not available).
 
 ## Continuity log (append newest on top)
+- 2026-04-08: Revised the ROS2 real-hardware `speed_test_node` schedule from a
+  uniform speed ladder to the requested stopped-dwell characterization run:
+  after 3s startup delay it now commands 0.5 m/s for 12s, 0.6 for 10s, 0.75
+  for 8s, 1.0 for 6s, 1.5 for 4s, 2.0 for 3s, and 3.0 for 2s, with 20s stopped
+  waits between each speed command. Updated `real_speed_test.launch.py` to
+  expose `inter_step_wait_sec` instead of the old uniform `step_duration_sec`.
+- 2026-04-07: Added ROS2 real-hardware open-loop characterization tests on the
+  raw `/cmd_vel` UART path. New `wallfollowing2/speed_test_node` waits 3s, then
+  commands fixed 10s speed plateaus at 0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, and
+  10 m/s before stopping. New `wallfollowing2/steering_test_node` waits 3s,
+  then commands fixed-radius turns for 20s each at 0.5, 0.6, 0.75, 1.0, 1.5,
+  2.0, and 3.0 m with a `turn_right` boolean to mirror the sequence. Added
+  `racer_bringup/real_speed_test.launch.py` and
+  `racer_bringup/real_steering_test.launch.py` to run the nodes through the
+  existing `car_control/uart_actuator_bridge` `cmd_vel` mode. Note: the full
+  requested steering radius list yields a 143s timeline (3s + 7x20s), not 123s.
 - 2026-03-16: Added a new ROS2 real-hardware timed arc test path for UART
   control without lidar dependencies. New `wallfollowing2/timed_arc_test_node`
   publishes raw `/cmd_vel` commands for a fixed sequence: startup delay, left
