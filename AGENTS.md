@@ -50,6 +50,15 @@ new dependencies, new workflows, or significant refactors).
 - Use `ign` CLI for Gazebo Fortress (`gz` is not available).
 
 ## Continuity log (append newest on top)
+- 2026-04-10: Selectively ported the ROS2 `follow_the_gap` autonomy path from
+  `varsha_branch` onto the `robbie_branch`/`navjit_branch` infrastructure
+  instead of merging the full branch histories. Added
+  `wallfollowing2/follow_the_gap_node.py` plus dedicated Fortress sim launch
+  `racer_bringup/fortress_follow_the_gap.launch.py`, registered both in the
+  package setup files, preserved the newer real-car/UART/wallbalancing
+  infrastructure, enabled dynamic parameter typing in the FTG node to match the
+  current ROS2 controller style, and dropped stale launch parameters that were
+  not implemented in the branch tip.
 - 2026-04-09: Hardened ROS2 real-car shutdown behavior so all real launch paths
   using `car_control/uart_actuator_bridge` now transmit a final neutral UART
   frame (`0` speed, `0` steering, `0` brake when present) before closing the
