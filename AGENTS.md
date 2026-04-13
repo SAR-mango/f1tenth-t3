@@ -50,6 +50,14 @@ new dependencies, new workflows, or significant refactors).
 - Use `ign` CLI for Gazebo Fortress (`gz` is not available).
 
 ## Continuity log (append newest on top)
+- 2026-04-13: Added ROS2 real-hardware autonomous launch
+  `racer_bringup/real_follow_the_gap.launch.py` for the ported
+  `wallfollowing2/follow_the_gap_node`, mirroring the existing physical-car
+  autonomy stack: `urg_node_driver` -> `follow_the_gap_node` ->
+  `drive_parameters_multiplexer` -> `car_controller` -> `/cmd_vel` ->
+  `uart_actuator_bridge`, plus continuous autonomous drive-mode and
+  emergency-stop-clear publishers. Registered the launch for install in
+  `racer_bringup/setup.py` and documented the command in `README.md`.
 - 2026-04-10: Selectively ported the ROS2 `follow_the_gap` autonomy path from
   `varsha_branch` onto the `robbie_branch`/`navjit_branch` infrastructure
   instead of merging the full branch histories. Added

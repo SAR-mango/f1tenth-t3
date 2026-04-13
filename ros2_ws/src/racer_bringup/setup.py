@@ -14,6 +14,7 @@ setup(
             "launch/fortress_teleop_rviz.launch.py",
             "launch/fortress_scan_stop_test.launch.py",
             "launch/fortress_follow_the_gap.launch.py",
+            "launch/real_follow_the_gap.launch.py",
             "launch/real_scan_stop_test.launch.py",
             "launch/real_wallbalancing.launch.py",
             "launch/real_timed_arc_test.launch.py",

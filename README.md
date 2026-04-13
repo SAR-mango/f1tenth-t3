@@ -91,6 +91,13 @@ Gazebo Fortress simulation with the ROS2 follow-the-gap controller:
 ros2 launch racer_bringup fortress_follow_the_gap.launch.py
 ```
 
+Real Hokuyo follow-the-gap autonomous path with the existing
+`drive_parameters_multiplexer` -> `car_controller` -> UART stack:
+
+```bash
+ros2 launch racer_bringup real_follow_the_gap.launch.py
+```
+
 Real Hokuyo scan-stop/reverse test (no Gazebo), including `urg_node_driver`,
 `scan_stop_reverse_test_node`, and raw UART output from `/cmd_vel`:
 
