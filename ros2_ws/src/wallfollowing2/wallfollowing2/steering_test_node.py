@@ -6,8 +6,6 @@ from rclpy.node import Node
 
 
 DEFAULT_TURNING_RADII_M = [
-    0.5,
-    0.6,
     0.75,
     1.0,
     1.5,
