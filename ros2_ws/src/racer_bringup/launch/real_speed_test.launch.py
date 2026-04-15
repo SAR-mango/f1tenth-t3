@@ -76,7 +76,7 @@ def generate_launch_description():
     )
     inter_step_wait_arg = DeclareLaunchArgument(
         "inter_step_wait_sec",
-        default_value="20.0",
+        default_value="3.0",
         description="How long to remain stopped between successive speed commands.",
     )
     control_rate_arg = DeclareLaunchArgument(
