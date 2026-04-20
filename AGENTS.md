@@ -50,6 +50,17 @@ new dependencies, new workflows, or significant refactors).
 - Use `ign` CLI for Gazebo Fortress (`gz` is not available).
 
 ## Continuity log (append newest on top)
+- 2026-04-20: Retuned ROS2 Follow-The-Gap for faster straights while reducing
+  repeatable sharp-corner crashes. `follow_the_gap_node.py` now honors
+  `bubble_max_angle_degrees`, `hard_stop_distance`,
+  `gap_fallback_speed_scale`, and new `steering_target_angle_degrees`; caps
+  adaptive bubble growth near walls; chooses a smoother high-score target
+  region; and slows based on requested turn severity before steering smoothing
+  catches up. `fortress_follow_the_gap.launch.py` now raises sim speed and
+  steering authority (`max_linear_speed:=1.35`, `max_steering_angle:=0.62`,
+  `max_speed:=1.08`) with earlier front caution and quicker steering response;
+  it also walks upward to find the repo root so installed launch files resolve
+  `ros_ws` assets without requiring `F1TENTH_T3_ROOT`.
 - 2026-03-14: Reverted the inside-wall score-penalization experiment in
   `wallfollowing2/follow_the_gap_node.py` and
   `fortress_follow_the_gap.launch.py` after it regressed behavior by pushing
