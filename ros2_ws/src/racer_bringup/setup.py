@@ -5,11 +5,12 @@ package_name = "racer_bringup"
 setup(
     name=package_name,
     version="0.1.0",
-    packages=[],
+    packages=[package_name],
     data_files=[
         ("share/ament_index/resource_index/packages", ["resource/" + package_name]),
         ("share/" + package_name, ["package.xml"]),
         ("share/" + package_name + "/launch", [
+            "launch/dashboard.launch.py",
             "launch/fortress_sim.launch.py",
             "launch/fortress_teleop_rviz.launch.py",
             "launch/fortress_scan_stop_test.launch.py",
@@ -31,4 +32,9 @@ setup(
     maintainer_email="robertkastaman@ucsb.edu",
     description="ROS 2 bringup and launch files for Gazebo Fortress simulation.",
     license="MIT",
+    entry_points={
+        "console_scripts": [
+            "dashboard_node = racer_bringup.dashboard_node:main",
+        ],
+    },
 )

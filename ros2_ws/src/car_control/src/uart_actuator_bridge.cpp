@@ -1,5 +1,8 @@
 #include "car_control/car_controller.hpp"
 
+#include <geometry_msgs/msg/twist_stamped.hpp>
+#include <std_msgs/msg/string.hpp>
+
 #include <errno.h>
 #include <fcntl.h>
 #include <termios.h>
@@ -128,6 +131,14 @@ public:
         speed_topic_ = this->declare_parameter<std::string>("speed_topic", TOPIC_FOCBOX_SPEED);
         angle_topic_ = this->declare_parameter<std::string>("angle_topic", TOPIC_FOCBOX_ANGLE);
         brake_topic_ = this->declare_parameter<std::string>("brake_topic", TOPIC_FOCBOX_BRAKE);
+        publish_telemetry_ = this->declare_parameter<bool>("publish_telemetry", true);
+        telemetry_topic_ =
+            this->declare_parameter<std::string>("telemetry_topic", "/telemetry/uart_command");
+        frame_topic_ =
+            this->declare_parameter<std::string>("frame_topic", "/telemetry/uart_frame");
+        stale_topic_ = this->declare_parameter<std::string>(
+            "stale_topic",
+            "/telemetry/uart_command_stale");
         frame_prefix_ = this->declare_parameter<std::string>("frame_prefix", "");
         line_terminator_ = decode_escapes(this->declare_parameter<std::string>("line_terminator", "\\n"));
         include_brake_ =
@@ -162,6 +173,15 @@ public:
                 std::bind(&UartActuatorBridge::brake_callback, this, std::placeholders::_1));
         }
 
+        if (publish_telemetry_)
+        {
+            telemetry_pub_ = this->create_publisher<geometry_msgs::msg::TwistStamped>(
+                telemetry_topic_,
+                rclcpp::QoS(10));
+            frame_pub_ = this->create_publisher<std_msgs::msg::String>(frame_topic_, rclcpp::QoS(10));
+            stale_pub_ = this->create_publisher<std_msgs::msg::Bool>(stale_topic_, rclcpp::QoS(10));
+        }
+
         timer_ = this->create_wall_timer(
             std::chrono::duration<double>(1.0 / send_rate_hz),
             std::bind(&UartActuatorBridge::timer_callback, this));
@@ -170,24 +190,29 @@ public:
         {
             RCLCPP_INFO(
                 this->get_logger(),
-                "UART bridge ready. mode=cmd_vel device=%s baud=%d cmd_vel_topic=%s include_brake=%s",
+                "UART bridge ready. mode=cmd_vel device=%s baud=%d cmd_vel_topic=%s include_brake=%s "
+                "publish_telemetry=%s telemetry_topic=%s",
                 uart_device_.c_str(),
                 baud_rate_,
                 cmd_vel_topic_.c_str(),
-                include_brake_ ? "true" : "false");
+                include_brake_ ? "true" : "false",
+                publish_telemetry_ ? "true" : "false",
+                telemetry_topic_.c_str());
         }
         else
         {
             RCLCPP_INFO(
                 this->get_logger(),
                 "UART bridge ready. mode=actuator_topics device=%s baud=%d speed_topic=%s "
-                "angle_topic=%s brake_topic=%s include_brake=%s",
+                "angle_topic=%s brake_topic=%s include_brake=%s publish_telemetry=%s telemetry_topic=%s",
                 uart_device_.c_str(),
                 baud_rate_,
                 speed_topic_.c_str(),
                 angle_topic_.c_str(),
                 brake_topic_.c_str(),
-                include_brake_ ? "true" : "false");
+                include_brake_ ? "true" : "false",
+                publish_telemetry_ ? "true" : "false",
+                telemetry_topic_.c_str());
         }
     }
 
@@ -236,6 +261,7 @@ private:
         double speed = speed_;
         double angle = angle_;
         double brake = brake_;
+        bool command_is_stale = false;
 
         if (command_timeout_sec_ > 0.0)
         {
@@ -245,6 +271,7 @@ private:
                 speed = 0.0;
                 angle = 0.0;
                 brake = 0.0;
+                command_is_stale = true;
             }
         }
 
@@ -257,7 +284,10 @@ private:
                 uart_device_.c_str(),
                 strerror(errno));
             close_port();
+            return;
         }
+
+        publish_telemetry(speed, angle, brake, frame, command_is_stale);
     }
 
     void maybe_open_port()
@@ -411,6 +441,36 @@ private:
         return true;
     }
 
+    void publish_telemetry(
+        double speed,
+        double angle,
+        double brake,
+        const std::string& frame,
+        bool command_is_stale)
+    {
+        if (!publish_telemetry_)
+        {
+            return;
+        }
+
+        const auto stamp = this->now();
+
+        geometry_msgs::msg::TwistStamped telemetry;
+        telemetry.header.stamp = stamp;
+        telemetry.twist.linear.x = speed;
+        telemetry.twist.linear.z = brake;
+        telemetry.twist.angular.z = angle;
+        telemetry_pub_->publish(telemetry);
+
+        std_msgs::msg::String frame_message;
+        frame_message.data = frame;
+        frame_pub_->publish(frame_message);
+
+        std_msgs::msg::Bool stale_message;
+        stale_message.data = command_is_stale;
+        stale_pub_->publish(stale_message);
+    }
+
     bool drain_output()
     {
         while (tcdrain(fd_) != 0)
@@ -431,6 +491,10 @@ private:
     std::string speed_topic_;
     std::string angle_topic_;
     std::string brake_topic_;
+    bool publish_telemetry_;
+    std::string telemetry_topic_;
+    std::string frame_topic_;
+    std::string stale_topic_;
     std::string frame_prefix_;
     std::string line_terminator_;
     bool include_brake_;
@@ -450,6 +514,9 @@ private:
     rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr speed_sub_;
     rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr angle_sub_;
     rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr brake_sub_;
+    rclcpp::Publisher<geometry_msgs::msg::TwistStamped>::SharedPtr telemetry_pub_;
+    rclcpp::Publisher<std_msgs::msg::String>::SharedPtr frame_pub_;
+    rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr stale_pub_;
     rclcpp::TimerBase::SharedPtr timer_;
 };
 

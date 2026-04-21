@@ -98,6 +98,22 @@ Real Hokuyo follow-the-gap autonomous path with the existing
 ros2 launch racer_bringup real_follow_the_gap.launch.py
 ```
 
+Launch the live dashboard separately alongside any real-car autonomy launch to
+view `/scan` in RViz2 and plot the actual UART command stream with a 60 second
+sliding buffer:
+
+```bash
+ros2 launch racer_bringup dashboard.launch.py
+```
+
+The dashboard expects the real-control stack to use the updated
+`uart_actuator_bridge`, which now republishes the transmitted UART command as
+`/telemetry/uart_command` (`geometry_msgs/msg/TwistStamped`), the raw CSV frame
+as `/telemetry/uart_frame` (`std_msgs/msg/String`), and timeout state as
+`/telemetry/uart_command_stale` (`std_msgs/msg/Bool`). Reserved future template
+inputs for sensor feedback are `/telemetry/measured_speed` and
+`/telemetry/measured_steering` (`std_msgs/msg/Float64`).
+
 Real Hokuyo scan-stop/reverse test (no Gazebo), including `urg_node_driver`,
 `scan_stop_reverse_test_node`, and raw UART output from `/cmd_vel`:
 

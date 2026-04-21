@@ -10,14 +10,19 @@
 
   <exec_depend>launch</exec_depend>
   <exec_depend>launch_ros</exec_depend>
+  <exec_depend>rclpy</exec_depend>
   <exec_depend>urg_node</exec_depend>
   <exec_depend>ros_gz_bridge</exec_depend>
   <exec_depend>ros_gz_sim</exec_depend>
   <exec_depend>tf2_ros</exec_depend>
   <exec_depend>rviz2</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
   <exec_depend>wallfollowing2</exec_depend>
   <exec_depend>car_control</exec_depend>
   <exec_depend>drive_msgs</exec_depend>
+  <exec_depend>python3-pyqt5</exec_depend>
 
   <export>
     <build_type>ament_python</build_type>

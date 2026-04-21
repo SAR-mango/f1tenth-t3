@@ -50,6 +50,26 @@ new dependencies, new workflows, or significant refactors).
 - Use `ign` CLI for Gazebo Fortress (`gz` is not available).
 
 ## Continuity log (append newest on top)
+- 2026-04-20: Ported the latest FTG-only tuning from
+  `origin/varsha_branch` commit `95d70bb` onto the adapted ROS2
+  `navjit_branch` implementation without merging the full branch history.
+  Updated `wallfollowing2/follow_the_gap_node.py` with the newer adaptive
+  bubble cap, gap-fallback steering/speed behavior, weighted target selection,
+  steering-target-angle scaling, and steering-step helper while preserving the
+  branch's dynamic parameter typing and compatible `DriveParam` pipeline.
+  Retuned `racer_bringup/fortress_follow_the_gap.launch.py` to the newer FTG
+  sim parameters and controller limits, while keeping this branch's current
+  repo-root/path fallback and reduced launch log noise behavior.
+- 2026-04-17: Added separate ROS2 live dashboard bringup
+  `racer_bringup/dashboard.launch.py` for real-car runs. It launches RViz2 on
+  the existing lidar config plus a new `racer_bringup/dashboard_node` PyQt
+  UI that keeps a 60s sliding buffer of command/feedback plots, shows scan
+  freshness, drive mode, emergency-stop state, and the latest UART CSV frame.
+  Also extended `car_control/uart_actuator_bridge` to publish transmitted UART
+  telemetry on `/telemetry/uart_command` (`TwistStamped`),
+  `/telemetry/uart_frame` (`String`), and `/telemetry/uart_command_stale`
+  (`Bool`) so the dashboard reflects the actual bridge output rather than only
+  upstream `/cmd_vel`.
 - 2026-04-13: Added ROS2 real-hardware autonomous launch
   `racer_bringup/real_follow_the_gap.launch.py` for the ported
   `wallfollowing2/follow_the_gap_node`, mirroring the existing physical-car
