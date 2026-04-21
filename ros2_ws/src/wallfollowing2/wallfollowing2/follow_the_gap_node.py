@@ -16,6 +16,7 @@ PARAM_DEFAULTS = {
     "field_of_view_degrees": 220.0,
     "bubble_angle_degrees": 18.0,
     "bubble_turn_gain_degrees": 16.0,
+    "bubble_max_angle_degrees": 45.0,
     "side_clearance_min": 0.35,
     "wall_bias_gain": 0.25,
     "wall_bias_deadband_m": 0.12,
@@ -32,6 +33,7 @@ PARAM_DEFAULTS = {
     "corner_escape_extra_steering_step": 0.0,
     "corner_escape_alpha_reduction": 0.0,
     "side_speed_floor": 0.25,
+    "gap_fallback_speed_scale": 0.5,
     "min_range": 0.05,
     "max_range": 8.0,
     "min_gap_points": 10,
@@ -43,6 +45,7 @@ PARAM_DEFAULTS = {
     "front_path_steering_threshold_degrees": 18.0,
     "front_stop_percentile": 12.0,
     "front_stop_hold_frames": 3,
+    "steering_target_angle_degrees": 70.0,
     "steering_slowdown_exponent": 1.0,
     "min_speed": 0.12,
     "max_speed": 0.45,
@@ -116,6 +119,24 @@ class FollowTheGapNode(Node):
         message.velocity = float(max(0.0, speed))
         self.drive_pub.publish(message)
 
+    def _limited_steering(self, desired_steering, alpha_reduction=0.0, extra_step=0.0):
+        desired_steering = clamp(desired_steering, -1.0, 1.0)
+        alpha = clamp(
+            self.params.steering_smoothing_alpha - max(0.0, alpha_reduction),
+            0.0,
+            0.98,
+        )
+        smoothed_steering = (
+            alpha * self.last_steering + (1.0 - alpha) * desired_steering
+        )
+        step = max(0.01, self.params.max_steering_step + max(0.0, extra_step))
+        delta = smoothed_steering - self.last_steering
+        if delta > step:
+            delta = step
+        elif delta < -step:
+            delta = -step
+        return clamp(self.last_steering + delta, -1.0, 1.0)
+
     def _largest_gap(self, ranges):
         valid = ranges > 0.0
         best_start = -1
@@ -149,13 +170,15 @@ class FollowTheGapNode(Node):
             return
 
         ranges = np.array(scan.ranges, dtype=np.float32)
+        # Treat non-finite and non-physical near-zero returns as "no obstacle".
         valid_mask = np.isfinite(ranges) & (ranges > max(self.params.min_range, 1e-3))
         ranges[~valid_mask] = self.params.max_range
         ranges = np.clip(ranges, self.params.min_range, self.params.max_range)
 
-        angles = scan.angle_min + np.arange(
-            ranges.shape[0], dtype=np.float32
-        ) * scan.angle_increment
+        angles = (
+            scan.angle_min
+            + np.arange(ranges.shape[0], dtype=np.float32) * scan.angle_increment
+        )
 
         half_fov = math.radians(self.params.field_of_view_degrees) * 0.5
         in_fov = np.abs(angles) <= half_fov
@@ -166,6 +189,31 @@ class FollowTheGapNode(Node):
         fov_ranges = ranges[in_fov].copy()
         fov_ranges_raw = fov_ranges.copy()
         fov_angles = angles[in_fov]
+
+        front_window = math.radians(self.params.front_window_degrees) * 0.5
+        front_mask = np.abs(fov_angles) <= front_window
+        front_stop_active = False
+        if np.any(front_mask):
+            front_values = fov_ranges_raw[front_mask]
+            percentile = clamp(self.params.front_stop_percentile, 0.0, 100.0)
+            front_distance = float(np.percentile(front_values, percentile))
+            if front_distance <= self.params.hard_stop_distance:
+                front_stop_active = True
+                self.front_stop_counter = max(
+                    self.front_stop_counter,
+                    max(1, self.params.front_stop_hold_frames),
+                )
+            elif front_distance <= self.params.front_stop_distance:
+                self.front_stop_counter += 1
+            else:
+                self.front_stop_counter = 0
+
+            front_stop_active = front_stop_active or self.front_stop_counter >= max(
+                1,
+                self.params.front_stop_hold_frames,
+            )
+        else:
+            self.front_stop_counter = 0
 
         closest_index = int(np.argmin(fov_ranges))
         closest_distance = float(fov_ranges[closest_index])
@@ -181,6 +229,11 @@ class FollowTheGapNode(Node):
         effective_bubble_degrees = max(
             adaptive_bubble_degrees, clearance_bubble_degrees
         )
+        if self.params.bubble_max_angle_degrees > 0.0:
+            effective_bubble_degrees = min(
+                effective_bubble_degrees,
+                self.params.bubble_max_angle_degrees,
+            )
         bubble_half_width = max(
             1,
             int(
@@ -194,7 +247,22 @@ class FollowTheGapNode(Node):
 
         gap_start, gap_end, gap_length = self._largest_gap(fov_ranges)
         if gap_start < 0 or gap_end <= gap_start or gap_length < self.params.min_gap_points:
-            self._publish_drive(0.0, 0.0)
+            if front_stop_active or self.params.gap_fallback_speed_scale <= 0.0:
+                self._publish_drive(self.last_steering, 0.0)
+                return
+
+            obstacle_angle = float(fov_angles[closest_index])
+            fallback_desired = (
+                0.0
+                if abs(obstacle_angle) < 1e-3
+                else -math.copysign(1.0, obstacle_angle)
+            )
+            fallback_steering = self._limited_steering(fallback_desired)
+            fallback_speed = self.params.min_speed * min(
+                1.0,
+                self.params.gap_fallback_speed_scale,
+            )
+            self._publish_drive(fallback_steering, fallback_speed)
             return
 
         gap_ranges = fov_ranges[gap_start:gap_end]
@@ -215,11 +283,31 @@ class FollowTheGapNode(Node):
         safe_mask = gap_ranges >= self.params.side_clearance_min
         if np.any(safe_mask):
             scores = np.where(safe_mask, scores, -1.0)
-        target_local = int(np.argmax(scores))
+        max_score = float(np.max(scores))
+        if max_score <= 0.0:
+            target_local = gap_len // 2
+        else:
+            candidate_mask = scores >= (0.85 * max_score)
+            candidate_indices = np.flatnonzero(candidate_mask)
+            candidate_weights = np.square(np.maximum(scores[candidate_mask], 1e-3))
+            target_local = int(
+                round(float(np.average(candidate_indices, weights=candidate_weights)))
+            )
         target_index = gap_start + target_local
         target_angle = float(fov_angles[target_index])
 
-        desired_steering = clamp(target_angle / max(half_fov, 1e-6), -1.0, 1.0)
+        steering_target_angle = math.radians(
+            clamp(
+                self.params.steering_target_angle_degrees,
+                1.0,
+                self.params.field_of_view_degrees * 0.5,
+            )
+        )
+        desired_steering = clamp(
+            target_angle / max(steering_target_angle, 1e-6),
+            -1.0,
+            1.0,
+        )
         turn_intent = max(
             abs(desired_steering),
             min(1.0, abs(target_angle) / max(half_fov, 1e-6)),
@@ -303,32 +391,19 @@ class FollowTheGapNode(Node):
                 / max(1e-6, 1.0 - sharp_turn_threshold),
             )
 
-        alpha = clamp(
-            self.params.steering_smoothing_alpha
-            - sharp_turn_progress
-            * max(0.0, self.params.sharp_turn_alpha_reduction)
-            - corner_escape_progress
-            * max(0.0, self.params.corner_escape_alpha_reduction),
-            0.0,
-            0.98,
+        steering = self._limited_steering(
+            desired_steering,
+            alpha_reduction=(
+                sharp_turn_progress * max(0.0, self.params.sharp_turn_alpha_reduction)
+                + corner_escape_progress
+                * max(0.0, self.params.corner_escape_alpha_reduction)
+            ),
+            extra_step=(
+                sharp_turn_progress * max(0.0, self.params.sharp_turn_extra_steering_step)
+                + corner_escape_progress
+                * max(0.0, self.params.corner_escape_extra_steering_step)
+            ),
         )
-        smoothed_steering = (
-            alpha * self.last_steering + (1.0 - alpha) * desired_steering
-        )
-        step = max(
-            0.01,
-            self.params.max_steering_step
-            + sharp_turn_progress
-            * max(0.0, self.params.sharp_turn_extra_steering_step)
-            + corner_escape_progress
-            * max(0.0, self.params.corner_escape_extra_steering_step),
-        )
-        delta = smoothed_steering - self.last_steering
-        if delta > step:
-            delta = step
-        elif delta < -step:
-            delta = -step
-        steering = clamp(self.last_steering + delta, -1.0, 1.0)
 
         front_window = math.radians(self.params.front_window_degrees) * 0.5
         front_mask = np.abs(fov_angles) <= front_window
