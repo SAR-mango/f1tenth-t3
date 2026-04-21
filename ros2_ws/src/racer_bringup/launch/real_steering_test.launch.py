@@ -33,6 +33,7 @@ def generate_launch_description():
     startup_delay_sec = LaunchConfiguration("startup_delay_sec")
     linear_speed_mps = LaunchConfiguration("linear_speed_mps")
     step_duration_sec = LaunchConfiguration("step_duration_sec")
+    inter_step_wait_sec = LaunchConfiguration("inter_step_wait_sec")
     turn_right = LaunchConfiguration("turn_right")
     control_rate_hz = LaunchConfiguration("control_rate_hz")
 
@@ -84,8 +85,13 @@ def generate_launch_description():
     )
     step_duration_arg = DeclareLaunchArgument(
         "step_duration_sec",
-        default_value="20.0",
+        default_value="40.0",
         description="Duration of each constant-radius steering plateau.",
+    )
+    inter_step_wait_arg = DeclareLaunchArgument(
+        "inter_step_wait_sec",
+        default_value="10.0",
+        description="How long to remain stopped between successive steering-radius commands.",
     )
     turn_right_arg = DeclareLaunchArgument(
         "turn_right",
@@ -129,6 +135,7 @@ def generate_launch_description():
                 "startup_delay_sec": startup_delay_sec,
                 "linear_speed_mps": linear_speed_mps,
                 "step_duration_sec": step_duration_sec,
+                "inter_step_wait_sec": inter_step_wait_sec,
                 "turn_right": ParameterValue(turn_right, value_type=bool),
                 "control_rate_hz": control_rate_hz,
             }
@@ -147,6 +154,7 @@ def generate_launch_description():
             startup_delay_arg,
             linear_speed_arg,
             step_duration_arg,
+            inter_step_wait_arg,
             turn_right_arg,
             control_rate_arg,
             uart_actuator_bridge,

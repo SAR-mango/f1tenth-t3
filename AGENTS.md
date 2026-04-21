@@ -50,6 +50,11 @@ new dependencies, new workflows, or significant refactors).
 - Use `ign` CLI for Gazebo Fortress (`gz` is not available).
 
 ## Continuity log (append newest on top)
+- 2026-04-21: Updated the ROS2 real-hardware `steering_test_node` schedule to
+  run each steering-radius command for 40s with explicit 10s stopped dwell
+  periods (`linear.x=0`, `angular.z=0`) between successive radii. Added the
+  `inter_step_wait_sec` parameter to `real_steering_test.launch.py` and set its
+  launch defaults to `step_duration_sec=40.0` and `inter_step_wait_sec=10.0`.
 - 2026-04-13: Added ROS2 real-hardware autonomous launch
   `racer_bringup/real_follow_the_gap.launch.py` for the ported
   `wallfollowing2/follow_the_gap_node`, mirroring the existing physical-car
