@@ -7,10 +7,12 @@ from rclpy.node import Node
 
 DEFAULT_TURNING_RADII_M = [
     0.75,
+    0.87,
     1.0,
+    1.25,
     1.5,
     2.0,
-    3.0,
+    3.0
 ]
 
 
@@ -21,7 +23,7 @@ class SteeringTestNode(Node):
         super().__init__("steering_test")
 
         self.startup_delay_sec = float(self.declare_parameter("startup_delay_sec", 3.0).value)
-        self.linear_speed_mps = float(self.declare_parameter("linear_speed_mps", 0.6).value)
+        self.linear_speed_mps = float(self.declare_parameter("linear_speed_mps", 0.75).value)
         self.step_duration_sec = float(self.declare_parameter("step_duration_sec", 20.0).value)
         self.turn_right = bool(self.declare_parameter("turn_right", False).value)
         self.control_rate_hz = float(self.declare_parameter("control_rate_hz", 20.0).value)
