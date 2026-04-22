@@ -1,3 +1,5 @@
+from glob import glob
+
 from setuptools import setup
 
 package_name = "racer_bringup"
@@ -9,21 +11,7 @@ setup(
     data_files=[
         ("share/ament_index/resource_index/packages", ["resource/" + package_name]),
         ("share/" + package_name, ["package.xml"]),
-        ("share/" + package_name + "/launch", [
-            "launch/dashboard.launch.py",
-            "launch/fortress_sim.launch.py",
-            "launch/fortress_teleop_rviz.launch.py",
-            "launch/fortress_scan_stop_test.launch.py",
-            "launch/fortress_follow_the_gap.launch.py",
-            "launch/real_follow_the_gap.launch.py",
-            "launch/real_scan_stop_test.launch.py",
-            "launch/real_wallbalancing.launch.py",
-            "launch/real_timed_arc_test.launch.py",
-            "launch/real_speed_test.launch.py",
-            "launch/real_steering_test.launch.py",
-            "launch/fortress_wallfollowing.launch.py",
-            "launch/fortress_wallbalancing.launch.py",
-        ]),
+        ("share/" + package_name + "/launch", sorted(glob("launch/*.launch.py"))),
         ("share/" + package_name + "/config", ["config/rviz2_lidar.rviz"]),
     ],
     install_requires=["setuptools"],

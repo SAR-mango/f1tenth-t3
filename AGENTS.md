@@ -50,6 +50,11 @@ new dependencies, new workflows, or significant refactors).
 - Use `ign` CLI for Gazebo Fortress (`gz` is not available).
 
 ## Continuity log (append newest on top)
+- 2026-04-22: Made `racer_bringup/setup.py` install all
+  `launch/*.launch.py` files automatically so `dashboard.launch.py` and future
+  bringup launches are present in install space after a rebuild. Rebuilt
+  `racer_bringup` so installed real launch files include the dashboard by
+  default and `ros2 launch racer_bringup dashboard.launch.py` resolves.
 - 2026-04-22: Kept the simplified dashboard UI unchanged but extended its data
   plumbing so the numeric tiles now prefer
   `/telemetry/uart_command` (`TwistStamped`) and fall back to `/cmd_vel`
