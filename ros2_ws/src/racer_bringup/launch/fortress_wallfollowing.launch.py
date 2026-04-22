@@ -1,7 +1,9 @@
 import os
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, IncludeLaunchDescription
+from launch.conditions import IfCondition
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
@@ -34,11 +36,23 @@ def _car_control_exec(name: str) -> str:
 
 def generate_launch_description():
     world = LaunchConfiguration("world")
+    start_dashboard = LaunchConfiguration("start_dashboard")
+    dashboard_start_rviz = LaunchConfiguration("dashboard_start_rviz")
 
     world_arg = DeclareLaunchArgument(
         "world",
         default_value=_default_world_path(),
         description="Path to the Gazebo Fortress world file.",
+    )
+    start_dashboard_arg = DeclareLaunchArgument(
+        "start_dashboard",
+        default_value="true",
+        description="Launch the dashboard alongside Fortress wallfollowing.",
+    )
+    dashboard_start_rviz_arg = DeclareLaunchArgument(
+        "dashboard_start_rviz",
+        default_value="false",
+        description="Also launch RViz inside the included dashboard bringup.",
     )
 
     ign_sim = ExecuteProcess(
@@ -145,9 +159,23 @@ def generate_launch_description():
         output="screen",
     )
 
+    dashboard = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(os.path.dirname(__file__), "dashboard.launch.py")
+        ),
+        launch_arguments={
+            "start_rviz": dashboard_start_rviz,
+            "scan_topic": "/scan",
+            "motion_topic": "/cmd_vel",
+        }.items(),
+        condition=IfCondition(start_dashboard),
+    )
+
     return LaunchDescription(
         [
             world_arg,
+            start_dashboard_arg,
+            dashboard_start_rviz_arg,
             ign_sim,
             bridge,
             drive_parameters_multiplexer,
@@ -155,5 +183,6 @@ def generate_launch_description():
             drive_mode_pub,
             emergency_stop_pub,
             wallfollowing,
+            dashboard,
         ]
     )

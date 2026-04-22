@@ -1,8 +1,9 @@
 import os
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, IncludeLaunchDescription
 from launch.conditions import IfCondition
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
@@ -23,6 +24,8 @@ def _car_control_exec(name: str) -> str:
 def generate_launch_description():
     start_lidar_driver = LaunchConfiguration("start_lidar_driver")
     start_uart_bridge = LaunchConfiguration("start_uart_bridge")
+    start_dashboard = LaunchConfiguration("start_dashboard")
+    dashboard_start_rviz = LaunchConfiguration("dashboard_start_rviz")
     lidar_ip = LaunchConfiguration("lidar_ip")
     lidar_port = LaunchConfiguration("lidar_port")
     scan_topic = LaunchConfiguration("scan_topic")
@@ -47,6 +50,16 @@ def generate_launch_description():
         "start_uart_bridge",
         default_value="true",
         description="If true, launch the UART actuator bridge for Jetson serial output.",
+    )
+    start_dashboard_arg = DeclareLaunchArgument(
+        "start_dashboard",
+        default_value="true",
+        description="If true, launch the dashboard alongside the real wallbalancing stack.",
+    )
+    dashboard_start_rviz_arg = DeclareLaunchArgument(
+        "dashboard_start_rviz",
+        default_value="false",
+        description="Also launch RViz inside the included dashboard bringup.",
     )
     lidar_ip_arg = DeclareLaunchArgument(
         "lidar_ip",
@@ -235,10 +248,25 @@ def generate_launch_description():
         ],
     )
 
+    dashboard = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(os.path.dirname(__file__), "dashboard.launch.py")
+        ),
+        launch_arguments={
+            "start_rviz": dashboard_start_rviz,
+            "scan_topic": scan_topic,
+            "motion_topic": uart_cmd_vel_topic,
+            "stamped_motion_topic": "/telemetry/uart_command",
+        }.items(),
+        condition=IfCondition(start_dashboard),
+    )
+
     return LaunchDescription(
         [
             start_lidar_driver_arg,
             start_uart_bridge_arg,
+            start_dashboard_arg,
+            dashboard_start_rviz_arg,
             lidar_ip_arg,
             lidar_port_arg,
             scan_topic_arg,
@@ -258,5 +286,6 @@ def generate_launch_description():
             drive_mode_pub,
             emergency_stop_pub,
             wallbalancing,
+            dashboard,
         ]
     )

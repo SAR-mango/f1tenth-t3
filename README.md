@@ -99,20 +99,43 @@ ros2 launch racer_bringup real_follow_the_gap.launch.py
 ```
 
 Launch the live dashboard separately alongside any real-car autonomy launch to
-view `/scan` in RViz2 and plot the actual UART command stream with a 60 second
-sliding buffer:
+view `/scan` in a simple XY LiDAR plot and show velocity / steering numbers
+from a configurable `geometry_msgs/msg/Twist` topic (default `/cmd_vel`). When
+available, the dashboard prefers `/telemetry/uart_command`
+(`geometry_msgs/msg/TwistStamped`) from `uart_actuator_bridge` so the readouts
+match what is actually transmitted to the car:
 
 ```bash
 ros2 launch racer_bringup dashboard.launch.py
 ```
 
-The dashboard expects the real-control stack to use the updated
-`uart_actuator_bridge`, which now republishes the transmitted UART command as
-`/telemetry/uart_command` (`geometry_msgs/msg/TwistStamped`), the raw CSV frame
-as `/telemetry/uart_frame` (`std_msgs/msg/String`), and timeout state as
-`/telemetry/uart_command_stale` (`std_msgs/msg/Bool`). Reserved future template
-inputs for sensor feedback are `/telemetry/measured_speed` and
-`/telemetry/measured_steering` (`std_msgs/msg/Float64`).
+If you still want the existing RViz2 lidar view alongside the dashboard, add
+`start_rviz:=true` to the command.
+
+The Fortress wallfollowing and wallbalancing launches now start the dashboard
+automatically and feed those numeric readouts from the simulation `/cmd_vel`
+topic:
+
+```bash
+ros2 launch racer_bringup fortress_wallfollowing.launch.py
+ros2 launch racer_bringup fortress_wallbalancing.launch.py
+```
+
+Add `start_dashboard:=false` to either command to suppress the dashboard, or
+`dashboard_start_rviz:=true` if you also want RViz2 opened from those sim
+launches.
+
+The real follow-the-gap and wallbalancing launches now start that same
+dashboard automatically, using the live Hokuyo `/scan` plus UART telemetry
+fallback to `/cmd_vel`:
+
+```bash
+ros2 launch racer_bringup real_follow_the_gap.launch.py
+ros2 launch racer_bringup real_wallbalancing.launch.py
+```
+
+Add `start_dashboard:=false` to either real-car command to suppress the
+dashboard, or `dashboard_start_rviz:=true` if you want RViz2 alongside it.
 
 Real Hokuyo scan-stop/reverse test (no Gazebo), including `urg_node_driver`,
 `scan_stop_reverse_test_node`, and raw UART output from `/cmd_vel`:

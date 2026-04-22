@@ -50,6 +50,28 @@ new dependencies, new workflows, or significant refactors).
 - Use `ign` CLI for Gazebo Fortress (`gz` is not available).
 
 ## Continuity log (append newest on top)
+- 2026-04-22: Kept the simplified dashboard UI unchanged but extended its data
+  plumbing so the numeric tiles now prefer
+  `/telemetry/uart_command` (`TwistStamped`) and fall back to `/cmd_vel`
+  (`Twist`), allowing the same dashboard to work in both Fortress sim and
+  real-car bringup. Updated `real_follow_the_gap.launch.py` and
+  `real_wallbalancing.launch.py` to include the dashboard by default, matching
+  the existing Fortress wallfollowing / wallbalancing behavior, with
+  `start_dashboard:=false` and `dashboard_start_rviz:=true` control flags.
+- 2026-04-21: Extended the simplified ROS2 dashboard to read numeric velocity
+  and steering values from a configurable `Twist` topic (default `/cmd_vel`)
+  while keeping the XY LiDAR view. Updated Fortress sim bringup so
+  `fortress_wallfollowing.launch.py` and `fortress_wallbalancing.launch.py`
+  now include the dashboard by default, with `start_dashboard:=false` to
+  disable it and `dashboard_start_rviz:=true` to also open RViz2.
+- 2026-04-21: Simplified the ROS2 live dashboard UI to match current real-car
+  needs. `racer_bringup/dashboard_node` now renders `/scan` directly as a
+  PyQt XY LiDAR view instead of the previous time-series/status panel layout,
+  and the velocity / steering areas are reduced to placeholder numeric tiles
+  until real telemetry topics are wired in. Updated
+  `racer_bringup/dashboard.launch.py` so RViz2 is optional via
+  `start_rviz:=true` rather than launching by default, and refreshed the
+  README dashboard description to match.
 - 2026-04-20: Ported the latest FTG-only tuning from
   `origin/varsha_branch` commit `95d70bb` onto the adapted ROS2
   `navjit_branch` implementation without merging the full branch history.
