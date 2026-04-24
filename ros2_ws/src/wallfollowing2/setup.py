@@ -21,6 +21,7 @@ setup(
             "wallfollowing_node = wallfollowing2.wallfollowing_node:main",
             "wallbalancing_node = wallfollowing2.wallbalancing_node:main",
             "follow_the_gap_node = wallfollowing2.follow_the_gap_node:main",
+            "weighted_pairs_mmse_node = wallfollowing2.weighted_pairs_mmse_node:main",
             "scan_stop_reverse_test_node = wallfollowing2.scan_stop_reverse_test_node:main",
             "timed_arc_test_node = wallfollowing2.timed_arc_test_node:main",
             "speed_test_node = wallfollowing2.speed_test_node:main",

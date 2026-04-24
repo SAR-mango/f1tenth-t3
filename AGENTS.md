@@ -50,6 +50,22 @@ new dependencies, new workflows, or significant refactors).
 - Use `ign` CLI for Gazebo Fortress (`gz` is not available).
 
 ## Continuity log (append newest on top)
+- 2026-04-24: Added direct raw-command ROS2 real-car autonomy path for the new
+  `weighted_pairs_mmse` lidar algorithm. New
+  `wallfollowing2/weighted_pairs_mmse_node.py` wraps the uploaded algorithm
+  implementation (`weighted_pairs_mmse_algorithm.py`), consumes `/scan`, and
+  publishes `/cmd_vel` directly as speed in m/s plus signed turning radius in
+  meters while preserving the current positive-left / negative-right radius
+  convention and encoding straight driving as `0.0` radius for the UART path.
+  The wrapper node now stops on algorithm fallback states by default even
+  though the imported algorithm's own fallback result is `v_min` straight.
+  Added `racer_bringup/real_weighted_pairs_mmse.launch.py` to run
+  `urg_node_driver` -> `weighted_pairs_mmse_node` -> `uart_actuator_bridge`
+  with the dashboard enabled by default. Extended
+  `car_control/uart_actuator_bridge` with optional drive-mode and
+  emergency-stop gating so direct raw `/cmd_vel` launches can preserve the
+  existing stop behavior without routing through
+  `drive_parameters_multiplexer` or `car_controller`.
 - 2026-04-22: Made `racer_bringup/setup.py` install all
   `launch/*.launch.py` files automatically so `dashboard.launch.py` and future
   bringup launches are present in install space after a rebuild. Rebuilt

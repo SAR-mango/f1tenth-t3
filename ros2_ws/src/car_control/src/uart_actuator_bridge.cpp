@@ -104,6 +104,10 @@ public:
     UartActuatorBridge()
         : Node("uart_actuator_bridge")
         , command_mode_("cmd_vel")
+        , current_drive_mode_(DriveMode::LOCKED)
+        , respect_drive_mode_and_estop_(false)
+        , drive_mode_lock_(false)
+        , emergency_stop_lock_(false)
         , include_brake_(true)
         , decimal_places_(6)
         , command_timeout_sec_(0.5)
@@ -131,6 +135,9 @@ public:
         speed_topic_ = this->declare_parameter<std::string>("speed_topic", TOPIC_FOCBOX_SPEED);
         angle_topic_ = this->declare_parameter<std::string>("angle_topic", TOPIC_FOCBOX_ANGLE);
         brake_topic_ = this->declare_parameter<std::string>("brake_topic", TOPIC_FOCBOX_BRAKE);
+        respect_drive_mode_and_estop_ =
+            this->declare_parameter<bool>("respect_drive_mode_and_estop", false);
+        drive_mode_lock_ = respect_drive_mode_and_estop_;
         publish_telemetry_ = this->declare_parameter<bool>("publish_telemetry", true);
         telemetry_topic_ =
             this->declare_parameter<std::string>("telemetry_topic", "/telemetry/uart_command");
@@ -173,6 +180,18 @@ public:
                 std::bind(&UartActuatorBridge::brake_callback, this, std::placeholders::_1));
         }
 
+        if (respect_drive_mode_and_estop_)
+        {
+            drive_mode_sub_ = this->create_subscription<std_msgs::msg::Int32>(
+                TOPIC_DRIVE_MODE,
+                rclcpp::QoS(10),
+                std::bind(&UartActuatorBridge::drive_mode_callback, this, std::placeholders::_1));
+            emergency_stop_sub_ = this->create_subscription<std_msgs::msg::Bool>(
+                TOPIC_EMERGENCY_STOP,
+                rclcpp::QoS(10),
+                std::bind(&UartActuatorBridge::emergency_stop_callback, this, std::placeholders::_1));
+        }
+
         if (publish_telemetry_)
         {
             telemetry_pub_ = this->create_publisher<geometry_msgs::msg::TwistStamped>(
@@ -191,20 +210,22 @@ public:
             RCLCPP_INFO(
                 this->get_logger(),
                 "UART bridge ready. mode=cmd_vel device=%s baud=%d cmd_vel_topic=%s include_brake=%s "
-                "publish_telemetry=%s telemetry_topic=%s",
+                "publish_telemetry=%s telemetry_topic=%s gated=%s",
                 uart_device_.c_str(),
                 baud_rate_,
                 cmd_vel_topic_.c_str(),
                 include_brake_ ? "true" : "false",
                 publish_telemetry_ ? "true" : "false",
-                telemetry_topic_.c_str());
+                telemetry_topic_.c_str(),
+                respect_drive_mode_and_estop_ ? "true" : "false");
         }
         else
         {
             RCLCPP_INFO(
                 this->get_logger(),
                 "UART bridge ready. mode=actuator_topics device=%s baud=%d speed_topic=%s "
-                "angle_topic=%s brake_topic=%s include_brake=%s publish_telemetry=%s telemetry_topic=%s",
+                "angle_topic=%s brake_topic=%s include_brake=%s publish_telemetry=%s telemetry_topic=%s "
+                "gated=%s",
                 uart_device_.c_str(),
                 baud_rate_,
                 speed_topic_.c_str(),
@@ -212,7 +233,8 @@ public:
                 brake_topic_.c_str(),
                 include_brake_ ? "true" : "false",
                 publish_telemetry_ ? "true" : "false",
-                telemetry_topic_.c_str());
+                telemetry_topic_.c_str(),
+                respect_drive_mode_and_estop_ ? "true" : "false");
         }
     }
 
@@ -249,6 +271,21 @@ private:
         last_command_time_ = std::chrono::steady_clock::now();
     }
 
+    void drive_mode_callback(const std_msgs::msg::Int32::SharedPtr message)
+    {
+        current_drive_mode_ = static_cast<DriveMode>(message->data);
+        drive_mode_lock_ = current_drive_mode_ == DriveMode::LOCKED;
+        if (drive_mode_lock_)
+        {
+            emergency_stop_lock_ = false;
+        }
+    }
+
+    void emergency_stop_callback(const std_msgs::msg::Bool::SharedPtr message)
+    {
+        emergency_stop_lock_ = message->data && current_drive_mode_ != DriveMode::MANUAL;
+    }
+
     void timer_callback()
     {
         if (fd_ < 0)
@@ -273,6 +310,13 @@ private:
                 brake = 0.0;
                 command_is_stale = true;
             }
+        }
+
+        if (respect_drive_mode_and_estop_ && (drive_mode_lock_ || emergency_stop_lock_))
+        {
+            speed = 0.0;
+            angle = 0.0;
+            brake = 0.0;
         }
 
         const std::string frame = build_frame(speed, angle, brake);
@@ -485,12 +529,16 @@ private:
     }
 
     std::string command_mode_;
+    DriveMode current_drive_mode_;
     std::string uart_device_;
     int baud_rate_;
     std::string cmd_vel_topic_;
     std::string speed_topic_;
     std::string angle_topic_;
     std::string brake_topic_;
+    bool respect_drive_mode_and_estop_;
+    bool drive_mode_lock_;
+    bool emergency_stop_lock_;
     bool publish_telemetry_;
     std::string telemetry_topic_;
     std::string frame_topic_;
@@ -514,6 +562,8 @@ private:
     rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr speed_sub_;
     rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr angle_sub_;
     rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr brake_sub_;
+    rclcpp::Subscription<std_msgs::msg::Int32>::SharedPtr drive_mode_sub_;
+    rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr emergency_stop_sub_;
     rclcpp::Publisher<geometry_msgs::msg::TwistStamped>::SharedPtr telemetry_pub_;
     rclcpp::Publisher<std_msgs::msg::String>::SharedPtr frame_pub_;
     rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr stale_pub_;

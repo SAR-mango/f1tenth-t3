@@ -98,6 +98,18 @@ Real Hokuyo follow-the-gap autonomous path with the existing
 ros2 launch racer_bringup real_follow_the_gap.launch.py
 ```
 
+Real Hokuyo weighted-pairs MMSE autonomy path with a direct raw-command stack:
+`urg_node_driver` -> `weighted_pairs_mmse_node` -> `/cmd_vel` (m/s + signed
+turning radius in meters) -> `uart_actuator_bridge` -> UART. This path keeps
+the existing UART CSV format and preserves emergency-stop / drive-mode gating
+inside `uart_actuator_bridge` without routing through
+`drive_parameters_multiplexer` or `car_controller`. By default the wrapper node
+also forces stop on algorithm fallback states (`stop_on_algorithm_fallback:=true`):
+
+```bash
+ros2 launch racer_bringup real_weighted_pairs_mmse.launch.py
+```
+
 Launch the live dashboard separately alongside any real-car autonomy launch to
 view `/scan` in a simple XY LiDAR plot and show velocity / steering numbers
 from a configurable `geometry_msgs/msg/Twist` topic (default `/cmd_vel`). When
@@ -134,7 +146,14 @@ ros2 launch racer_bringup real_follow_the_gap.launch.py
 ros2 launch racer_bringup real_wallbalancing.launch.py
 ```
 
-Add `start_dashboard:=false` to either real-car command to suppress the
+The real weighted-pairs MMSE launch starts that same dashboard automatically,
+using the live Hokuyo `/scan` plus UART telemetry fallback to `/cmd_vel`:
+
+```bash
+ros2 launch racer_bringup real_weighted_pairs_mmse.launch.py
+```
+
+Add `start_dashboard:=false` to any of those real-car commands to suppress the
 dashboard, or `dashboard_start_rviz:=true` if you want RViz2 alongside it.
 
 Real Hokuyo scan-stop/reverse test (no Gazebo), including `urg_node_driver`,
