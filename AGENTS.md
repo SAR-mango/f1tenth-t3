@@ -50,6 +50,22 @@ new dependencies, new workflows, or significant refactors).
 - Use `ign` CLI for Gazebo Fortress (`gz` is not available).
 
 ## Continuity log (append newest on top)
+- 2026-04-24: Replaced the `weighted_pairs_mmse` launch-argument tuning fanout
+  with a YAML parameter file workflow. Added
+  `racer_bringup/config/weighted_pairs_mmse.yaml`, changed
+  `real_weighted_pairs_mmse.launch.py` to load that file via a new
+  `weighted_pairs_params_file` launch arg, and made the default prefer the
+  source-tree config path so retuning the file takes effect on the next launch
+  without rebuilding. Updated `racer_bringup/setup.py` to install all config
+  files and refreshed the README usage notes.
+- 2026-04-24: Made the ROS2 real-car `weighted_pairs_mmse` stack fully
+  launch-tunable. `wallfollowing2/weighted_pairs_mmse_algorithm.py` now keeps
+  its algorithm constants in a validated parameter table, and
+  `wallfollowing2/weighted_pairs_mmse_node.py` declares/applies those as ROS
+  parameters so the next scan uses updated values without a package rebuild.
+  `racer_bringup/real_weighted_pairs_mmse.launch.py` now exposes every
+  weighted-pairs algorithm parameter plus the straight-radius override as
+  launch arguments, and `README.md` documents CLI tuning plus `--show-args`.
 - 2026-04-24: Added a scan-based hard stop override to the direct ROS2 real-car
   `weighted_pairs_mmse` path. `wallfollowing2/weighted_pairs_mmse_node.py`
   now forces `/cmd_vel` to zero whenever any finite lidar return inside a

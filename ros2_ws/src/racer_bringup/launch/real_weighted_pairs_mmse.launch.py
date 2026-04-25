@@ -1,11 +1,13 @@
 import os
 
+from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, ExecuteProcess, IncludeLaunchDescription
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
+from launch_ros.parameter_descriptions import ParameterFile
 
 
 def _car_control_exec(name: str) -> str:
@@ -21,6 +23,25 @@ def _car_control_exec(name: str) -> str:
     )
 
 
+def _default_weighted_pairs_params_path() -> str:
+    repo_root = os.environ.get("F1TENTH_T3_ROOT", os.path.expanduser("~/f1tenth-t3"))
+    source_cfg = os.path.join(
+        repo_root,
+        "ros2_ws",
+        "src",
+        "racer_bringup",
+        "config",
+        "weighted_pairs_mmse.yaml",
+    )
+    if os.path.exists(source_cfg):
+        return source_cfg
+    return os.path.join(
+        get_package_share_directory("racer_bringup"),
+        "config",
+        "weighted_pairs_mmse.yaml",
+    )
+
+
 def generate_launch_description():
     start_lidar_driver = LaunchConfiguration("start_lidar_driver")
     start_uart_bridge = LaunchConfiguration("start_uart_bridge")
@@ -30,18 +51,13 @@ def generate_launch_description():
     lidar_port = LaunchConfiguration("lidar_port")
     scan_topic = LaunchConfiguration("scan_topic")
     laser_frame_id = LaunchConfiguration("laser_frame_id")
+    weighted_pairs_params_file = LaunchConfiguration("weighted_pairs_params_file")
 
     uart_cmd_vel_topic = LaunchConfiguration("uart_cmd_vel_topic")
     uart_device = LaunchConfiguration("uart_device")
     uart_baud_rate = LaunchConfiguration("uart_baud_rate")
     uart_send_rate_hz = LaunchConfiguration("uart_send_rate_hz")
     uart_command_timeout_sec = LaunchConfiguration("uart_command_timeout_sec")
-
-    steering_radius_sign = LaunchConfiguration("steering_radius_sign")
-    stop_on_algorithm_fallback = LaunchConfiguration("stop_on_algorithm_fallback")
-    front_stop_distance_m = LaunchConfiguration("front_stop_distance_m")
-    front_stop_half_angle_deg = LaunchConfiguration("front_stop_half_angle_deg")
-    log_status_interval_sec = LaunchConfiguration("log_status_interval_sec")
 
     start_lidar_driver_arg = DeclareLaunchArgument(
         "start_lidar_driver",
@@ -83,6 +99,15 @@ def generate_launch_description():
         default_value="car/chassis/ust10lx",
         description="Frame id for published LaserScan messages.",
     )
+    weighted_pairs_params_file_arg = DeclareLaunchArgument(
+        "weighted_pairs_params_file",
+        default_value=_default_weighted_pairs_params_path(),
+        description=(
+            "YAML file containing weighted_pairs_mmse node and algorithm parameters. "
+            "The default prefers the source-tree config so edits take effect on the next launch "
+            "without rebuilding."
+        ),
+    )
 
     uart_cmd_vel_topic_arg = DeclareLaunchArgument(
         "uart_cmd_vel_topic",
@@ -108,38 +133,6 @@ def generate_launch_description():
         "uart_command_timeout_sec",
         default_value="0.5",
         description="If no new command arrives within this timeout, the UART bridge sends zeros.",
-    )
-
-    steering_radius_sign_arg = DeclareLaunchArgument(
-        "steering_radius_sign",
-        default_value="1.0",
-        description=(
-            "Multiplier applied before publishing the algorithm radius command. "
-            "Keep 1.0 for the current positive-left / negative-right convention."
-        ),
-    )
-    stop_on_algorithm_fallback_arg = DeclareLaunchArgument(
-        "stop_on_algorithm_fallback",
-        default_value="true",
-        description="Force a zero-speed command whenever the algorithm reports a fallback state.",
-    )
-    front_stop_distance_arg = DeclareLaunchArgument(
-        "front_stop_distance_m",
-        default_value="0.2",
-        description=(
-            "Force a stop whenever any finite range inside the forward stop cone "
-            "is at or below this distance in meters. Set <= 0 to disable."
-        ),
-    )
-    front_stop_half_angle_arg = DeclareLaunchArgument(
-        "front_stop_half_angle_deg",
-        default_value="15.0",
-        description="Half-angle of the forward lidar cone used for the hard stop gate.",
-    )
-    log_status_interval_arg = DeclareLaunchArgument(
-        "log_status_interval_sec",
-        default_value="1.0",
-        description="How often the weighted_pairs_mmse node logs its status string.",
     )
 
     urg_driver = Node(
@@ -220,14 +213,10 @@ def generate_launch_description():
         executable="weighted_pairs_mmse_node",
         output="screen",
         parameters=[
+            ParameterFile(weighted_pairs_params_file, allow_substs=False),
             {
                 "scan_topic": scan_topic,
                 "cmd_vel_topic": uart_cmd_vel_topic,
-                "steering_radius_sign": steering_radius_sign,
-                "stop_on_algorithm_fallback": stop_on_algorithm_fallback,
-                "front_stop_distance_m": front_stop_distance_m,
-                "front_stop_half_angle_deg": front_stop_half_angle_deg,
-                "log_status_interval_sec": log_status_interval_sec,
             }
         ],
     )
@@ -255,16 +244,12 @@ def generate_launch_description():
             lidar_port_arg,
             scan_topic_arg,
             laser_frame_id_arg,
+            weighted_pairs_params_file_arg,
             uart_cmd_vel_topic_arg,
             uart_device_arg,
             uart_baud_rate_arg,
             uart_send_rate_arg,
             uart_command_timeout_arg,
-            steering_radius_sign_arg,
-            stop_on_algorithm_fallback_arg,
-            front_stop_distance_arg,
-            front_stop_half_angle_arg,
-            log_status_interval_arg,
             urg_driver,
             uart_actuator_bridge,
             drive_mode_pub,

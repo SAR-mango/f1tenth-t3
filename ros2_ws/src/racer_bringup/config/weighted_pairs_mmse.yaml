@@ -1,0 +1,40 @@
+weighted_pairs_mmse:
+  ros__parameters:
+    # Wrapper-node behavior.
+    steering_radius_sign: 1.0
+    straight_radius_command_m: 0.0
+    stop_on_algorithm_fallback: true
+    front_stop_distance_m: 0.2
+    front_stop_half_angle_deg: 15.0
+    log_status_interval_sec: 1.0
+
+    # Numerical settings.
+    epsilon: 0.000001
+
+    # LiDAR preprocessing.
+    downsample_resolution_deg: 1
+    front_angle_limit_deg: 90
+    cone_width_deg: 5
+    cone_half_width_deg: 2
+    cone_step_deg: 5
+    max_valid_distance_m: 30.0
+
+    # Weighted-pairs tuning.
+    k_J: 10.0
+    k_delta: 10.0
+    angular_prior_exponent: 1.0
+    min_pair_angle_deg: 10.0
+
+    # Setpoint tuning.
+    use_dynamic_lookahead: True
+    lookahead_distance_min: 0.3
+    lookahead_distance_max: 1.5
+    k_lookahead: 10.0
+    y_max: 0.35
+    min_turn_radius: 0.75
+    straight_y_threshold_m: 0.02
+
+    # Speed tuning.
+    v_min: 1.25
+    v_max: 2
+    k_curvature: 1.5

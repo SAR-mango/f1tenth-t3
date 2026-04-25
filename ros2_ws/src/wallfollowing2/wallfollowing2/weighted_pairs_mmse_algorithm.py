@@ -1,36 +1,139 @@
 import numpy as np
 
 
-# numerical settings
-epsilon = 1.0e-6  # small positive constant for numerical stability
+PARAMETER_SPECS = (
+    ("epsilon", 1.0e-6, float, "Small positive constant for numerical stability."),
+    ("downsample_resolution_deg", 1, int, "Angular resolution in degrees used after LiDAR bin averaging."),
+    ("front_angle_limit_deg", 90, int, "Only use LiDAR returns within +/- this front-facing angle."),
+    ("cone_width_deg", 5, int, "Cone sample count at the configured downsample resolution."),
+    ("cone_half_width_deg", 2, int, "Cone half-width in degrees around each cone center."),
+    ("cone_step_deg", 5, int, "Cone-center spacing in degrees."),
+    ("max_valid_distance_m", 30.0, float, "Reject implausible or saturated ranges beyond this distance."),
+    ("k_J", 14.0, float, "Convert cone model-fit cost into confidence."),
+    ("k_delta", 10.0, float, "Penalize large left/right distance disparity within a pair."),
+    ("angular_prior_exponent", 1.0, float, "Exponent p used in sin(|alpha|)^p."),
+    ("min_pair_angle_deg", 10.0, float, "Ignore pairs too close to straight ahead."),
+    ("use_dynamic_lookahead", True, bool, "When false, always use lookahead_distance_min."),
+    ("lookahead_distance_min", 0.3, float, "Minimum forward setpoint distance."),
+    ("lookahead_distance_max", 1.0, float, "Maximum forward setpoint distance."),
+    ("k_lookahead", 20.0, float, "Map weighted-pair disparity into a straightness score."),
+    ("y_max", 0.35, float, "Lateral setpoint clamp magnitude."),
+    ("min_turn_radius", 0.75, float, "Minimum physically allowed signed turn-radius magnitude."),
+    ("straight_y_threshold_m", 0.02, float, "Treat smaller lateral offsets as straight driving."),
+    ("v_min", 0.75, float, "Fallback and minimum commanded speed."),
+    ("v_max", 1.25, float, "Maximum commanded speed."),
+    ("k_curvature", 0.6, float, "Penalize speed as curvature magnitude increases."),
+)
 
-# lidar preprocessing
-downsample_resolution_deg = 1.0  # target angular resolution after averaging raw LiDAR samples
-front_angle_limit_deg = 90.0  # only use LiDAR returns within +/- this front-facing angle
-cone_width_deg = 5  # each cone spans five 1-degree samples
-cone_half_width_deg = 2  # center sample +/- this many degrees gives five samples total
-cone_step_deg = 5  # cone centers are spaced every five degrees
-max_valid_distance_m = 30.0  # reject implausible or saturated ranges beyond this distance
+PARAM_DEFAULTS = {name: default for name, default, _, _ in PARAMETER_SPECS}
+PARAM_TYPES = {name: param_type for name, _, param_type, _ in PARAMETER_SPECS}
+PARAM_DESCRIPTIONS = {name: description for name, _, _, description in PARAMETER_SPECS}
 
-# weighted-pairs tuning
-k_J = 14.0  # converts cone model-fit cost into confidence
-k_delta = 10.0  # penalizes large left/right distance disparity within a pair
-angular_prior_exponent = 1.0  # exponent p used in sin(|alpha|)^p
-min_pair_angle_deg = 10.0  # ignore pairs too close to straight ahead
 
-# setpoint tuning
-use_dynamic_lookahead = True  # when false, always use lookahead_distance_min
-lookahead_distance_min = 0.3  # minimum forward setpoint distance when local geometry looks curved or asymmetric
-lookahead_distance_max = 1.0  # maximum forward setpoint distance when local geometry looks straight and symmetric
-k_lookahead = 20.0  # maps weighted pair disparity into a straightness score for dynamic lookahead
-y_max = 0.35  # lateral setpoint clamp magnitude
-min_turn_radius = 0.75  # minimum physically allowed signed turn-radius magnitude
-straight_y_threshold_m = 0.02  # treat smaller lateral offsets as straight driving
+def coerce_parameter_value(name, value):
+    param_type = PARAM_TYPES[name]
+    if param_type is bool:
+        if isinstance(value, str):
+            normalized = value.strip().lower()
+            if normalized in ("true", "1", "yes", "on"):
+                return True
+            if normalized in ("false", "0", "no", "off"):
+                return False
+            raise ValueError(f"{name} must be a boolean value, got {value!r}")
+        return bool(value)
+    return param_type(value)
 
-# speed tuning
-v_min = 0.75  # fallback and minimum commanded speed
-v_max = 1.25  # maximum commanded speed
-k_curvature = 0.6  # penalizes speed as curvature magnitude increases
+
+def _current_parameter_values():
+    return {
+        name: coerce_parameter_value(name, globals().get(name, default))
+        for name, default in PARAM_DEFAULTS.items()
+    }
+
+
+def _cone_sample_offsets_deg(parameter_values):
+    resolution_deg = int(parameter_values["downsample_resolution_deg"])
+    half_width_deg = int(parameter_values["cone_half_width_deg"])
+    return np.arange(
+        -half_width_deg,
+        half_width_deg + resolution_deg,
+        resolution_deg,
+        dtype=np.int32,
+    )
+
+
+def _validate_parameter_values(parameter_values):
+    resolution_deg = int(parameter_values["downsample_resolution_deg"])
+    front_angle_limit = int(parameter_values["front_angle_limit_deg"])
+    cone_width = int(parameter_values["cone_width_deg"])
+    cone_half_width = int(parameter_values["cone_half_width_deg"])
+    cone_step = int(parameter_values["cone_step_deg"])
+
+    if parameter_values["epsilon"] <= 0.0:
+        raise ValueError("epsilon must be > 0")
+    if resolution_deg <= 0:
+        raise ValueError("downsample_resolution_deg must be > 0")
+    if front_angle_limit <= 0:
+        raise ValueError("front_angle_limit_deg must be > 0")
+    if front_angle_limit % resolution_deg != 0:
+        raise ValueError(
+            "front_angle_limit_deg must be an integer multiple of downsample_resolution_deg"
+        )
+    if cone_half_width < 0:
+        raise ValueError("cone_half_width_deg must be >= 0")
+    if cone_half_width % resolution_deg != 0:
+        raise ValueError(
+            "cone_half_width_deg must be an integer multiple of downsample_resolution_deg"
+        )
+    if cone_step <= 0:
+        raise ValueError("cone_step_deg must be > 0")
+    if cone_step % resolution_deg != 0:
+        raise ValueError(
+            "cone_step_deg must be an integer multiple of downsample_resolution_deg"
+        )
+
+    expected_cone_width = int(_cone_sample_offsets_deg(parameter_values).shape[0])
+    if cone_width != expected_cone_width:
+        raise ValueError(
+            "cone_width_deg must match the configured cone sample count "
+            f"({expected_cone_width}) for the current half-width and downsample resolution"
+        )
+
+    if parameter_values["max_valid_distance_m"] <= 0.0:
+        raise ValueError("max_valid_distance_m must be > 0")
+    if parameter_values["min_pair_angle_deg"] < 0.0:
+        raise ValueError("min_pair_angle_deg must be >= 0")
+    if parameter_values["lookahead_distance_min"] <= 0.0:
+        raise ValueError("lookahead_distance_min must be > 0")
+    if parameter_values["lookahead_distance_max"] < parameter_values["lookahead_distance_min"]:
+        raise ValueError("lookahead_distance_max must be >= lookahead_distance_min")
+    if parameter_values["y_max"] < 0.0:
+        raise ValueError("y_max must be >= 0")
+    if parameter_values["min_turn_radius"] < 0.0:
+        raise ValueError("min_turn_radius must be >= 0")
+    if parameter_values["straight_y_threshold_m"] < 0.0:
+        raise ValueError("straight_y_threshold_m must be >= 0")
+    if parameter_values["v_min"] < 0.0:
+        raise ValueError("v_min must be >= 0")
+    if parameter_values["v_max"] < parameter_values["v_min"]:
+        raise ValueError("v_max must be >= v_min")
+
+
+def configure_parameters(overrides=None):
+    parameter_values = _current_parameter_values()
+    if overrides is not None:
+        for name, value in overrides.items():
+            if name not in PARAM_DEFAULTS:
+                raise KeyError(f"unknown weighted_pairs_mmse_algorithm parameter: {name}")
+            parameter_values[name] = coerce_parameter_value(name, value)
+
+    _validate_parameter_values(parameter_values)
+    globals().update(parameter_values)
+    return dict(parameter_values)
+
+
+globals().update(PARAM_DEFAULTS)
+configure_parameters()
 
 
 def isValidDistance(distance_m):
@@ -122,8 +225,10 @@ def preprocess_lidar(scan):
 
 def compute_cone_cost(cone_distances_m):
     cone_distances_m = np.asarray(cone_distances_m, dtype=np.float64)
+    theta_offsets_deg = _cone_sample_offsets_deg(_current_parameter_values())
+    center_index = int(theta_offsets_deg.shape[0] // 2)
 
-    if len(cone_distances_m) != cone_width_deg:
+    if len(cone_distances_m) != int(theta_offsets_deg.shape[0]):
         return None
     if np.any(~np.isfinite(cone_distances_m)):
         return None
@@ -132,12 +237,11 @@ def compute_cone_cost(cone_distances_m):
     if np.any(cone_distances_m >= max_valid_distance_m):
         return None
 
-    d_3 = float(cone_distances_m[cone_half_width_deg])
+    d_3 = float(cone_distances_m[center_index])
     if not isValidDistance(d_3):
         return None
 
-    theta_offsets_deg = np.arange(-cone_half_width_deg, cone_half_width_deg + 1, dtype=np.float64)
-    theta_offsets_rad = np.deg2rad(theta_offsets_deg)
+    theta_offsets_rad = np.deg2rad(theta_offsets_deg.astype(np.float64))
     ideal_profile = d_3 / np.cos(theta_offsets_rad)
     residual = (cone_distances_m - ideal_profile) / (d_3 + epsilon)
     cost = float(np.mean(residual ** 2))
@@ -152,6 +256,7 @@ def compute_cone_cost(cone_distances_m):
 
 def extract_valid_cones(preprocessed_scan):
     valid_cones = {}
+    sample_offsets_deg = _cone_sample_offsets_deg(_current_parameter_values())
 
     max_center_angle_deg = (
         (int(front_angle_limit_deg) - cone_half_width_deg) // cone_step_deg
@@ -164,11 +269,7 @@ def extract_valid_cones(preprocessed_scan):
     )
 
     for center_deg in candidate_centers_deg:
-        sample_angles_deg = np.arange(
-            center_deg - cone_half_width_deg,
-            center_deg + cone_half_width_deg + 1,
-            dtype=np.int32,
-        )
+        sample_angles_deg = sample_offsets_deg + center_deg
 
         indices = []
         for angle_deg in sample_angles_deg:

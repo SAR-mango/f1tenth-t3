@@ -4,37 +4,47 @@ import time
 import numpy as np
 import rclpy
 from geometry_msgs.msg import Twist
+from rcl_interfaces.msg import ParameterDescriptor, SetParametersResult
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, ReliabilityPolicy
 from sensor_msgs.msg import LaserScan
 
-from .weighted_pairs_mmse_algorithm import runAutonomousAlgorithm
+from . import weighted_pairs_mmse_algorithm
+
+
+NODE_PARAM_DEFAULTS = {
+    "scan_topic": "/scan",
+    "cmd_vel_topic": "/cmd_vel",
+    "steering_radius_sign": 1.0,
+    "straight_radius_command_m": 0.0,
+    "stop_on_algorithm_fallback": True,
+    "front_stop_distance_m": 0.2,
+    "front_stop_half_angle_deg": 15.0,
+    "log_status_interval_sec": 1.0,
+}
+
+
+def _coerce_node_parameter(name, value):
+    expected = NODE_PARAM_DEFAULTS[name]
+    if isinstance(expected, bool):
+        if isinstance(value, str):
+            return value.strip().lower() in ("true", "1", "yes", "on")
+        return bool(value)
+    if isinstance(expected, float):
+        return float(value)
+    if isinstance(expected, int):
+        return int(value)
+    if isinstance(expected, str):
+        return str(value)
+    return value
 
 
 class WeightedPairsMmseNode(Node):
     def __init__(self):
         super().__init__("weighted_pairs_mmse")
-
-        self.scan_topic = str(self.declare_parameter("scan_topic", "/scan").value)
-        self.cmd_vel_topic = str(self.declare_parameter("cmd_vel_topic", "/cmd_vel").value)
-        self.steering_radius_sign = float(
-            self.declare_parameter("steering_radius_sign", 1.0).value
-        )
-        self.straight_radius_command_m = float(
-            self.declare_parameter("straight_radius_command_m", 0.0).value
-        )
-        self.stop_on_algorithm_fallback = bool(
-            self.declare_parameter("stop_on_algorithm_fallback", True).value
-        )
-        self.front_stop_distance_m = float(
-            self.declare_parameter("front_stop_distance_m", 0.2).value
-        )
-        self.front_stop_half_angle_deg = float(
-            self.declare_parameter("front_stop_half_angle_deg", 15.0).value
-        )
-        self.log_status_interval_sec = float(
-            self.declare_parameter("log_status_interval_sec", 1.0).value
-        )
+        self._declare_parameters()
+        self._apply_parameters(self._collect_parameter_values())
+        self.add_on_set_parameters_callback(self._on_params)
 
         self._last_status_log_time = 0.0
         self._last_status_message = ""
@@ -62,6 +72,88 @@ class WeightedPairsMmseNode(Node):
                 self.front_stop_half_angle_deg,
             )
         )
+
+    def _declare_parameters(self):
+        descriptor = ParameterDescriptor(dynamic_typing=True)
+        for name, default in NODE_PARAM_DEFAULTS.items():
+            self.declare_parameter(name, default, descriptor)
+        for name, default in weighted_pairs_mmse_algorithm.PARAM_DEFAULTS.items():
+            self.declare_parameter(name, default, descriptor)
+
+    def _collect_parameter_values(self, overrides=None):
+        values = {}
+        for name in NODE_PARAM_DEFAULTS.keys():
+            values[name] = self.get_parameter(name).value
+        for name in weighted_pairs_mmse_algorithm.PARAM_DEFAULTS.keys():
+            values[name] = self.get_parameter(name).value
+
+        if overrides is not None:
+            for parameter in overrides:
+                values[parameter.name] = parameter.value
+
+        return values
+
+    def _apply_parameters(self, parameter_values):
+        self.scan_topic = _coerce_node_parameter(
+            "scan_topic",
+            parameter_values["scan_topic"],
+        )
+        self.cmd_vel_topic = _coerce_node_parameter(
+            "cmd_vel_topic",
+            parameter_values["cmd_vel_topic"],
+        )
+        self.steering_radius_sign = _coerce_node_parameter(
+            "steering_radius_sign",
+            parameter_values["steering_radius_sign"],
+        )
+        self.straight_radius_command_m = _coerce_node_parameter(
+            "straight_radius_command_m",
+            parameter_values["straight_radius_command_m"],
+        )
+        self.stop_on_algorithm_fallback = _coerce_node_parameter(
+            "stop_on_algorithm_fallback",
+            parameter_values["stop_on_algorithm_fallback"],
+        )
+        self.front_stop_distance_m = _coerce_node_parameter(
+            "front_stop_distance_m",
+            parameter_values["front_stop_distance_m"],
+        )
+        self.front_stop_half_angle_deg = _coerce_node_parameter(
+            "front_stop_half_angle_deg",
+            parameter_values["front_stop_half_angle_deg"],
+        )
+        self.log_status_interval_sec = _coerce_node_parameter(
+            "log_status_interval_sec",
+            parameter_values["log_status_interval_sec"],
+        )
+
+        weighted_pairs_mmse_algorithm.configure_parameters(
+            {
+                name: parameter_values[name]
+                for name in weighted_pairs_mmse_algorithm.PARAM_DEFAULTS.keys()
+            }
+        )
+
+        if self.log_status_interval_sec < 0.0:
+            raise ValueError("log_status_interval_sec must be >= 0")
+        if self.front_stop_half_angle_deg < 0.0:
+            raise ValueError("front_stop_half_angle_deg must be >= 0")
+
+    def _on_params(self, params):
+        previous_scan_topic = getattr(self, "scan_topic", None)
+        previous_cmd_vel_topic = getattr(self, "cmd_vel_topic", None)
+
+        try:
+            self._apply_parameters(self._collect_parameter_values(params))
+        except Exception as exc:
+            return SetParametersResult(successful=False, reason=str(exc))
+
+        if previous_scan_topic is not None and self.scan_topic != previous_scan_topic:
+            self.get_logger().warn("scan_topic changes require a node restart to take effect.")
+        if previous_cmd_vel_topic is not None and self.cmd_vel_topic != previous_cmd_vel_topic:
+            self.get_logger().warn("cmd_vel_topic changes require a node restart to take effect.")
+
+        return SetParametersResult(successful=True)
 
     def _scan_to_algorithm_input(self, scan: LaserScan):
         if not scan.ranges:
@@ -141,7 +233,9 @@ class WeightedPairsMmseNode(Node):
             return
 
         try:
-            result = runAutonomousAlgorithm(self._scan_to_algorithm_input(scan))
+            result = weighted_pairs_mmse_algorithm.runAutonomousAlgorithm(
+                self._scan_to_algorithm_input(scan)
+            )
         except Exception as exc:
             self.get_logger().error(f"weighted_pairs_mmse failed; publishing stop command: {exc}")
             self._publish_cmd(0.0, math.inf)

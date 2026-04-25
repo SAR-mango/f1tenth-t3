@@ -104,10 +104,26 @@ turning radius in meters) -> `uart_actuator_bridge` -> UART. This path keeps
 the existing UART CSV format and preserves emergency-stop / drive-mode gating
 inside `uart_actuator_bridge` without routing through
 `drive_parameters_multiplexer` or `car_controller`. By default the wrapper node
-also forces stop on algorithm fallback states (`stop_on_algorithm_fallback:=true`):
+also forces stop on algorithm fallback states (`stop_on_algorithm_fallback:=true`).
+Weighted-pairs tuning now comes from
+`ros2_ws/src/racer_bringup/config/weighted_pairs_mmse.yaml` by default, and the
+launch prefers that source-tree file when it exists so editing it takes effect
+on the next launch without rebuilding:
 
 ```bash
 ros2 launch racer_bringup real_weighted_pairs_mmse.launch.py
+```
+
+```bash
+vim ros2_ws/src/racer_bringup/config/weighted_pairs_mmse.yaml
+ros2 launch racer_bringup real_weighted_pairs_mmse.launch.py
+```
+
+To launch with a different parameter file:
+
+```bash
+ros2 launch racer_bringup real_weighted_pairs_mmse.launch.py \
+  weighted_pairs_params_file:=/absolute/path/to/weighted_pairs_mmse.yaml
 ```
 
 Launch the live dashboard separately alongside any real-car autonomy launch to
