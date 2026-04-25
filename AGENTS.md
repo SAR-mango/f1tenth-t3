@@ -50,6 +50,20 @@ new dependencies, new workflows, or significant refactors).
 - Use `ign` CLI for Gazebo Fortress (`gz` is not available).
 
 ## Continuity log (append newest on top)
+- 2026-04-24: Added a scan-based hard stop override to the direct ROS2 real-car
+  `weighted_pairs_mmse` path. `wallfollowing2/weighted_pairs_mmse_node.py`
+  now forces `/cmd_vel` to zero whenever any finite lidar return inside a
+  configurable forward cone is at or below the configured stop distance
+  (`front_stop_distance_m`, default 0.2 m, and
+  `front_stop_half_angle_deg`, default 15 deg), overriding the weighted-pairs
+  algorithm until the front cone clears. Exposed both parameters in
+  `racer_bringup/real_weighted_pairs_mmse.launch.py`.
+- 2026-04-24: Fixed ROS2 autonomy bringup emergency-stop behavior so the
+  `racer_bringup` weighted-pairs, follow-the-gap, wallfollowing, and
+  wallbalancing launch files no longer pin `/commands/emergency_stop=false`
+  continuously. They now publish a short startup clear burst and exit, which
+  preserves the previous automatic estop-clear-on-launch behavior while
+  allowing later manual estop assertions to latch.
 - 2026-04-24: Added direct raw-command ROS2 real-car autonomy path for the new
   `weighted_pairs_mmse` lidar algorithm. New
   `wallfollowing2/weighted_pairs_mmse_node.py` wraps the uploaded algorithm

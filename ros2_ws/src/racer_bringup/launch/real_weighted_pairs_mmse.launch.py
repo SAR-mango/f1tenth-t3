@@ -39,6 +39,8 @@ def generate_launch_description():
 
     steering_radius_sign = LaunchConfiguration("steering_radius_sign")
     stop_on_algorithm_fallback = LaunchConfiguration("stop_on_algorithm_fallback")
+    front_stop_distance_m = LaunchConfiguration("front_stop_distance_m")
+    front_stop_half_angle_deg = LaunchConfiguration("front_stop_half_angle_deg")
     log_status_interval_sec = LaunchConfiguration("log_status_interval_sec")
 
     start_lidar_driver_arg = DeclareLaunchArgument(
@@ -121,6 +123,19 @@ def generate_launch_description():
         default_value="true",
         description="Force a zero-speed command whenever the algorithm reports a fallback state.",
     )
+    front_stop_distance_arg = DeclareLaunchArgument(
+        "front_stop_distance_m",
+        default_value="0.2",
+        description=(
+            "Force a stop whenever any finite range inside the forward stop cone "
+            "is at or below this distance in meters. Set <= 0 to disable."
+        ),
+    )
+    front_stop_half_angle_arg = DeclareLaunchArgument(
+        "front_stop_half_angle_deg",
+        default_value="15.0",
+        description="Half-angle of the forward lidar cone used for the hard stop gate.",
+    )
     log_status_interval_arg = DeclareLaunchArgument(
         "log_status_interval_sec",
         default_value="1.0",
@@ -188,10 +203,14 @@ def generate_launch_description():
             "topic",
             "pub",
             "-r",
-            "2",
+            "5",
+            "-t",
+            "3",
             "/commands/emergency_stop",
             "std_msgs/msg/Bool",
             "{data: false}",
+            "--keep-alive",
+            "1.0",
         ],
         output="log",
     )
@@ -206,6 +225,8 @@ def generate_launch_description():
                 "cmd_vel_topic": uart_cmd_vel_topic,
                 "steering_radius_sign": steering_radius_sign,
                 "stop_on_algorithm_fallback": stop_on_algorithm_fallback,
+                "front_stop_distance_m": front_stop_distance_m,
+                "front_stop_half_angle_deg": front_stop_half_angle_deg,
                 "log_status_interval_sec": log_status_interval_sec,
             }
         ],
@@ -241,6 +262,8 @@ def generate_launch_description():
             uart_command_timeout_arg,
             steering_radius_sign_arg,
             stop_on_algorithm_fallback_arg,
+            front_stop_distance_arg,
+            front_stop_half_angle_arg,
             log_status_interval_arg,
             urg_driver,
             uart_actuator_bridge,

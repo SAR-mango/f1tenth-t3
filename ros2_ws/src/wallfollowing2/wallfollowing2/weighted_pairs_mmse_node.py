@@ -26,6 +26,12 @@ class WeightedPairsMmseNode(Node):
         self.stop_on_algorithm_fallback = bool(
             self.declare_parameter("stop_on_algorithm_fallback", True).value
         )
+        self.front_stop_distance_m = float(
+            self.declare_parameter("front_stop_distance_m", 0.2).value
+        )
+        self.front_stop_half_angle_deg = float(
+            self.declare_parameter("front_stop_half_angle_deg", 15.0).value
+        )
         self.log_status_interval_sec = float(
             self.declare_parameter("log_status_interval_sec", 1.0).value
         )
@@ -46,11 +52,14 @@ class WeightedPairsMmseNode(Node):
 
         self.get_logger().info(
             "weighted_pairs_mmse ready. scan=%s cmd_vel=%s steering_radius_sign=%.1f "
+            "front_stop=%.3fm inside +/-%.1fdeg "
             "(raw command convention: positive radius = left, negative = right)"
             % (
                 self.scan_topic,
                 self.cmd_vel_topic,
                 self.steering_radius_sign,
+                self.front_stop_distance_m,
+                self.front_stop_half_angle_deg,
             )
         )
 
@@ -82,6 +91,25 @@ class WeightedPairsMmseNode(Node):
             return self.straight_radius_command_m
         return self.steering_radius_sign * float(steering_radius_m)
 
+    def _extract_front_min_distance(self, scan: LaserScan) -> float:
+        if not scan.ranges or self.front_stop_distance_m <= 0.0:
+            return math.inf
+
+        half_angle_rad = math.radians(max(self.front_stop_half_angle_deg, 0.0))
+        ranges_m = np.asarray(scan.ranges, dtype=np.float64)
+        angles_rad = scan.angle_min + np.arange(ranges_m.shape[0], dtype=np.float64) * scan.angle_increment
+
+        front_mask = np.abs(angles_rad) <= half_angle_rad
+        if not np.any(front_mask):
+            return math.inf
+
+        front_ranges_m = ranges_m[front_mask]
+        valid_front_hits = np.isfinite(front_ranges_m) & (front_ranges_m >= 0.0)
+        if not np.any(valid_front_hits):
+            return math.inf
+
+        return float(np.min(front_ranges_m[valid_front_hits]))
+
     def _publish_cmd(self, speed_mps: float, steering_radius_m: float):
         msg = Twist()
         msg.linear.x = float(speed_mps)
@@ -99,6 +127,19 @@ class WeightedPairsMmseNode(Node):
             self._last_status_message = status
 
     def _scan_callback(self, scan: LaserScan):
+        front_min_distance_m = self._extract_front_min_distance(scan)
+        if front_min_distance_m <= self.front_stop_distance_m:
+            self._publish_cmd(0.0, math.inf)
+            self._maybe_log_status(
+                "front stop | min=%.3f m <= %.3f m inside +/-%.1f deg | commanded stop"
+                % (
+                    front_min_distance_m,
+                    self.front_stop_distance_m,
+                    self.front_stop_half_angle_deg,
+                )
+            )
+            return
+
         try:
             result = runAutonomousAlgorithm(self._scan_to_algorithm_input(scan))
         except Exception as exc:
