@@ -29,8 +29,8 @@ straight_y_threshold_m = 0.02  # treat smaller lateral offsets as straight drivi
 
 # speed tuning
 v_min = 0.75  # fallback and minimum commanded speed
-v_max = 2.0  # maximum commanded speed
-k_curvature = 0.3  # penalizes speed as curvature magnitude increases
+v_max = 1.25  # maximum commanded speed
+k_curvature = 0.6  # penalizes speed as curvature magnitude increases
 
 
 def isValidDistance(distance_m):
