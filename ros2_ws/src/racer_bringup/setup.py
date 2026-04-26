@@ -13,6 +13,8 @@ setup(
         ("share/" + package_name, ["package.xml"]),
         ("share/" + package_name + "/launch", sorted(glob("launch/*.launch.py"))),
         ("share/" + package_name + "/config", sorted(glob("config/*"))),
+        ("share/" + package_name + "/worlds", sorted(glob("worlds/*"))),
+        ("share/" + package_name + "/meshes", sorted(glob("meshes/*"))),
     ],
     install_requires=["setuptools"],
     zip_safe=True,

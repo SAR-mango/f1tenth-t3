@@ -4,52 +4,68 @@ Update it whenever you make major changes (new features, architecture changes,
 new dependencies, new workflows, or significant refactors).
 
 ## Project overview
-- Legacy ROS1 (catkin) workspace for 1/10th-scale autonomous racing (F1/10),
-  originally built around older Gazebo.
-- Current goal: migrate to ROS2 Humble and Gazebo Fortress to simulate an
-  autonomous driving algorithm for a lidar-equipped car.
-- Supports simulation (Gazebo) and real hardware; only a few world files and
-  some new folders have been modified so far.
-- Core autonomy: wallfollowing, navigation stack/SLAM, reinforcement learning,
-  and evolutionary neural network training (legacy ROS1 implementations).
+- ROS2 Humble + Gazebo Fortress workspace for a lidar-equipped 1/10th-scale
+  autonomous racing car.
+- The legacy ROS1/catkin stack from the upstream fork has been removed from
+  this repo; keep new work ROS2-only unless there is a deliberate reason to
+  reintroduce archived material elsewhere.
+- Supports both Fortress simulation and the current real-car Hokuyo + UART
+  workflow.
+- Core maintained autonomy paths are wallfollowing, wallbalancing,
+  follow-the-gap, weighted-pairs MMSE, and the real-hardware test nodes.
 
 ## Repository layout
-- ros_ws/                     # ROS workspace
-  - launch/                   # Top-level launch files
-  - src/                      # ROS packages
-    - autonomous/             # Driving algorithms and learning
-    - car_control/            # Drive parameters, control, and safety
-    - car_tf/                 # TF transforms and laser scan handling
-    - hardware/               # Real-car hardware configs
-    - navigation_stack/       # SLAM/navigation stack integration
-    - simulation/             # Gazebo worlds, models, and simulation tools
-    - teleoperation/          # Keyboard/joystick control
-- doc/                        # Documentation and assets
-- scripts/                    # Helper scripts (formatting, cartographer, etc.)
-- ros2_ws/                    # ROS2 workspace (migration target)
+- ros2_ws/                    # Active ROS2 workspace
   - src/drive_msgs            # ROS2 interface package (DriveParam.msg)
-  - src/wallfollowing2        # ROS2 port of wallfollowing2 (rclpy)
+  - src/wallfollowing2        # ROS2 autonomy + test nodes (rclpy)
   - src/car_control           # ROS2 control nodes (multiplexer + controller)
-  - src/racer_bringup         # ROS2 Gazebo Fortress launch + ros_gz_bridge
+  - src/racer_bringup         # ROS2 bringup, dashboard, Fortress assets
+    - launch/                 # Sim + real-car launch files
+    - config/                 # RViz + weighted-pairs parameter files
+    - worlds/                 # Fortress world files kept in-repo
+    - meshes/                 # Meshes referenced by the Fortress world
+- README.md                   # Top-level ROS2 usage doc
+- AGENTS.md                   # Cross-session continuity log
 
 ## Key simulation assets
-- ros_ws/src/simulation/racer_world/worlds/
-  - racetrack_decorated_2_hokuyo.world (custom world with Hokuyo model)
-  - racetrack_decorated_2.world
-  - hokuyo_ust10lx/ (model config, SDF, mesh, textures)
+- ros2_ws/src/racer_bringup/worlds/racetrack_decorated_2_hokuyo.world
+- ros2_ws/src/racer_bringup/meshes/
+  - track_decorated_2.dae
+  - walls.dae
+  - decoration_colliders_2.dae
 
 ## Common workflows
-- Build: `catkin_make` from `ros_ws/`
-- Source: `source devel/setup.bash` (or `setup.zsh`)
-- Launch: see `ros_ws/launch/*.launch` (gazebo, nav stack, RL training)
-- ROS2 build: `colcon build --packages-select drive_msgs` from `ros2_ws/`
+- Build: `colcon build` from `ros2_ws/`
 - ROS2 source: `source install/setup.bash`
 - ROS2 sim: `ros2 launch racer_bringup fortress_sim.launch.py`
+- ROS2 sim controllers:
+  `fortress_wallfollowing.launch.py`,
+  `fortress_wallbalancing.launch.py`,
+  `fortress_follow_the_gap.launch.py`
+- Real-car autonomy:
+  `real_follow_the_gap.launch.py`,
+  `real_wallbalancing.launch.py`,
+  `real_weighted_pairs_mmse.launch.py`
+- Real-car tests:
+  `real_scan_stop_test.launch.py`,
+  `real_speed_test.launch.py`,
+  `real_steering_test.launch.py`,
+  `real_timed_arc_test.launch.py`
+- Dashboard: `ros2 launch racer_bringup dashboard.launch.py`
 - Shell: zsh, ROS2 environment is pre-sourced on new terminals.
 - Assumed installed: ROS2 Humble, Gazebo Fortress, ros_gz bridge.
 - Use `ign` CLI for Gazebo Fortress (`gz` is not available).
 
 ## Continuity log (append newest on top)
+- 2026-04-25: Removed the remaining legacy upstream repository content so the
+  tree is now ROS2-only. Moved the active Fortress world and required meshes
+  from `ros_ws/src/simulation/racer_world` into
+  `ros2_ws/src/racer_bringup/{worlds,meshes}`, updated all Fortress launch
+  files to prefer those source-tree assets with install-space fallback, taught
+  `racer_bringup/setup.py` to install the world + mesh files, removed the dead
+  `cmd_vel_to_drive_param_real_node` entrypoint, dropped legacy docs/scripts/
+  ROS1 workspace files from the repo, and rewrote the README / `.gitignore`
+  for the cleaned ROS2 layout.
 - 2026-04-24: Replaced the `weighted_pairs_mmse` launch-argument tuning fanout
   with a YAML parameter file workflow. Added
   `racer_bringup/config/weighted_pairs_mmse.yaml`, changed

@@ -26,7 +26,6 @@ setup(
             "timed_arc_test_node = wallfollowing2.timed_arc_test_node:main",
             "speed_test_node = wallfollowing2.speed_test_node:main",
             "steering_test_node = wallfollowing2.steering_test_node:main",
-            "cmd_vel_to_drive_param_real_node = wallfollowing2.cmd_vel_to_drive_param_real_node:main",
         ],
     },
 )
