@@ -23,6 +23,7 @@
   <exec_depend>car_control</exec_depend>
   <exec_depend>drive_msgs</exec_depend>
   <exec_depend>python3-pyqt5</exec_depend>
+  <exec_depend>python3-pyqtgraph</exec_depend>
 
   <export>
     <build_type>ament_python</build_type>

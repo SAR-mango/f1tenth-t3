@@ -57,6 +57,25 @@ new dependencies, new workflows, or significant refactors).
 - Use `ign` CLI for Gazebo Fortress (`gz` is not available).
 
 ## Continuity log (append newest on top)
+- 2026-04-25: Restored simulator-style MMSE cone visualization in the
+  `racer_bringup/dashboard_node` LiDAR view. The dashboard now supports an
+  `overlay_mode` parameter with `weighted_pairs_mmse`, recreates the
+  weighted-pairs debug geometry from live `/scan` data using the same
+  `weighted_pairs_mmse_algorithm`, and can load matching tuning/front-stop
+  values from a new `weighted_pairs_params_file` parameter. Updated
+  `dashboard.launch.py` to expose both dashboard overlay args, and
+  `real_weighted_pairs_mmse.launch.py` now enables that overlay and passes the
+  active `weighted_pairs_mmse.yaml` path through so cone-center lines and the
+  lookahead marker match the running MMSE stack.
+- 2026-04-25: Replaced `racer_bringup/dashboard_node` with a simulator-style
+  `pyqtgraph` dashboard. The old custom Qt metric-card UI is gone; the
+  dashboard now opens a LiDAR forward/lateral view plus a separate speed /
+  steering command-history window, with no sim-only dual-algorithm comparison
+  or track-visualization window. `dashboard.launch.py` now exposes steering
+  plot title/axis options so controller-based launches label angle commands
+  correctly while `real_weighted_pairs_mmse.launch.py` uses steering-radius
+  semantics and hides zero-valued straight commands. Added
+  `python3-pyqtgraph` as a runtime dependency and updated the README notes.
 - 2026-04-25: Removed the remaining legacy upstream repository content so the
   tree is now ROS2-only. Moved the active Fortress world and required meshes
   from `ros_ws/src/simulation/racer_world` into

@@ -178,6 +178,8 @@ def generate_launch_description():
             "start_rviz": dashboard_start_rviz,
             "scan_topic": "/scan",
             "motion_topic": "/cmd_vel",
+            "steering_plot_title": "Steering Angle Command",
+            "steering_axis_label": "Angle (rad)",
         }.items(),
         condition=IfCondition(start_dashboard),
     )

@@ -17,6 +17,7 @@ content from the upstream fork is no longer included.
 - `ros_gz_bridge` / `ros_gz_sim`
 - `urg_node`
 - `python3-pyqt5`
+- `python3-pyqtgraph`
 - Python packages used by the lidar algorithms:
 
 ```bash
@@ -92,10 +93,17 @@ Run the dashboard on its own:
 ros2 launch racer_bringup dashboard.launch.py
 ```
 
-The sim wallfollowing / wallbalancing launches and the real follow-the-gap /
-wallbalancing / weighted-pairs launches start the dashboard by default. Use
-`start_dashboard:=false` to suppress it, or `dashboard_start_rviz:=true` when
-the including launch supports RViz alongside the dashboard.
+The dashboard now mirrors the simulator-style UI: one `pyqtgraph` LiDAR window
+with forward/lateral axes plus a separate command-history window for speed and
+steering setpoints. The sim wallfollowing / wallbalancing launches and the real
+follow-the-gap / wallbalancing / weighted-pairs launches start it by default.
+Use `start_dashboard:=false` to suppress it, or `dashboard_start_rviz:=true`
+when the including launch supports RViz alongside the dashboard.
+
+Controller-based launches label the steering history as an angle command.
+`real_weighted_pairs_mmse.launch.py` labels it as steering radius and hides
+zero-valued straight commands so the plot matches that algorithm's raw UART
+command convention.
 
 ## Notes
 - Shells in this environment are expected to be `zsh`.

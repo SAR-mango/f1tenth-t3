@@ -230,6 +230,11 @@ def generate_launch_description():
             "scan_topic": scan_topic,
             "motion_topic": uart_cmd_vel_topic,
             "stamped_motion_topic": "/telemetry/uart_command",
+            "steering_plot_title": "Steering Radius Command",
+            "steering_axis_label": "Radius (m)",
+            "steering_zero_is_straight": "true",
+            "overlay_mode": "weighted_pairs_mmse",
+            "weighted_pairs_params_file": weighted_pairs_params_file,
         }.items(),
         condition=IfCondition(start_dashboard),
     )
